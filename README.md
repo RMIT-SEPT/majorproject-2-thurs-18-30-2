@@ -1,9 +1,9 @@
 # RMIT SEPT 2020 Major Project
 
-# Group 00
+# Group 02
 
 ## Members
-* SURNAME, GivenName (sXXXX)
+* Undrakh, Chinguun (s3774562)
 * SURNAME, GivenName (sXXXX)
 * SURNAME, GivenName (sXXXX)
 * SURNAME, GivenName (sXXXX)
