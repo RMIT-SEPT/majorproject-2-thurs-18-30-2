@@ -4,7 +4,7 @@
 
 ## Members
 * Undrakh, Chinguun (s3774562)
-* SURNAME, GivenName (sXXXX)
+* Vu, Ted (s3678491)
 * SURNAME, GivenName (sXXXX)
 * SURNAME, GivenName (sXXXX)
 * SURNAME, GivenName (sXXXX)
