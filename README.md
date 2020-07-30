@@ -4,9 +4,8 @@
 
 ## Members
 * Undrakh, Chinguun (s3774562)
-* Vu, Ted (s3678491)
+* Huang, Jialun Darren (s3755729)
 * Ojaimi, Anthony (s3782507)
-* SURNAME, GivenName (sXXXX)
 * SURNAME, GivenName (sXXXX)
 
 ## Records
