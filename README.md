@@ -6,7 +6,7 @@
 * Undrakh, Chinguun (s3774562)
 * Huang, Jialun Darren (s3755729)
 * Ojaimi, Anthony (s3782507)
-* SURNAME, GivenName (sXXXX)
+* Isman, Danial (s3786400)
 
 ## Records
 
