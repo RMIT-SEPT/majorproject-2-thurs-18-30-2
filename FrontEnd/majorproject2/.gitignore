@@ -1,12 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-creds.sh
-creds2.sh
-.terraform*
-terraform.tfstate
-terraform.tfstate.backup
-tmp/
-
 # dependencies
 /node_modules
 /.pnp
@@ -28,3 +21,6 @@ tmp/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Intellij
+.idea/
