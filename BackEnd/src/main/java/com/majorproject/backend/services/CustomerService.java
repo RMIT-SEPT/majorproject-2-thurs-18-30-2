@@ -1,0 +1,20 @@
+package com.majorproject.backend.services;
+
+
+import com.majorproject.backend.repositories.CustomerRepository;
+import com.majorproject.backend.models.Customer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CustomerService {
+    @Autowired
+    private CustomerRepository customerRepository;
+
+
+    public Customer saveOrUpdatePerson(Customer person) {
+
+        //logic
+        return customerRepository.save(person);
+    }
+}
