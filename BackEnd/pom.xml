@@ -8,11 +8,11 @@
         <version>2.3.2.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.majorproject-2</groupId>
-    <artifactId>majorproject2-thurs-18-30-2</artifactId>
+    <groupId>com.majorproject</groupId>
+    <artifactId>backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>majorproject2-thurs-18-30-2</name>
-    <description>SEPT major project team 2</description>
+    <name>backend</name>
+    <description>Major project Back end</description>
 
     <properties>
         <java.version>1.8</java.version>

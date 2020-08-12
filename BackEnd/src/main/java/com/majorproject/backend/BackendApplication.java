@@ -1,13 +1,13 @@
-package com.majorproject2.majorproject2thurs18302;
+package com.majorproject.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Majorproject2Thurs18302Application {
+public class BackendApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Majorproject2Thurs18302Application.class, args);
+        SpringApplication.run(BackendApplication.class, args);
     }
 
 }

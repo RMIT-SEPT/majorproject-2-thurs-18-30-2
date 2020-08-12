@@ -1,10 +1,10 @@
-package com.majorproject2.majorproject2thurs18302;
+package com.majorproject.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Majorproject2Thurs18302ApplicationTests {
+class BackendApplicationTests {
 
     @Test
     void contextLoads() {
