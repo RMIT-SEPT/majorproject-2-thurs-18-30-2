@@ -1,6 +1,5 @@
 package com.majorproject.backend.models;
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +12,7 @@ public class Customer extends User {
     private Long id;
 
     public Customer() {
+
     }
 
     public Long getId() {
