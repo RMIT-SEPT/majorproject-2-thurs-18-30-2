@@ -45,6 +45,10 @@ public abstract class User {
         this.pNumber = pNumber;
     }
 
+    public User() {
+
+    }
+
     public String getfName() {
         return fName;
     }
