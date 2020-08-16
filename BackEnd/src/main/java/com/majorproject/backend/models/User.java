@@ -28,6 +28,10 @@ public abstract class User {
     @JsonFormat(pattern ="yyyy-mm-dd")
     private Date updatedAt;
 
+    public User() {
+        
+    }
+
     public User(@NotBlank(message = "First name is required") String fName,
                 @NotBlank(message = "Last name is required") String lName,
                 @Email(message = "Invalid email address") @NotBlank(message = "email is required") String email,

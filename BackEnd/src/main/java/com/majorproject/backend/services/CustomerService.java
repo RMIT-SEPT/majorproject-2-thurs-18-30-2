@@ -11,9 +11,14 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public Customer saveOrUpdatePerson(Customer person) {
+
+    public Customer saveOrUpdateCustomer(Customer person) {
 
         //logic
         return customerRepository.save(person);
+    }
+
+    public Customer getCustomerByEmail(String email) {
+        return customerRepository.findByEmail(email);
     }
 }
