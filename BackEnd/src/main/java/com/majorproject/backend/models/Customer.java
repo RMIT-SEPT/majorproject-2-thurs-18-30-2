@@ -10,9 +10,14 @@ public class Customer extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
+    public Customer(String fName, String lName, String email, String password,
+                    String address, String pNumber) {
+        super(fName, lName, email, password, address, pNumber);
+    }
+
     public Customer() {
-        super();
+
     }
 
     public Long getId() {

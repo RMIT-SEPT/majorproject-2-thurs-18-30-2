@@ -14,8 +14,4 @@ public class EmployeeService {
         //logic
         return employeeRepository.save(person);
     }
-
-    public Employee getPerson(String fName) {
-        return employeeRepository.findByFName(fName);
-    }
 }

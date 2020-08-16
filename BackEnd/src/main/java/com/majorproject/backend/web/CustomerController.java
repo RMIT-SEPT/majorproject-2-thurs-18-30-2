@@ -1,5 +1,6 @@
 package com.majorproject.backend.web;
 
+import com.majorproject.backend.jsonconv.LoginForm;
 import com.majorproject.backend.models.Customer;
 import com.majorproject.backend.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,16 @@ public class CustomerController {
         return new ResponseEntity<Customer>(customer, HttpStatus.CREATED);
     }
 
-    @GetMapping("/get/email/{email}")
-    public ResponseEntity<?> getCustomerById(@PathVariable String email) {
-        Customer customer = customerService.getCustomerByEmail(email);
-        return new ResponseEntity<Customer>(customer, HttpStatus.OK);
+    @PostMapping("/verify")
+    public ResponseEntity<?> loginCustomer(@RequestBody LoginForm loginForm) {
+        ResponseEntity<?> responseEntity = null;
+        Customer customer = customerService.getCustomerByEmail(loginForm.getEmail());
+        if(customer.getPassword().equals(loginForm.getPassword())) {
+            responseEntity = new ResponseEntity<Customer>(customer, HttpStatus.OK);
+        } else {
+            responseEntity = new ResponseEntity<String>("Email or password invalid", HttpStatus.UNAUTHORIZED);
+        }
+        return responseEntity;
     }
+
 }

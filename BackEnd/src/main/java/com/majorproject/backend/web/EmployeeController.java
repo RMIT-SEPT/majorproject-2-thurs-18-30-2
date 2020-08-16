@@ -25,8 +25,8 @@ public class EmployeeController {
         return new ResponseEntity<Employee>(employee, HttpStatus.CREATED);
     }
 
-    @GetMapping("/get/fName/{fName}")
-    public Employee findEmployeeByFName(@PathVariable String fName) {
-        return employeeService.getPerson(fName);
-    }
+//    @GetMapping("/get/fName/{fName}")
+//    public Employee findEmployeeByFName(@PathVariable String fName) {
+//        return employeeService.getPerson(fName);
+//    }
 }
