@@ -11,7 +11,10 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
 
     public Employee saveOrUpdatePerson(Employee person) {
-        //logic
         return employeeRepository.save(person);
+    }
+
+    public Employee getEmployeeByEmail(String email) {
+        return employeeRepository.findByEmail(email);
     }
 }

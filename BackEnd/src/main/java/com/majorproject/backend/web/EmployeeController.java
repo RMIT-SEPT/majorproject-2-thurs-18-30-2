@@ -1,5 +1,6 @@
 package com.majorproject.backend.web;
 
+import com.majorproject.backend.jsonconv.LoginForm;
 import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +19,23 @@ public class EmployeeController {
 
     @PostMapping("")
     public ResponseEntity<?> createEmployee(@Valid @RequestBody Employee employee, BindingResult result) {
-        if(result.hasErrors()) {
-            return new ResponseEntity<String>("Invalid Person Object", HttpStatus.BAD_REQUEST);
-        }
         Employee employeeNew = employeeService.saveOrUpdatePerson(employee);
         return new ResponseEntity<Employee>(employee, HttpStatus.CREATED);
     }
 
-//    @GetMapping("/get/fName/{fName}")
-//    public Employee findEmployeeByFName(@PathVariable String fName) {
-//        return employeeService.getPerson(fName);
-//    }
+    @PostMapping("/verify")
+    public ResponseEntity<?> loginCustomer(@RequestBody LoginForm loginForm) {
+        ResponseEntity<?> responseEntity = null;
+        Employee employee = employeeService.getEmployeeByEmail(loginForm.getEmail());
+        if(employee == null) {
+            responseEntity = new ResponseEntity<String>("User does not exist", HttpStatus.NOT_FOUND);
+        } else {
+            if(employee.getPassword().equals(loginForm.getPassword())) {
+                responseEntity = new ResponseEntity<Employee>(employee, HttpStatus.OK);
+            } else {
+                responseEntity = new ResponseEntity<String>("Email or password invalid", HttpStatus.UNAUTHORIZED);
+            }
+        }
+        return responseEntity;
+    }
 }
