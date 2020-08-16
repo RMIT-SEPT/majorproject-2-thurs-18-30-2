@@ -33,7 +33,7 @@ public class TestCustomerController {
     private CustomerService customerService;
 
     @Test
-    public void testCustomerLogin_Pass() throws Exception {
+    public void customerLogin_Pass() throws Exception {
         Customer customer =  new Customer("Ross", "Bob", "bob@gmail.com", "1234", null, null);
 
         given(customerService.getCustomerByEmail("bob@gmail.com")).willReturn(customer);
@@ -51,7 +51,7 @@ public class TestCustomerController {
     }
 
     @Test
-    public void pwdWrong_testCustomerLogin_Fail() throws Exception {
+    public void customerLogin_pwdWrong_Fail() throws Exception {
         Customer customer =  new Customer("Ross", "Bob", "bob@gmail.com", "1234", null, null);
 
         given(customerService.getCustomerByEmail("bob@gmail.com")).willReturn(customer);
@@ -67,7 +67,7 @@ public class TestCustomerController {
     }
 
     @Test
-    public void emailWrong_testCustomerLogin_Fail() throws Exception {
+    public void customerLogin_emailWrong_Fail() throws Exception {
         given(customerService.getCustomerByEmail("ob@gmail.com")).willReturn(null);
 
         LoginForm requestBody = new LoginForm();
