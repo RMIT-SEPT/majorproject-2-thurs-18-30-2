@@ -3,4 +3,5 @@ creds2.sh
 .terraform*
 terraform.tfstate
 terraform.tfstate.backup
+.idea/
 tmp/
