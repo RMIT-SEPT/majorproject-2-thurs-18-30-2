@@ -30,11 +30,17 @@ public class CustomerController {
     public ResponseEntity<?> loginCustomer(@RequestBody LoginForm loginForm) {
         ResponseEntity<?> responseEntity = null;
         Customer customer = customerService.getCustomerByEmail(loginForm.getEmail());
-        if(customer.getPassword().equals(loginForm.getPassword())) {
-            responseEntity = new ResponseEntity<Customer>(customer, HttpStatus.OK);
-        } else {
-            responseEntity = new ResponseEntity<String>("Email or password invalid", HttpStatus.UNAUTHORIZED);
+        if(customer == null) {
+            responseEntity = new ResponseEntity<String>("User does not exist", HttpStatus.NOT_FOUND);
         }
+        else {
+            if(customer.getPassword().equals(loginForm.getPassword())) {
+                responseEntity = new ResponseEntity<Customer>(customer, HttpStatus.OK);
+            } else {
+                responseEntity = new ResponseEntity<String>("Password invalid", HttpStatus.UNAUTHORIZED);
+            }
+        }
+
         return responseEntity;
     }
 

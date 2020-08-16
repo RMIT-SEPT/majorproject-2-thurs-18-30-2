@@ -33,7 +33,7 @@ public class TestCustomerController {
     private CustomerService customerService;
 
     @Test
-    public void testCustomerLogin() throws Exception {
+    public void testCustomerLogin_Pass() throws Exception {
         Customer customer =  new Customer("Ross", "Bob", "bob@gmail.com", "1234", null, null);
 
         given(customerService.getCustomerByEmail("bob@gmail.com")).willReturn(customer);
@@ -48,5 +48,35 @@ public class TestCustomerController {
                     )
                 .andExpect(status().isOk())
                 .andExpect(content().json("{'fName' : 'Ross'}"));
+    }
+
+    @Test
+    public void pwdWrong_testCustomerLogin_Fail() throws Exception {
+        Customer customer =  new Customer("Ross", "Bob", "bob@gmail.com", "1234", null, null);
+
+        given(customerService.getCustomerByEmail("bob@gmail.com")).willReturn(customer);
+
+        LoginForm requestBody = new LoginForm();
+        requestBody.setEmail("bob@gmail.com");
+        requestBody.setPassword("123");
+
+        mvc.perform(post("/api/customer/verify")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Util.asJsonString(requestBody))
+        ).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void emailWrong_testCustomerLogin_Fail() throws Exception {
+        given(customerService.getCustomerByEmail("ob@gmail.com")).willReturn(null);
+
+        LoginForm requestBody = new LoginForm();
+        requestBody.setEmail("ob@gmail.com");
+        requestBody.setPassword("1234");
+
+        mvc.perform(post("/api/customer/verify")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Util.asJsonString(requestBody))
+        ).andExpect(status().isNotFound());
     }
 }
