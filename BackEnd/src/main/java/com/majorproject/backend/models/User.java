@@ -1,6 +1,7 @@
 package com.majorproject.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.majorproject.backend.dashboard.Dashboard;
 
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
@@ -27,6 +28,7 @@ public abstract class User {
     private Date createdAt;
     @JsonFormat(pattern ="yyyy-mm-dd")
     private Date updatedAt;
+    private Dashboard dashboard = null;
 
     public User() {
         
@@ -118,5 +120,7 @@ public abstract class User {
     protected void onUpdate() {
         this.updatedAt = new Date();
     }
+
+    public Dashboard getDashboard() { return dashboard; }
 }
 
