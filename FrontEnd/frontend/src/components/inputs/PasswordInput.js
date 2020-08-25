@@ -1,4 +1,5 @@
 import React from 'react';
+import { Form } from 'react-bootstrap';
 
 class PasswordInput extends React.Component {
     constructor (props) {
@@ -18,7 +19,7 @@ class PasswordInput extends React.Component {
 
     render () {
         return (
-            <input type="password" value={this.state.value} onChange={this.handleChange} />
+            <Form.Control placeholder="Password" type="password" value={this.state.value} onChange={this.handleChange} />
         );
     }
 }

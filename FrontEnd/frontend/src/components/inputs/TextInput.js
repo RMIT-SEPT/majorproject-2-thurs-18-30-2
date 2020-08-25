@@ -1,4 +1,5 @@
 import React from 'react';
+import { Form } from 'react-bootstrap';
 
 class TextInput extends React.Component {
     constructor (props) {
@@ -18,7 +19,7 @@ class TextInput extends React.Component {
 
     render () {
         return (
-            <input type="text" value={this.state.value} onChange={this.handleChange} />
+            <Form.Control type="text" value={this.state.value} onChange={this.handleChange} />
         );
     }
 }

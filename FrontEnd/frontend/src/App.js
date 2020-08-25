@@ -1,26 +1,19 @@
 import React from 'react';
-import Form from './components/Form'
+import { Switch } from 'react-router-dom';
+
+import './css/App.css';
+import SubRouter from './components/SubRouter';
+import router from './router/router';
 
 class App extends React.Component {
   render () {
-    var form = {
-      components : [
-        {
-          inputName : 'Name',
-          inputType : 'text'
-        },
-        {
-          inputName : 'Email',
-          inputType : 'email'
-        },
-        {
-          inputName : 'Password',
-          inputType : 'password'
-        }
-      ]
-    };
     return (
-      <Form form={form}/>
+          <Switch>
+            {router.map((route, i) => (
+                    <SubRouter key={i} {...route} />
+                )
+            )}
+          </Switch>
     );
   }
 }
