@@ -26,7 +26,7 @@ public class CustomerController {
         return new ResponseEntity<Customer>(customer, HttpStatus.CREATED);
     }
 
-    @PostMapping("/verify")
+    @PostMapping("/login")
     public ResponseEntity<?> loginCustomer(@RequestBody LoginForm loginForm) {
         ResponseEntity<?> responseEntity = null;
         Customer customer = customerService.getCustomerByEmail(loginForm.getEmail());
@@ -43,5 +43,4 @@ public class CustomerController {
 
         return responseEntity;
     }
-
 }

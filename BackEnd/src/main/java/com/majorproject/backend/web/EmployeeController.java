@@ -23,7 +23,7 @@ public class EmployeeController {
         return new ResponseEntity<Employee>(employee, HttpStatus.CREATED);
     }
 
-    @PostMapping("/verify")
+    @PostMapping("/login")
     public ResponseEntity<?> loginCustomer(@RequestBody LoginForm loginForm) {
         ResponseEntity<?> responseEntity = null;
         Employee employee = employeeService.getEmployeeByEmail(loginForm.getEmail());

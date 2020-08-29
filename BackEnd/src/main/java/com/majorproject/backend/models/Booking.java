@@ -12,14 +12,14 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    public Booking() {
+
+    }
+
     public Booking(Employee employee, Customer customer, @NotBlank(message = "Service required") String service) {
         this.employee = employee;
         this.customer = customer;
         this.service = service;
-    }
-
-    public Booking() {
-
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
