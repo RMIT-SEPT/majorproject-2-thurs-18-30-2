@@ -11,8 +11,11 @@ public class DashboardController {
     @Autowired
     private DashboardService dashboardService;
 
-    @PostMapping("")
-    public ResponseEntity<?> viewDashboard() {
+    @PostMapping("/view")
+    public ResponseEntity<?> viewDashboard(@RequestParam String ) {
+        if() {
+//             if customer or employee
+        }
 //        return new ResponseEntity<Dashboard>(???, HttpStatus.OK);
     }
 }

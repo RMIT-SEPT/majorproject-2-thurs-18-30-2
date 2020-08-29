@@ -11,12 +11,7 @@ public class DashboardService {
     @Autowired
     private DashboardRepository dashboardRepository;
 
-    public void updateDashboard(Booking booking) {
-        // Reread all bookings
-//        return dashboardRepository.save(booking);
-    }
-
-    public Dashboard displayDashboard() {
+    public Dashboard displayDashboard(String userType) {
         // Read dashboard
 //        return dashboardRepository.findAll();
     }
