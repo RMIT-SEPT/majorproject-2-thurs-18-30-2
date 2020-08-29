@@ -5,10 +5,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import NavigationBar from "./components/NavigationBar";
 
 ReactDOM.render(
     <React.StrictMode>
         <HashRouter>
+        <NavigationBar />
         <App />
         </HashRouter>
     </React.StrictMode>,
