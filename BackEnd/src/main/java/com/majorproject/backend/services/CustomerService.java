@@ -15,6 +15,17 @@ public class CustomerService {
     }
 
     public Customer getCustomerByEmail(String email) {
-        return customerRepository.findByEmail(email);
+        Customer customer = customerRepository.findByEmail(email);
+
+        return customer;
+    }
+
+    public boolean verifyCustomerByPassword(Customer customer, String password) {
+        boolean is_verified = false;
+        if(customer.getPassword().equals(password)) {
+            is_verified = true;
+        }
+
+        return is_verified;
     }
 }
