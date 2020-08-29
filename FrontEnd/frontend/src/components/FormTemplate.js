@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import { Row, Col, 
     Form, Button, Card   
@@ -37,18 +38,26 @@ class FormTemplate extends React.Component {
 
     submitForm (event) {
         var values = [];
-        var canSubmit = false;
         var ref;
         for (ref in this.componentRefs) {
             values.push(this.componentRefs[ref].current.state);
         }
-
+        console.log(values[0]);
+        var user = {
+            email : values[0].value,
+            username : values[1].value,
+            password : values[2].value,
+            address : values[3].value,
+            phone : values[4].value
+        }
         if(values[2].valid) {
             // Redirect url after form submission
             this.setState({
                     redirect : this.form.redirect
                 }
             )
+            //POST template
+            axios.post('localhost8080:api/customer', { user });
             event.preventDefault();
         }
     }
