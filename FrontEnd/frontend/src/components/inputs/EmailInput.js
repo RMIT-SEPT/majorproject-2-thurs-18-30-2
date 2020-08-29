@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
 
 class EmailInput extends React.Component {
@@ -33,7 +33,15 @@ class EmailInput extends React.Component {
 
     render () {
         return (
-            <Form.Control placeholder="Email" type="text" value={this.state.value} onChange={this.handleChange} />
+            <Form.Group as={Row}>
+                    <Form.Label column sm={this.props.pos[0]}>
+                        {this.props.naming}
+                    </Form.Label>
+                    <Col sm={this.props.pos[1]}>
+                    <Form.Control placeholder="Email" type="text" value={this.state.value} onChange={this.handleChange} />
+                    </Col>
+                </Form.Group>
+            
         );
     }
 }

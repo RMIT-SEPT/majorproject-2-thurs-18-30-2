@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import { Row, Col, 
     Form, Button, Card   
@@ -41,14 +42,24 @@ class FormTemplate extends React.Component {
         for (ref in this.componentRefs) {
             values.push(this.componentRefs[ref].current.state);
         }
-        console.log(values);
-
-        // Redirect url after form submission
-        this.setState({
-                redirect : this.form.redirect
-            }
-        )
-        event.preventDefault();
+        console.log(values[0]);
+        var user = {
+            email : values[0].value,
+            username : values[1].value,
+            password : values[2].value,
+            address : values[3].value,
+            phone : values[4].value
+        }
+        if(values[2].valid) {
+            // Redirect url after form submission
+            this.setState({
+                    redirect : this.form.redirect
+                }
+            )
+            //POST template
+            axios.post('localhost8080:api/customer', { user });
+            event.preventDefault();
+        }
     }
     
     render () {
@@ -69,20 +80,19 @@ class FormTemplate extends React.Component {
                                         function(component) {
                                             var TagName = component.inputType;
                                             return  (
-                                                <Form.Group as={Row} key={component.inputName}>
-                                                    <Form.Label column sm={2}>
-                                                        {component.inputName}
-                                                    </Form.Label>
-                                                    <Col sm={10}>
-                                                        <TagName ref={this.componentRefs[component.inputName]} />
-                                                    </Col>
-                                                </Form.Group>
+                                                <TagName 
+                                                    key={component.inputName} 
+                                                    ref={this.componentRefs[component.inputName]} 
+                                                    naming={component.inputName} 
+                                                    pos={[4,8]} 
+                                                />
+                                                
                                             );
                                         }.bind(this)
-                                    )
+                                    ) 
                                 }
                                 <Form.Group as={Row}>
-                                    <Col sm={{ span: 10, offset: 2 }}>
+                                    <Col sm={{ span: 8, offset: 4 }}>
                                         <Button type="submit">{this.form.submitText}</Button>
                                     </Col>
                                 </Form.Group>
