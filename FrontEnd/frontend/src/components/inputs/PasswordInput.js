@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
 
 class PasswordInput extends React.Component {
     constructor (props) {
@@ -19,7 +19,14 @@ class PasswordInput extends React.Component {
 
     render () {
         return (
-            <Form.Control placeholder="Password" type="password" value={this.state.value} onChange={this.handleChange} />
+            <Form.Group as={Row}>
+                <Form.Label column sm={this.props.pos[0]}>
+                    {this.props.naming}
+                </Form.Label>
+                <Col sm={this.props.pos[1]}>
+                    <Form.Control placeholder="Password" type="password" value={this.state.value} onChange={this.handleChange} />
+                </Col>
+            </Form.Group>
         );
     }
 }

@@ -19,6 +19,7 @@ const router = [
 {
     path : "/sign-up",
     component : FormTemplate,
+    style : "centered", 
     form : "signUp"
 }
 ];

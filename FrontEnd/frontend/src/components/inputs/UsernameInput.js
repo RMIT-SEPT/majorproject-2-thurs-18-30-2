@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 
-class TextInput extends React.Component {
+class UsernameInput extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
@@ -26,11 +26,11 @@ class TextInput extends React.Component {
                     {this.props.naming}
                 </Form.Label>
                 <Col sm={this.props.pos[1]}>
-                    <Form.Control type="text" value={this.state.value} onChange={this.handleChange} />
+                    <Form.Control placeholder="Username" type="Username" value={this.state.value} onChange={this.handleChange} />
                 </Col>
             </Form.Group>
         );
     }
 }
 
-export default TextInput;
+export default UsernameInput;
