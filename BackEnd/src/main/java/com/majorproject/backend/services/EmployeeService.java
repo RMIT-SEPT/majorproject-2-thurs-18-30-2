@@ -10,8 +10,8 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    public Employee saveOrUpdatePerson(Employee person) {
-        return employeeRepository.save(person);
+    public Employee saveOrUpdatePerson(Employee employee) {
+        return employeeRepository.save(employee);
     }
 
     public Employee getEmployeeByEmail(String email) {

@@ -1,5 +1,6 @@
 package com.majorproject.backend.services;
 
+import com.majorproject.backend.jsonconv.LoginForm;
 import com.majorproject.backend.repositories.CustomerRepository;
 import com.majorproject.backend.models.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,11 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public Customer saveOrUpdateCustomer(Customer person) {
-        return customerRepository.save(person);
+    public Customer saveOrUpdateCustomer(Customer customer) {
+        return customerRepository.save(customer);
     }
 
+    // Option A
     public Customer getCustomerByEmail(String email) {
         Customer customer = customerRepository.findByEmail(email);
 
@@ -27,5 +29,25 @@ public class CustomerService {
         }
 
         return is_verified;
+    }
+
+    // Option B
+    public Customer loginCustomer(LoginForm loginForm) {
+        boolean login_success = false;
+        String email = loginForm.getEmail();
+        Customer customer = getCustomerByEmail(email);
+
+        if(customer != null) {
+            String password = loginForm.getPassword();
+            boolean is_verified = verifyCustomerByPassword(customer, password);
+
+            if(is_verified) {
+                login_success = true;
+            } else {
+                customer = null;
+            }
+        }
+
+        return customer;
     }
 }

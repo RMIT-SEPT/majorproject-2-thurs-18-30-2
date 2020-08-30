@@ -26,6 +26,7 @@ public class CustomerController {
         return new ResponseEntity<Customer>(customer, HttpStatus.CREATED);
     }
 
+    // Option A
     @PostMapping("/login")
     public ResponseEntity<?> loginCustomer(@RequestBody LoginForm loginForm) {
         ResponseEntity<?> responseEntity = null;
@@ -44,6 +45,20 @@ public class CustomerController {
 
         } else {
             responseEntity = new ResponseEntity<String>("User does not exist", HttpStatus.NOT_FOUND);
+        }
+
+        return responseEntity;
+    }
+
+    // Option B
+    @PostMapping("/login")
+    public ResponseEntity<?> loginCustomer(@RequestBody LoginForm loginForm) {
+        ResponseEntity<?> responseEntity = null;
+        Customer customer = customerService.loginCustomer(loginForm);
+        if(customer != null) {
+            responseEntity = new ResponseEntity<Customer>(customer, HttpStatus.OK);
+        } else {
+            responseEntity = new ResponseEntity<String>("User or Password invalid", HttpStatus.UNAUTHORIZED);
         }
 
         return responseEntity;
