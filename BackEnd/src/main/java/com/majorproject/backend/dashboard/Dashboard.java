@@ -6,6 +6,10 @@ import com.majorproject.backend.models.User;
 import java.util.ArrayList;
 
 public class Dashboard {
-    private User user;
-    private ArrayList<Booking> bookings = new ArrayList<Booking>();
+    private String username;
+    private ArrayList<Booking> dashboard = new ArrayList<Booking>();
+
+    public Dashboard(String username) {
+        this.username = username;
+    }
 }
