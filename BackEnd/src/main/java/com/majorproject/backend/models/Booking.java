@@ -1,7 +1,6 @@
 package com.majorproject.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.majorproject.backend.dashboard.BookingStatus;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
