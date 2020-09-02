@@ -26,31 +26,6 @@ public class CustomerController {
         return new ResponseEntity<Customer>(customer, HttpStatus.CREATED);
     }
 
-    // Option A
-    @PostMapping("/login")
-    public ResponseEntity<?> loginCustomer(@RequestBody LoginForm loginForm) {
-        ResponseEntity<?> responseEntity = null;
-        String email = loginForm.getEmail();
-        Customer customer = customerService.getCustomerByEmail(email);
-
-        if(customer != null) {
-            String password = loginForm.getPassword();
-            boolean is_verified = customerService.verifyCustomerByPassword(customer, password);
-
-            if(is_verified) {
-                responseEntity = new ResponseEntity<Customer>(customer, HttpStatus.OK);
-            } else {
-                responseEntity = new ResponseEntity<String>("Password invalid", HttpStatus.UNAUTHORIZED);
-            }
-
-        } else {
-            responseEntity = new ResponseEntity<String>("User does not exist", HttpStatus.NOT_FOUND);
-        }
-
-        return responseEntity;
-    }
-
-    // Option B
     @PostMapping("/login")
     public ResponseEntity<?> loginCustomer(@RequestBody LoginForm loginForm) {
         ResponseEntity<?> responseEntity = null;

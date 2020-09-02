@@ -1,6 +1,7 @@
 package com.majorproject.backend.web;
 
 import com.majorproject.backend.jsonconv.LoginForm;
+import com.majorproject.backend.models.Customer;
 import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +25,15 @@ public class EmployeeController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginCustomer(@RequestBody LoginForm loginForm) {
+    public ResponseEntity<?> loginEmployee(@RequestBody LoginForm loginForm) {
         ResponseEntity<?> responseEntity = null;
-        Employee employee = employeeService.getEmployeeByEmail(loginForm.getEmail());
-        if(employee == null) {
-            responseEntity = new ResponseEntity<String>("User does not exist", HttpStatus.NOT_FOUND);
+        Employee employee = employeeService.loginEmployee(loginForm);
+        if(employee != null) {
+            responseEntity = new ResponseEntity<Employee>(employee, HttpStatus.OK);
         } else {
-            if(employee.getPassword().equals(loginForm.getPassword())) {
-                responseEntity = new ResponseEntity<Employee>(employee, HttpStatus.OK);
-            } else {
-                responseEntity = new ResponseEntity<String>("Email or password invalid", HttpStatus.UNAUTHORIZED);
-            }
+            responseEntity = new ResponseEntity<String>("User or Password invalid", HttpStatus.UNAUTHORIZED);
         }
+
         return responseEntity;
     }
 }

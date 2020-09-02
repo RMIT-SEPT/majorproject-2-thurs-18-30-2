@@ -11,7 +11,6 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
     @Override
     Iterable<Employee> findAllById(Iterable<Long> iterable);
 
-    @Query(value = "SELECT * FROM EMPLOYEE c WHERE c.email = ?1",
-            nativeQuery = true)
+    @Query(value = "SELECT * FROM EMPLOYEE c WHERE c.email = ?1", nativeQuery = true)
     Employee findByEmail(String email);
 }

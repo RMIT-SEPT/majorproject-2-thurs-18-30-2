@@ -15,23 +15,7 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
-    // Option A
-    public Customer getCustomerByEmail(String email) {
-        Customer customer = customerRepository.findByEmail(email);
-
-        return customer;
-    }
-
-    public boolean verifyCustomerByPassword(Customer customer, String password) {
-        boolean is_verified = false;
-        if(customer.getPassword().equals(password)) {
-            is_verified = true;
-        }
-
-        return is_verified;
-    }
-
-    // Option B
+    /* Logic */
     public Customer loginCustomer(LoginForm loginForm) {
         boolean login_success = false;
         String email = loginForm.getEmail();
@@ -49,5 +33,21 @@ public class CustomerService {
         }
 
         return customer;
+    }
+
+    /* Used Methods */
+    public Customer getCustomerByEmail(String email) {
+        Customer customer = customerRepository.findByEmail(email);
+
+        return customer;
+    }
+
+    public boolean verifyCustomerByPassword(Customer customer, String password) {
+        boolean is_verified = false;
+        if(customer.getPassword().equals(password)) {
+            is_verified = true;
+        }
+
+        return is_verified;
     }
 }
