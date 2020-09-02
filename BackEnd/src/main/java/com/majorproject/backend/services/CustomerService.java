@@ -15,31 +15,33 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
-    /* Logic */
-    public Customer loginCustomer(LoginForm loginForm) {
-        boolean login_success = false;
-        String email = loginForm.getEmail();
-        Customer customer = getCustomerByEmail(email);
-
-        if(customer != null) {
-            String password = loginForm.getPassword();
-            boolean is_verified = verifyCustomerByPassword(customer, password);
-
-            if(is_verified) {
-                login_success = true;
-            } else {
-                customer = null;
-            }
-        }
-
-        return customer;
-    }
+//    /* Logic */
+//    public Customer loginCustomer(LoginForm loginForm) {
+//        boolean login_success = false;
+//        String email = loginForm.getEmail();
+//        Customer customer = getCustomerByEmail(email);
+//
+//        if(customer != null) {
+//            String password = loginForm.getPassword();
+//            boolean is_verified = verifyCustomerByPassword(customer, password);
+//
+//            if(is_verified) {
+//                login_success = true;
+//            } else {
+//                customer = null;
+//            }
+//        }
+//
+//        return customer;
+//    }
 
     /* Used Methods */
     public Customer getCustomerByEmail(String email) {
-        Customer customer = customerRepository.findByEmail(email);
+        return customerRepository.findByEmail(email);
+    }
 
-        return customer;
+    public Customer getCustomerByUsername(String username) {
+        return customerRepository.findByUsername(username);
     }
 
     public boolean verifyCustomerByPassword(Customer customer, String password) {

@@ -18,22 +18,22 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @PostMapping("")
+    @PostMapping("/register")
     public ResponseEntity<?> createEmployee(@Valid @RequestBody Employee employee, BindingResult result) {
         Employee employeeNew = employeeService.saveOrUpdatePerson(employee);
         return new ResponseEntity<Employee>(employee, HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> loginEmployee(@RequestBody LoginForm loginForm) {
-        ResponseEntity<?> responseEntity = null;
-        Employee employee = employeeService.loginEmployee(loginForm);
-        if(employee != null) {
-            responseEntity = new ResponseEntity<Employee>(employee, HttpStatus.OK);
-        } else {
-            responseEntity = new ResponseEntity<String>("User or Password invalid", HttpStatus.UNAUTHORIZED);
-        }
-
-        return responseEntity;
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity<?> loginEmployee(@RequestBody LoginForm loginForm) {
+//        ResponseEntity<?> responseEntity = null;
+//        Employee employee = employeeService.loginEmployee(loginForm);
+//        if(employee != null) {
+//            responseEntity = new ResponseEntity<Employee>(employee, HttpStatus.OK);
+//        } else {
+//            responseEntity = new ResponseEntity<String>("User or Password invalid", HttpStatus.UNAUTHORIZED);
+//        }
+//
+//        return responseEntity;
+//    }
 }

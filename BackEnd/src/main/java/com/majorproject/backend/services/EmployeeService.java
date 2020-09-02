@@ -16,31 +16,33 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-    /* Logic */
-    public Employee loginEmployee(LoginForm loginForm) {
-        boolean login_success = false;
-        String email = loginForm.getEmail();
-        Employee employee = getEmployeeByEmail(email);
-
-        if(employee != null) {
-            String password = loginForm.getPassword();
-            boolean is_verified = verifyEmployeeByPassword(employee, password);
-
-            if(is_verified) {
-                login_success = true;
-            } else {
-                employee = null;
-            }
-        }
-
-        return employee;
-    }
+//    /* Logic */
+//    public Employee loginEmployee(LoginForm loginForm) {
+//        boolean login_success = false;
+//        String email = loginForm.getEmail();
+//        Employee employee = getEmployeeByEmail(email);
+//
+//        if(employee != null) {
+//            String password = loginForm.getPassword();
+//            boolean is_verified = verifyEmployeeByPassword(employee, password);
+//
+//            if(is_verified) {
+//                login_success = true;
+//            } else {
+//                employee = null;
+//            }
+//        }
+//
+//        return employee;
+//    }
 
     /* Used Methods */
     public Employee getEmployeeByEmail(String email) {
-        Employee employee = employeeRepository.findByEmail(email);
+        return employeeRepository.findByEmail(email);
+    }
 
-        return employee;
+    public Employee getEmployeeByUsername(String username) {
+        return employeeRepository.findByUsername(username);
     }
 
     public boolean verifyEmployeeByPassword(Employee employee, String password) {
@@ -51,4 +53,5 @@ public class EmployeeService {
 
         return is_verified;
     }
+
 }
