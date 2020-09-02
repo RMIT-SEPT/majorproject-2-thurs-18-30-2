@@ -26,7 +26,7 @@ class TextInput extends React.Component {
                     {this.props.naming}
                 </Form.Label>
                 <Col sm={this.props.pos[1]}>
-                    <Form.Control type="text" value={this.state.value} onChange={this.handleChange} />
+                    <Form.Control type="text" placeholder={this.props.naming} value={this.state.value} onChange={this.handleChange} />
                 </Col>
             </Form.Group>
         );

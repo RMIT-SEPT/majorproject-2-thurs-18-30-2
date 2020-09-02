@@ -25,7 +25,7 @@ class EmailInput extends React.Component {
         this.debounceFn = _.debounce(() => {
             let searchString = event.target.value;
             // Here should be API call to check if email already exists.
-            console.log(searchString);
+            
         }, 700, { leading : false, trailing: true });
 
         this.debounceFn();
@@ -38,7 +38,7 @@ class EmailInput extends React.Component {
                         {this.props.naming}
                     </Form.Label>
                     <Col sm={this.props.pos[1]}>
-                    <Form.Control placeholder="Email" type="text" value={this.state.value} onChange={this.handleChange} />
+                    <Form.Control placeholder={this.props.naming} type="text" value={this.state.value} onChange={this.handleChange} />
                     </Col>
                 </Form.Group>
             

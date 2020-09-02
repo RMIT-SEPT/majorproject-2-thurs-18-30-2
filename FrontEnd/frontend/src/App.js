@@ -1,21 +1,42 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { Switch, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import './css/App.css';
-import SubRouter from './components/SubRouter';
+
+import SubRouter from './components/utils/SubRouter';
+import NavigationBar from './components/layout/NavigationBar';
 import router from './router/router';
+import { } from './app/reducers/userSlice';
 
 class App extends React.Component {
   render () {
     return (
-          <Switch>
-            {router.map((route, i) => (
-                    <SubRouter key={i} {...route} />
-                )
-            )}
-          </Switch>
+        <React.Fragment>
+            <NavigationBar />
+            <Switch>
+                {router.map((route, i) => (
+                        <SubRouter key={i} {...route} />
+                    )
+                )}
+                <Redirect to="/home" />
+            </Switch>
+        </React.Fragment>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+    user : state.user
+});
+
+const mapDispatchToProps = () => {
+    return {
+        
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps()
+)(App);

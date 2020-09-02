@@ -8,7 +8,7 @@ class PasswordInputWithConf extends React.Component {
         super(props);
         this.state = {
             value : '',
-            value1 : '',
+            valueConf : '',
             valid : false
         };
 
@@ -24,7 +24,7 @@ class PasswordInputWithConf extends React.Component {
 
     handleChangeConf (event) {
         this.setState({
-            value1 : event.target.value
+            valueConf : event.target.value
         });
 
         // here
@@ -36,7 +36,7 @@ class PasswordInputWithConf extends React.Component {
         }
 
         this.debounceFn = _.debounce(() => {
-            if(this.value == this.value1) {
+            if(this.value === this.valueConf) {
                 this.setState({
                     valid : true
                 });
@@ -53,25 +53,25 @@ class PasswordInputWithConf extends React.Component {
 
     render () {
         return (
-            <Form>
+            <React.Fragment>
                 <Form.Group as={Row}>
                     <Form.Label column sm={this.props.pos[0]}>
                         {this.props.naming}
                     </Form.Label>
                     <Col sm={this.props.pos[1]}>
-                    <Form.Control placeholder="Password" type="password" value={this.state.value} onChange={this.handleChange} />
+                    <Form.Control placeholder={this.props.naming} type="password" value={this.state.value} onChange={this.handleChange} />
                     </Col>
                 </Form.Group>
-                
+                    
                 <Form.Group as={Row}>
                     <Form.Label column sm={this.props.pos[0]}>
                         Confirm {this.props.naming}
                     </Form.Label>
                     <Col sm={this.props.pos[1]}>
-                    <Form.Control placeholder="Confirm Password" type="password" value={this.state.value1} onChange={this.handleChangeConf} />
+                    <Form.Control placeholder={'Confirm' + this.props.naming} type="password" value={this.state.valueConf} onChange={this.handleChangeConf} />
                     </Col>
                 </Form.Group>
-            </Form>
+            </React.Fragment>
         );
     }
 }

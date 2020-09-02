@@ -1,19 +1,15 @@
 import React from 'react';
-import axios from 'axios';
+import api from '../../app/api';
 import { Redirect } from 'react-router-dom';
 import { Row, Col, 
     Form, Button, Card   
 } from 'react-bootstrap';
-import FormTemplates from '../form-templates/form-templates'
+import { connect } from 'react-redux';
+
+import { logIn } from '../../app/reducers/userSlice';
+import FormTemplates from '../../form-templates/form-templates';
 
 class FormTemplate extends React.Component {
-
-    // components = {
-    //     text : TextInput,
-    //     email : EmailInput,
-    //     password : PasswordInput,
-    //     // address : AddressInput
-    // }
 
     constructor (props) {
         super(props);
@@ -37,29 +33,26 @@ class FormTemplate extends React.Component {
     }
 
     submitForm (event) {
-        var values = [];
-        var ref;
-        for (ref in this.componentRefs) {
-            values.push(this.componentRefs[ref].current.state);
-        }
-        console.log(values[0]);
-        var user = {
-            email : values[0].value,
-            username : values[1].value,
-            password : values[2].value,
-            address : values[3].value,
-            phone : values[4].value
-        }
-        if(values[2].valid) {
-            // Redirect url after form submission
+        event.preventDefault();
+
+        var user = {};
+        this.form.components.map(component => user[component.input] = this.componentRefs[component.inputName].current.state.value);
+
+        api.post(this.form.apiCall, user)
+        .then((response) => {
+            
+            if(this.form.responseHandler) {
+                this.props[this.form.responseHandler](response.data);
+            }
+
             this.setState({
                     redirect : this.form.redirect
                 }
             )
-            //POST template
-            axios.post('localhost8080:api/customer', { user });
-            event.preventDefault();
-        }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
     
     render () {
@@ -84,15 +77,16 @@ class FormTemplate extends React.Component {
                                                     key={component.inputName} 
                                                     ref={this.componentRefs[component.inputName]} 
                                                     naming={component.inputName} 
-                                                    pos={[4,8]} 
+                                                    pos={[3,9]} 
                                                 />
                                                 
                                             );
                                         }.bind(this)
                                     ) 
                                 }
+                                <br></br>
                                 <Form.Group as={Row}>
-                                    <Col sm={{ span: 8, offset: 4 }}>
+                                    <Col sm={{ span: 9, offset: 3 }}>
                                         <Button type="submit">{this.form.submitText}</Button>
                                     </Col>
                                 </Form.Group>
@@ -106,4 +100,16 @@ class FormTemplate extends React.Component {
 
 }
 
-export default FormTemplate;
+const mapStateToProps = state => ({
+});
+
+const mapDispatchToProps = () => {
+    return {
+        logIn
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps()
+)(FormTemplate);

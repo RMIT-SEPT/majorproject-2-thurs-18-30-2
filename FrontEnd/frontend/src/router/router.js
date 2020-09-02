@@ -1,4 +1,4 @@
-import FormTemplate from '../components/FormTemplate';
+import FormTemplate from '../components/utils/FormTemplate';
 import Home from '../components/Home';
 
 

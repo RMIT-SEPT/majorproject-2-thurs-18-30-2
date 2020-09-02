@@ -26,7 +26,7 @@ class UsernameInput extends React.Component {
                     {this.props.naming}
                 </Form.Label>
                 <Col sm={this.props.pos[1]}>
-                    <Form.Control placeholder="Username" type="Username" value={this.state.value} onChange={this.handleChange} />
+                    <Form.Control placeholder={this.props.naming} type="Username" value={this.state.value} onChange={this.handleChange} />
                 </Col>
             </Form.Group>
         );

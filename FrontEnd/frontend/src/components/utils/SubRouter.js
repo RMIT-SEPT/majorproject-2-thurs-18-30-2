@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { Jumbotron, Container } from 'react-bootstrap';
-import '../css/log-in.css';
+
+import '../../css/centered.css';
 
 export default function SubRouter(route) {
     return (

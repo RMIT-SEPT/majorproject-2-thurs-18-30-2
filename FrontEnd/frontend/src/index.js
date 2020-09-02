@@ -1,18 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
+import { Provider } from 'react-redux';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/index.css';
+
 import App from './App';
+
 import * as serviceWorker from './serviceWorker';
-import NavigationBar from "./components/NavigationBar";
+import store from './app/store';
 
 ReactDOM.render(
     <React.StrictMode>
-        <HashRouter>
-        <NavigationBar />
-        <App />
-        </HashRouter>
+        <Provider store={store}>
+            <Router>
+                <App />
+            </Router>
+        </Provider>
     </React.StrictMode>,
     document.getElementById('root')
 );
