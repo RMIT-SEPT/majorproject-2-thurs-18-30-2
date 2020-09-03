@@ -46,7 +46,7 @@ class UsernameInput extends React.Component {
 
             if(this.state.valid) {
                 this.setState({
-                    border : '1px solid black',
+                    border : '1px solid green',
                     errMsg : ""
                 });
             }
@@ -63,8 +63,6 @@ class UsernameInput extends React.Component {
 
     render () {
         return (
-
-            
             <Form.Group as={Row}>
                 <Form.Label column sm={this.props.pos[0]}>
                     {this.props.naming}

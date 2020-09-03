@@ -36,6 +36,14 @@ export default class FormTemplates {
                 header : "Sign Up",
                 components : [
                     {
+                        inputName : "FirstName",
+                        inputType : TextInput
+                    },
+                    {
+                        inputName : "LastName",
+                        inputType : TextInput
+                    },
+                    {
                         inputName : "Email",
                         inputType : EmailInput
                     },
