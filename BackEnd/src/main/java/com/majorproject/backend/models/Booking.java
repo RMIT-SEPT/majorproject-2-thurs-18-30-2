@@ -38,8 +38,6 @@ public class Booking {
     @JsonFormat(pattern ="yyyy-mm-dd")
     private Date updatedAt;
 
-    private BookingStatus bookingStatus;
-
     public Employee getEmployee() {
         return employee;
     }
@@ -89,8 +87,4 @@ public class Booking {
     protected void onUpdate() {
         this.updatedAt = new Date();
     }
-
-    public BookingStatus getBookingStatus() { return bookingStatus; }
-
-    public void setBookingStatus(BookingStatus bookingStatus) { this.bookingStatus = bookingStatus; }
 }

@@ -19,9 +19,11 @@ public class BookingService {
     private BookingRepository bookingRepository;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
     private EmployeeRepository employeeRepository;
     @Autowired
     private CustomerService customerService;
+    @Autowired
     private CustomerRepository customerRepository;
 
     public Booking saveOrUpdateBooking(BookingForm bookingForm) {
