@@ -17,12 +17,15 @@ public class UserService {
     public User loginUser(LoginForm loginForm) {
         User user = null;
         boolean is_verified = false;
-        String email = loginForm.getEmail();
+//        String email = loginForm.getEmail();
+        String username = loginForm.getUsername();
         String password = loginForm.getPassword();
 
         // Check if User is employee
-        Employee employee = employeeService.getEmployeeByEmail(email);
-        Customer customer = customerService.getCustomerByEmail(email);
+//        Employee employee = employeeService.getEmployeeByEmail(email);
+//        Customer customer = customerService.getCustomerByEmail(email);
+        Employee employee = employeeService.getEmployeeByUsername(username);
+        Customer customer = customerService.getCustomerByUsername(username);
         if(employee != null && customer == null) { // is_employee
             is_verified = employeeService.verifyEmployeeByPassword(employee, password);
         } else if(employee == null && customer != null){ // is_customer

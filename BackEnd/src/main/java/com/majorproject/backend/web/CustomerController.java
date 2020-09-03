@@ -13,6 +13,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("api/customer")
+@CrossOrigin
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
