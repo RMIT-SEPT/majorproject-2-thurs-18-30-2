@@ -7,7 +7,7 @@ class UsernameInput extends React.Component {
         super(props);
         this.state = {
             value : '',
-            valid : false,
+            valid : true,
             border : "1px solid black",
             errMsg : ""
         };
@@ -33,8 +33,24 @@ class UsernameInput extends React.Component {
 
         this.debounceFn = _.debounce(() => {
             //insert api call
+            if(this.state.value == "test1") {
+                this.setState({
+                    valid : true
+                });
+            }
+            else {
+                this.setState({
+                    valid : false
+                });
+            }
 
-            if(!this.valid) {
+            if(this.state.valid) {
+                this.setState({
+                    border : '1px solid black',
+                    errMsg : ""
+                });
+            }
+            else {
                 this.setState({
                     border : '1px solid red',
                     errMsg : "Username already exists, please try a different username"
@@ -55,9 +71,9 @@ class UsernameInput extends React.Component {
                 </Form.Label>
                 <Col sm={this.props.pos[1]}>
                     <Form.Control style={{border: this.state.border}} placeholder="Username" type="Username" value={this.state.value} onChange={this.handleChange} />
-                    <p3 style={{color: 'red', fontSize: '12px'}}>
+                    <p style={{color: 'red', fontSize: '12px'}}>
                         {this.state.errMsg}
-                    </p3>
+                    </p>
                 </Col>
             </Form.Group>
         );
