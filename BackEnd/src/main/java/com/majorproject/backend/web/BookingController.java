@@ -8,12 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
-//@RequestMapping("api/booking")
 @RequestMapping("api/value = {'customer', 'employee'}/{username}/booking")
+@CrossOrigin
 public class BookingController {
     @Autowired
     private BookingService bookingService;

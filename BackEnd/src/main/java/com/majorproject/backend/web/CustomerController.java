@@ -18,7 +18,7 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @PostMapping("")
+    @PostMapping("/register")
     public ResponseEntity<?> createCustomer(@Valid @RequestBody Customer customer) {
 //        if (result.hasErrors()){
 //            return new ResponseEntity<String>("Invalid Person Object", HttpStatus.BAD_REQUEST);
@@ -27,22 +27,16 @@ public class CustomerController {
         return new ResponseEntity<Customer>(customer, HttpStatus.CREATED);
     }
 
-    @PostMapping("/verify")
-    public ResponseEntity<?> loginCustomer(@RequestBody LoginForm loginForm) {
-        ResponseEntity<?> responseEntity = null;
-        Customer customer = customerService.getCustomerByEmail(loginForm.getEmail());
-        if(customer == null) {
-            responseEntity = new ResponseEntity<String>("User does not exist", HttpStatus.NOT_FOUND);
-        }
-        else {
-            if(customer.getPassword().equals(loginForm.getPassword())) {
-                responseEntity = new ResponseEntity<Customer>(customer, HttpStatus.OK);
-            } else {
-                responseEntity = new ResponseEntity<String>("Password invalid", HttpStatus.UNAUTHORIZED);
-            }
-        }
-
-        return responseEntity;
-    }
-
+//    @PostMapping("/login")
+//    public ResponseEntity<?> loginCustomer(@RequestBody LoginForm loginForm) {
+//        ResponseEntity<?> responseEntity = null;
+//        Customer customer = customerService.loginCustomer(loginForm);
+//        if(customer != null) {
+//            responseEntity = new ResponseEntity<Customer>(customer, HttpStatus.OK);
+//        } else {
+//            responseEntity = new ResponseEntity<String>("User or Password invalid", HttpStatus.UNAUTHORIZED);
+//        }
+//
+//        return responseEntity;
+//    }
 }

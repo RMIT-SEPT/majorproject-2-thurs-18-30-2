@@ -12,14 +12,14 @@ public class Employee extends User {
     private Long id;
     private String empType;
 
-    public Employee(String fName, String lName, String email, String password,
-                    String address, String pNumber, String empType) {
-        super(fName, lName, email, password, address, pNumber);
-        this.empType = empType;
-    }
-
     public Employee() {
 
+    }
+
+    public Employee(String fName, String lName, String email, String username,
+                    String password, String address, String pNumber, String empType) {
+        super(fName, lName, email, username, password, address, pNumber);
+        this.empType = empType;
     }
 
     public Long getId() { return id; }
