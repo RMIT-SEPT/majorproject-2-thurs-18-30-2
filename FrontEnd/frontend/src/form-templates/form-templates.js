@@ -53,11 +53,11 @@ export default class FormTemplates {
                     inputName : "Email",
                     inputType : EmailInput
                 },
-                // {
-                //     input : "username",
-                //     inputName : "Username",
-                //     inputType : UsernameInput
-                // },
+                {
+                    input : "username",
+                    inputName : "Username",
+                    inputType : UsernameInput
+                },
                 {
                     input : "password",
                     inputName : "Password",
