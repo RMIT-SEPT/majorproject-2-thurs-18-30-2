@@ -38,7 +38,7 @@ class EmailInput extends React.Component {
                         {this.props.naming}
                     </Form.Label>
                     <Col sm={this.props.pos[1]}>
-                    <Form.Control placeholder={this.props.naming} type="text" value={this.state.value} onChange={this.handleChange} />
+                    <Form.Control placeholder={this.props.naming} type="email" value={this.state.value} onChange={this.handleChange} />
                     </Col>
                 </Form.Group>
             
