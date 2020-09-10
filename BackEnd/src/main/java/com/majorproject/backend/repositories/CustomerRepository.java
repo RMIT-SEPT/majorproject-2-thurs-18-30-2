@@ -13,6 +13,9 @@ public interface CustomerRepository extends CrudRepository<Customer, Long> {
     @Query(value = "SELECT * FROM CUSTOMER c WHERE c.email = ?1", nativeQuery = true)
     Customer findByEmail(String email);
 
+    @Query(value = "SELECT * FROM CUSTOMER c WHERE c.username = ?1 AND c.password = ?2", nativeQuery = true)
+    Customer findByUsernameAndPassword(String username, String password);
+
     @Query(value = "SELECT * FROM CUSTOMER c WHERE c.username = ?1", nativeQuery = true)
     Customer findByUsername(String username);
 }

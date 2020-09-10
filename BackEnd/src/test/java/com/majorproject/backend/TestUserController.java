@@ -1,6 +1,6 @@
 package com.majorproject.backend;
 
-import com.majorproject.backend.jsonconv.LoginForm;
+import com.majorproject.backend.responseForms.LoginForm;
 import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.services.UserService;
 import com.majorproject.backend.util.Util;

@@ -2,6 +2,7 @@ package com.majorproject.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -18,6 +19,7 @@ public abstract class User {
     @Email(message = "Invalid email address")
     @NotBlank(message = "email is required")
     private String email;
+    @Column(unique=true)
     @NotBlank(message = "username is required")
     private String username;
     @NotBlank(message = "Password is required")

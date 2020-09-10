@@ -1,4 +1,4 @@
-package com.majorproject.backend.jsonconv;
+package com.majorproject.backend.responseForms;
 
 public class LoginForm {
     private String username;

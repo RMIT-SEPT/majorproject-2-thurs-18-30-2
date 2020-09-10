@@ -16,7 +16,7 @@ public class Booking {
 
     }
 
-    public Booking(Employee employee, Customer customer, @NotBlank(message = "Service required") String service) {
+    public Booking(Employee employee, Customer customer, Service service) {
         this.employee = employee;
         this.customer = customer;
         this.service = service;
@@ -30,8 +30,14 @@ public class Booking {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @NotBlank(message = "Service required")
-    private String service;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "service_id")
+    private Service service;
+
+    @JsonFormat(pattern ="yyyy-mm-dd")
+    private Date startDate;
+    @JsonFormat(pattern ="yyyy-mm-dd")
+    private Date endDate;
 
     @JsonFormat(pattern ="yyyy-mm-dd")
     private Date createdAt;
@@ -54,11 +60,11 @@ public class Booking {
         this.customer = customer;
     }
 
-    public String getService() {
+    public Service getService() {
         return service;
     }
 
-    public void setService(String service) {
+    public void setService(Service service) {
         this.service = service;
     }
 

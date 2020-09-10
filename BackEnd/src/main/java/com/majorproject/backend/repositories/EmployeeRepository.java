@@ -18,6 +18,9 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
     @Query(value = "SELECT * FROM EMPLOYEE e WHERE e.email = ?1", nativeQuery = true)
     Employee findByEmail(String email);
 
+    @Query(value = "SELECT * FROM EMPLOYEE e WHERE e.username = ?1 AND e.password = ?2", nativeQuery = true)
+    Employee findByUsernameAndPassword(String username, String password);
+
     @Query(value = "SELECT * FROM EMPLOYEE e WHERE e.username = ?1", nativeQuery = true)
     Employee findByUsername(String username);
 }

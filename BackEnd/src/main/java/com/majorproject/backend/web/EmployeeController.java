@@ -1,11 +1,12 @@
 package com.majorproject.backend.web;
 
-import com.majorproject.backend.jsonconv.LoginForm;
 import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.services.EmployeeService;
+import com.majorproject.backend.services.MapValidationErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,9 +19,22 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private MapValidationErrorService mapValidationErrorService;
+
     @PostMapping("/register")
-    public ResponseEntity<?> createEmployee(@Valid @RequestBody Employee employee) {
-        return new ResponseEntity<Employee>(employee, HttpStatus.CREATED);
+    public ResponseEntity<?> createEmployee(@Valid @RequestBody Employee employee, BindingResult result) {
+        ResponseEntity<?> response;
+
+        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
+        if (errorMap != null) {
+            response = errorMap;
+        } else {
+            Employee employeeNew = employeeService.saveOrUpdateEmployee(employee);
+            response = new ResponseEntity<Employee>(employee, HttpStatus.CREATED);
+        }
+
+        return response;
     }
 
     /* Testing Purposes */

@@ -1,38 +1,45 @@
 package com.majorproject.backend.web;
 
-import com.majorproject.backend.jsonconv.BookingForm;
 import com.majorproject.backend.models.Booking;
 import com.majorproject.backend.services.BookingService;
+import com.majorproject.backend.services.MapValidationErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("api/value = {'customer', 'employee'}/{username}/booking")
+@RequestMapping("api/booking")
 @CrossOrigin
 public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    @PostMapping("")
-    public ResponseEntity<?> createBooking(@RequestBody BookingForm bookingForm) {
-        Booking booking1 = bookingService.saveOrUpdateBooking(bookingForm);
-        return new ResponseEntity<Booking>(booking1, HttpStatus.CREATED);
-    }
+    @Autowired
+    private MapValidationErrorService mapValidationErrorService;
 
-    @GetMapping("/viewDashboard")
-    public ResponseEntity<?> viewDashboard(@PathVariable String username) {
-        ResponseEntity<?> responseEntity = null;
-        List<Booking> bookingList = bookingService.displayDashboard(username);
-        if(bookingList == null) {
-            responseEntity = new ResponseEntity<String>("Sorry, you do not have any bookings", HttpStatus.NOT_FOUND);
+    @PostMapping("")
+    public ResponseEntity<?> createBooking(@RequestBody Booking booking, BindingResult result) {
+        ResponseEntity<?> response;
+
+        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
+        if (errorMap != null) {
+            response = errorMap;
         } else {
-            responseEntity = new ResponseEntity<List<Booking>>(bookingList, HttpStatus.OK);
+            Booking booking1 = bookingService.saveOrUpdateBooking(booking);
+            response = new ResponseEntity<Booking>(booking1, HttpStatus.CREATED);
         }
 
-        return responseEntity;
+        return  response;
+    }
+
+    @GetMapping("/getBookings")
+    public ResponseEntity<?> getBookings(@RequestParam Map<String,String> requestParams) {
+        List<Booking> bookingList = bookingService.displayDashboard(requestParams.get("id"), requestParams.get(""));
+
+        return new ResponseEntity<List<Booking>>(bookingList, HttpStatus.OK);
     }
 }

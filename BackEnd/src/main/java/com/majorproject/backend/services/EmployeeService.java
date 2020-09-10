@@ -1,9 +1,10 @@
 package com.majorproject.backend.services;
 
-import com.majorproject.backend.jsonconv.LoginForm;
+import com.majorproject.backend.exceptions.ResponseException;
 import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +14,15 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    public void saveOrUpdateEmployee(Employee employee) {
-        employeeRepository.save(employee);
+    public Employee saveOrUpdateEmployee(Employee employee) {
+        Employee employeeNew = null;
+        try {
+            employeeNew = employeeRepository.save(employee);
+        } catch(Exception e) {
+            throw new ResponseException(HttpStatus.BAD_REQUEST, "Username already in use");
+        }
+
+        return employeeNew;
     }
 
     /* Testing purposes */

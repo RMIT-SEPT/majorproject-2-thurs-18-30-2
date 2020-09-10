@@ -1,4 +1,4 @@
-package errorHandler.subErrors;
+package com.majorproject.backend.exceptions.subErrors;
 
 public class validationError extends AbstractSubError {
     private String objectType;
