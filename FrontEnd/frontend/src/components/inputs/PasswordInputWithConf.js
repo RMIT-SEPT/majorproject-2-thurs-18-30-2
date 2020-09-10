@@ -8,7 +8,7 @@ class PasswordInputWithConf extends React.Component {
         super(props);
         this.state = {
             value : '',
-            value1 : '',
+            valueConf : '',
             valid : false,
             border : "1px solid black",
             errMsg : ""
@@ -38,12 +38,12 @@ class PasswordInputWithConf extends React.Component {
         }
 
         this.debounceFn = _.debounce(() => {
-            if(this.state.value == this.state.value1 && this.state.value.length >= 8) {
+            if(this.state.value == this.state.valueConf && this.state.value.length >= 8) {
                 this.setState({
                     valid : true
                 });
             }
-            else if(this.state.value != this.state.value1) {
+            else if(this.state.value != this.state.valueConf) {
                 this.setState({
                     valid : false,
                     border : '1px solid red',
@@ -85,7 +85,7 @@ class PasswordInputWithConf extends React.Component {
                         Confirm {this.props.naming}
                     </Form.Label>
                     <Col sm={this.props.pos[1]}>
-                    <Form.Control style={{border: this.state.border}} placeholder="Confirm Password" type="password" value={this.state.value1} onChange={this.handleChangeConf} />
+                    <Form.Control style={{border: this.state.border}} placeholder="Confirm Password" type="password" value={this.state.valueConf} onChange={this.handleChangeConf} />
                     <p style={{color: 'red', fontSize: '12px'}}>
                         {this.state.errMsg}
                     </p>
