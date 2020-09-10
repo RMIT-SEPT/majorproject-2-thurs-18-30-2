@@ -70,11 +70,11 @@ public abstract class User {
         this.email = email;
     }
 
-    private String getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    private void setUsername(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 

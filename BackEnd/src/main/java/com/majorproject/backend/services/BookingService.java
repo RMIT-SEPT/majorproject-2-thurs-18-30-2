@@ -18,19 +18,16 @@ public class BookingService {
     @Autowired
     private BookingRepository bookingRepository;
     @Autowired
-    private EmployeeService employeeService;
-    @Autowired
     private EmployeeRepository employeeRepository;
-    @Autowired
-    private CustomerService customerService;
     @Autowired
     private CustomerRepository customerRepository;
 
     public Booking saveOrUpdateBooking(BookingForm bookingForm) {
-        Employee employee = employeeService.getEmployeeByEmail(bookingForm.getEmployeeEmail());
-        Customer customer = customerService.getCustomerByEmail(bookingForm.getEmployeeEmail());
+//        Employee employee = employeeService.getEmployeeByEmail(bookingForm.getEmployeeEmail());
+//        Customer customer = customerService.getCustomerByEmail(bookingForm.getEmployeeEmail());
+        Employee employee = employeeRepository.findByEmail(bookingForm.getEmployeeEmail());
+        Customer customer = customerRepository.findByEmail(bookingForm.getCustomerEmail());
         Booking booking = new Booking(employee, customer, bookingForm.getService());
-        //logic
         return bookingRepository.save(booking);
     }
 

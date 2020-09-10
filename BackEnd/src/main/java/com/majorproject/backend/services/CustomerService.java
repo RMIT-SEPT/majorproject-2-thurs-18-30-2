@@ -11,8 +11,8 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public Customer saveOrUpdateCustomer(Customer customer) {
-        return customerRepository.save(customer);
+    public void saveOrUpdateCustomer(Customer customer) {
+        customerRepository.save(customer);
     }
 
 //    /* Logic */
@@ -35,21 +35,20 @@ public class CustomerService {
 //        return customer;
 //    }
 
-    /* Used Methods */
-    public Customer getCustomerByEmail(String email) {
-        return customerRepository.findByEmail(email);
-    }
-
-    public Customer getCustomerByUsername(String username) {
-        return customerRepository.findByUsername(username);
-    }
-
-    public boolean verifyCustomerByPassword(Customer customer, String password) {
-        boolean is_verified = false;
-        if(customer.getPassword().equals(password)) {
-            is_verified = true;
-        }
-
-        return is_verified;
-    }
+//    public Customer getCustomerByEmail(String email) {
+//        return customerRepository.findByEmail(email);
+//    }
+//
+//    public Customer getCustomerByUsername(String username) {
+//        return customerRepository.findByUsername(username);
+//    }
+//
+//    public boolean verifyCustomerByPassword(Customer customer, String password) {
+//        boolean is_verified = false;
+//        if(customer.getPassword().equals(password)) {
+//            is_verified = true;
+//        }
+//
+//        return is_verified;
+//    }
 }

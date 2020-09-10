@@ -25,25 +25,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(CustomerController.class)
 public class TestCustomerController {
-
     @Autowired
     private MockMvc mvc;
-
     @MockBean
     private CustomerService customerService;
+    private Customer customer =  new Customer("Ross", "Bob", "bob@gmail.com",
+                                                "usernameABC", "pw1234",
+                                                "address", "0123456");
 
     @Test
     public void customerLogin_Pass() throws Exception {
-        // Incorrect parameters
-//        Customer customer =  new Customer("Ross", "Bob", "bob@gmail.com", "1234", null, null);
-//
 //        given(customerService.getCustomerByEmail("bob@gmail.com")).willReturn(customer);
 //
 //        LoginForm requestBody = new LoginForm();
-//        requestBody.setEmail("bob@gmail.com");
-//        requestBody.setPassword("1234");
+////        requestBody.setEmail("bob@gmail.com");
+//        requestBody.setUsername("usernameABC");
+//        requestBody.setPassword("pw1234");
 //
-//        mvc.perform(post("/api/customer/verify")
+////        mvc.perform(post("/api/customer/verify")
+//        mvc.perform(post("/api/user/login")
 //                        .contentType(MediaType.APPLICATION_JSON)
 //                        .content(Util.asJsonString(requestBody))
 //                    )

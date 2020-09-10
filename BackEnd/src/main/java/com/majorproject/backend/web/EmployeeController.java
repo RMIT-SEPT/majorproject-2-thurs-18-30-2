@@ -1,16 +1,15 @@
 package com.majorproject.backend.web;
 
 import com.majorproject.backend.jsonconv.LoginForm;
-import com.majorproject.backend.models.Customer;
 import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/employee")
@@ -20,10 +19,18 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> createEmployee(@Valid @RequestBody Employee employee, BindingResult result) {
-        Employee employeeNew = employeeService.saveOrUpdatePerson(employee);
+    public ResponseEntity<?> createEmployee(@Valid @RequestBody Employee employee) {
         return new ResponseEntity<Employee>(employee, HttpStatus.CREATED);
     }
+
+    /* Testing Purposes */
+    @GetMapping("/test/getAllEmployees")
+    public List<Employee> getAllEmployees() {
+        return employeeService.getAllEmployees();
+    }
+
+    @GetMapping("/test/getEmployeeByUsername")
+    public Employee getEmployeeByUsername(String username) { return employeeService.getEmployeeByUsername(username); }
 
 //    @PostMapping("/login")
 //    public ResponseEntity<?> loginEmployee(@RequestBody LoginForm loginForm) {

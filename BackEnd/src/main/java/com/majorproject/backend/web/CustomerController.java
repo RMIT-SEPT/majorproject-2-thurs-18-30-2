@@ -6,7 +6,6 @@ import com.majorproject.backend.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,10 +19,7 @@ public class CustomerController {
 
     @PostMapping("/register")
     public ResponseEntity<?> createCustomer(@Valid @RequestBody Customer customer) {
-//        if (result.hasErrors()){
-//            return new ResponseEntity<String>("Invalid Person Object", HttpStatus.BAD_REQUEST);
-//        }
-        Customer customerNew = customerService.saveOrUpdateCustomer(customer);
+        customerService.saveOrUpdateCustomer(customer);
         return new ResponseEntity<Customer>(customer, HttpStatus.CREATED);
     }
 
