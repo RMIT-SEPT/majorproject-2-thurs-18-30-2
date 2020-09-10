@@ -14,9 +14,9 @@ export default class FormTemplates {
             header : "Log In",
             components : [
                 {
-                    input : "email",
-                    inputName : "Email",
-                    inputType : EmailInput
+                    input : "username",
+                    inputName : "Username",
+                    inputType : TextInput
                 },
                 {
                     input : "password",
@@ -53,11 +53,11 @@ export default class FormTemplates {
                     inputName : "Email",
                     inputType : EmailInput
                 },
-                // {
-                //     input : "username",
-                //     inputName : "Username",
-                //     inputType : UsernameInput
-                // },
+                {
+                    input : "username",
+                    inputName : "Username",
+                    inputType : UsernameInput
+                },
                 {
                     input : "password",
                     inputName : "Password",
