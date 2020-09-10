@@ -7,7 +7,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 @MappedSuperclass
@@ -19,6 +18,8 @@ public abstract class User {
     @Email(message = "Invalid email address")
     @NotBlank(message = "email is required")
     private String email;
+    @NotBlank(message = "username is required")
+    private String username;
     @NotBlank(message = "Password is required")
     private String password;
     private String address;
@@ -28,18 +29,18 @@ public abstract class User {
     @JsonFormat(pattern ="yyyy-mm-dd")
     private Date updatedAt;
 
-    public User() {
-        
-    }
+    public User() { }
 
     public User(@NotBlank(message = "First name is required") String fName,
                 @NotBlank(message = "Last name is required") String lName,
                 @Email(message = "Invalid email address") @NotBlank(message = "email is required") String email,
+                @NotBlank(message = "username is required") String username,
                 @NotBlank(message = "Password is required") String password,
                 String address, String pNumber) {
         this.fName = fName;
         this.lName = lName;
         this.email = email;
+        this.username = username;
         this.password = password;
         this.address = address;
         this.pNumber = pNumber;
@@ -67,6 +68,14 @@ public abstract class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    private String getUsername() {
+        return username;
+    }
+
+    private void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -119,4 +128,3 @@ public abstract class User {
         this.updatedAt = new Date();
     }
 }
-

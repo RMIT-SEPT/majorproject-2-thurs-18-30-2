@@ -7,13 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
-@RequestMapping("api/booking")
+@RequestMapping("api/value = {'customer', 'employee'}/{username}/booking")
+@CrossOrigin
 public class BookingController {
     @Autowired
     private BookingService bookingService;
@@ -22,5 +21,18 @@ public class BookingController {
     public ResponseEntity<?> createBooking(@RequestBody BookingForm bookingForm) {
         Booking booking1 = bookingService.saveOrUpdateBooking(bookingForm);
         return new ResponseEntity<Booking>(booking1, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/viewDashboard")
+    public ResponseEntity<?> viewDashboard(@PathVariable String username) {
+        ResponseEntity<?> responseEntity = null;
+        List<Booking> bookingList = bookingService.displayDashboard(username);
+        if(bookingList == null) {
+            responseEntity = new ResponseEntity<String>("Sorry, you do not have any bookings", HttpStatus.NOT_FOUND);
+        } else {
+            responseEntity = new ResponseEntity<List<Booking>>(bookingList, HttpStatus.OK);
+        }
+
+        return responseEntity;
     }
 }

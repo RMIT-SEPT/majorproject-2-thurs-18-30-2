@@ -9,7 +9,9 @@ class PasswordInputWithConf extends React.Component {
         this.state = {
             value : '',
             valueConf : '',
-            valid : false
+            valid : false,
+            border : "1px solid black",
+            errMsg : ""
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -36,14 +38,29 @@ class PasswordInputWithConf extends React.Component {
         }
 
         this.debounceFn = _.debounce(() => {
-            if(this.value === this.valueConf) {
+            if(this.state.value == this.state.valueConf && this.state.value.length >= 8) {
                 this.setState({
                     valid : true
                 });
             }
+            else if(this.state.value != this.state.valueConf) {
+                this.setState({
+                    valid : false,
+                    border : '1px solid red',
+                    errMsg : "Passwords do not match, please check and try again"
+                });
+            }
             else {
                 this.setState({
-                    valid : false
+                    valid : false,
+                    border : '1px solid red',
+                    errMsg : "Password is too short, please try a longer password"
+                });
+            }
+            if(this.state.valid) {
+                this.setState({
+                    border : '1px solid green',
+                    errMsg : ""
                 });
             }
         }, 700, { leading : false, trailing: true });
@@ -59,7 +76,7 @@ class PasswordInputWithConf extends React.Component {
                         {this.props.naming}
                     </Form.Label>
                     <Col sm={this.props.pos[1]}>
-                    <Form.Control placeholder={this.props.naming} type="password" value={this.state.value} onChange={this.handleChange} />
+                    <Form.Control style={{border: this.state.border}} placeholder="Password" type="password" value={this.state.value} onChange={this.handleChange} />
                     </Col>
                 </Form.Group>
                     
@@ -68,7 +85,10 @@ class PasswordInputWithConf extends React.Component {
                         Confirm {this.props.naming}
                     </Form.Label>
                     <Col sm={this.props.pos[1]}>
-                    <Form.Control placeholder={'Confirm' + this.props.naming} type="password" value={this.state.valueConf} onChange={this.handleChangeConf} />
+                    <Form.Control style={{border: this.state.border}} placeholder="Confirm Password" type="password" value={this.state.valueConf} onChange={this.handleChangeConf} />
+                    <p style={{color: 'red', fontSize: '12px'}}>
+                        {this.state.errMsg}
+                    </p>
                     </Col>
                 </Form.Group>
             </React.Fragment>

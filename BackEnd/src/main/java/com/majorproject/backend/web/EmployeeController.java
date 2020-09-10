@@ -1,6 +1,7 @@
 package com.majorproject.backend.web;
 
 import com.majorproject.backend.jsonconv.LoginForm;
+import com.majorproject.backend.models.Customer;
 import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,29 +14,27 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("api/employee")
+@CrossOrigin
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @PostMapping("")
+    @PostMapping("/register")
     public ResponseEntity<?> createEmployee(@Valid @RequestBody Employee employee, BindingResult result) {
         Employee employeeNew = employeeService.saveOrUpdatePerson(employee);
         return new ResponseEntity<Employee>(employee, HttpStatus.CREATED);
     }
 
-    @PostMapping("/verify")
-    public ResponseEntity<?> loginCustomer(@RequestBody LoginForm loginForm) {
-        ResponseEntity<?> responseEntity = null;
-        Employee employee = employeeService.getEmployeeByEmail(loginForm.getEmail());
-        if(employee == null) {
-            responseEntity = new ResponseEntity<String>("User does not exist", HttpStatus.NOT_FOUND);
-        } else {
-            if(employee.getPassword().equals(loginForm.getPassword())) {
-                responseEntity = new ResponseEntity<Employee>(employee, HttpStatus.OK);
-            } else {
-                responseEntity = new ResponseEntity<String>("Email or password invalid", HttpStatus.UNAUTHORIZED);
-            }
-        }
-        return responseEntity;
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity<?> loginEmployee(@RequestBody LoginForm loginForm) {
+//        ResponseEntity<?> responseEntity = null;
+//        Employee employee = employeeService.loginEmployee(loginForm);
+//        if(employee != null) {
+//            responseEntity = new ResponseEntity<Employee>(employee, HttpStatus.OK);
+//        } else {
+//            responseEntity = new ResponseEntity<String>("User or Password invalid", HttpStatus.UNAUTHORIZED);
+//        }
+//
+//        return responseEntity;
+//    }
 }

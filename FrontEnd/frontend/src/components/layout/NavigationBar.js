@@ -13,8 +13,8 @@ class NavigationBar extends React.Component {
                 <Navbar.Brand href="#home">AGME</Navbar.Brand>
 
                 <Nav className="mr-auto">
-                    <Nav.Link href="#home">Contact Us</Nav.Link>
-                    <Nav.Link href="#home">About Us</Nav.Link>
+                    <Nav.Link href="#contact-us">Contact Us</Nav.Link>
+                    <Nav.Link href="#about-us">About Us</Nav.Link>
                 </Nav>
 
                 <Nav className="justify-content-end">
