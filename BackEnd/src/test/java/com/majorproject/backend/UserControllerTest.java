@@ -28,7 +28,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserController.class)
-public class TestUserController {
+public class UserControllerTest {
     @Autowired
     private MockMvc mvc;
     @MockBean

@@ -1,14 +1,13 @@
 package com.majorproject.backend.repositories;
 
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.majorproject.backend.models.Service;
+import com.majorproject.backend.models.Services;
 
 @Repository
-public interface ServiceRepository extends CrudRepository<Service, Long> {
+public interface ServiceRepository extends CrudRepository<Services, Long> {
 
     @Override
-    Iterable<Service> findAllById(Iterable<Long> iterable);
+    Iterable<Services> findAllById(Iterable<Long> iterable);
 }

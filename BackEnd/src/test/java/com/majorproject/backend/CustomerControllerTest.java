@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(CustomerController.class)
-public class TestCustomerController {
+public class CustomerControllerTest {
     @Autowired
     private MockMvc mvc;
     @MockBean

@@ -41,7 +41,7 @@ package com.majorproject.backend;
 //
 //@RunWith(SpringRunner.class)
 //@WebMvcTest(EmployeeController.class)
-public class TestEmployeeController {
+public class EmployeeControllerTest {
 //    @Autowired
 //    private MockMvc mvc;
 //    @MockBean

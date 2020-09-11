@@ -2,18 +2,23 @@ package com.majorproject.backend.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 @Entity
-public class Service {
+@Table(name="SERVICE")
+public class Services {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "service_id")
     private Long id;
 
+    @NotBlank(message = "Service name required")
+    private String name;
+
     @NotBlank(message = "Service description required")
     private String description;
 
-    public Service() {
+    public Services() {
 
     }
 
@@ -23,6 +28,14 @@ public class Service {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {

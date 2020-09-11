@@ -14,20 +14,26 @@ import java.util.Date;
 public abstract class User {
     @NotBlank(message = "First name is required")
     private String fName;
+
     @NotBlank(message = "Last name is required")
     private String lName;
+
     @Email(message = "Invalid email address")
     @NotBlank(message = "email is required")
     private String email;
+
     @Column(unique=true)
     @NotBlank(message = "username is required")
     private String username;
+
     @NotBlank(message = "Password is required")
     private String password;
     private String address;
     private String pNumber;
+
     @JsonFormat(pattern ="yyyy-mm-dd")
     private Date createdAt;
+
     @JsonFormat(pattern ="yyyy-mm-dd")
     private Date updatedAt;
 
