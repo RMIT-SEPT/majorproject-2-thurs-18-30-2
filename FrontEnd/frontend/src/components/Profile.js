@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import { Row, Col, Form } from 'react-bootstrap';
+import '../css/Profile.css';
 
 class Profile extends React.Component {
     constructor (props) {
