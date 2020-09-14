@@ -23,7 +23,4 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
     @Query(value = "SELECT * FROM EMPLOYEE e WHERE e.username = ?1", nativeQuery = true)
     Employee findByUsername(String username);
-
-    @Query(value = "UPDATE EMPLOYEE SET e.?2 = ?3, where e.username = ?1", nativeQuery = true)
-    void editEmployeeDetail(String username, String column, String editDetail);
 }
