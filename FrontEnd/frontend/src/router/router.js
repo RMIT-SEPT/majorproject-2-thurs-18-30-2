@@ -2,6 +2,7 @@ import FormTemplate from '../components/utils/FormTemplate';
 import Home from '../components/Home';
 import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";
+import Profile from '../components/Profile';
 
 
 const router = [
@@ -37,6 +38,10 @@ const router = [
     component : FormTemplate,
     style : "centered", 
     form : "signUp"
+},
+{
+    path : "/profile",
+    component : Profile
 }
 ];
 
