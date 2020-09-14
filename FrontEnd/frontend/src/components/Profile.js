@@ -25,21 +25,21 @@ class Profile extends React.Component {
                     </Row>
                     <Row>
                         <Col>Username</Col>
-                        <Col>{this.props.user.userDetails.Username}</Col>
+                        <Col>{this.props.user.userDetails.username}</Col>
                     </Row>
                     <Row>
                         <Col>Password</Col>
-                        <Col>{this.props.user.userDetails.Password}</Col>
+                        <Col>{this.props.user.userDetails.password}</Col>
 
                     </Row>
                     <Row>
                         <Col>Address</Col>
-                        <Col>{this.props.user.userDetails.Address}</Col>
+                        <Col>{this.props.user.userDetails.address}</Col>
 
                     </Row>
                     <Row>
                         <Col>Contact Number</Col>
-                        <Col>{this.props.user.userDetails.Contact}</Col>
+                        <Col>{this.props.user.userDetails.pNumber}</Col>
 
                     </Row>
                 </Form.Group>
