@@ -22,7 +22,7 @@ class NavigationBar extends React.Component {
                 </Nav>
                 
                 <NavDropdown 
-                    title={this.props.user.loggedIn ? this.props.user.userDetails.fName : 
+                    title={this.props.user.loggedIn ? this.props.user.userDetails.username :
                         (this.props.location.pathname === "/log-in" ? "Sign Up" : "Log In")} 
                     id="collasible-nav-dropdown" 
                     className="mr-sm-2"
