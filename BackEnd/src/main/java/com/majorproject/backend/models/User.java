@@ -8,6 +8,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @MappedSuperclass
@@ -29,6 +30,7 @@ public abstract class User {
     @NotBlank(message = "Password is required")
     private String password;
     private String address;
+    @Size(min = 10, max = 10)
     private String pNumber;
 
     @JsonFormat(pattern ="yyyy-mm-dd")

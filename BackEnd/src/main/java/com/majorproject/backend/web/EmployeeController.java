@@ -25,13 +25,39 @@ public class EmployeeController {
     @PostMapping("/register")
     public ResponseEntity<?> createEmployee(@Valid @RequestBody Employee employee, BindingResult result) {
         ResponseEntity<?> response;
-
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
+
         if (errorMap != null) {
             response = errorMap;
         } else {
             Employee employeeNew = employeeService.saveOrUpdateEmployee(employee);
             response = new ResponseEntity<Employee>(employee, HttpStatus.CREATED);
+        }
+
+        return response;
+    }
+
+    @PostMapping("/{username}/editEmployee")
+    public ResponseEntity<?> editEmployee(@Valid @PathVariable String username, @RequestBody Employee employee, BindingResult result) {
+        ResponseEntity<?> response;
+        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
+
+        if(errorMap != null) {
+            response = errorMap;
+        } else {
+            Employee employeeEdit = employeeService.getEmployeeByUsername(username);
+
+            // Seting employee details
+            employeeEdit.setfName(employee.getfName());
+            employeeEdit.setlName(employee.getlName());
+            employeeEdit.setEmail(employee.getEmail());
+            employeeEdit.setUsername(employee.getUsername());
+            employeeEdit.setAddress(employee.getAddress());
+            employeeEdit.setPassword(employee.getPassword());
+            employeeEdit.setpNumber(employee.getpNumber());
+
+            employeeService.saveOrUpdateEmployee(employeeEdit);
+            response = new ResponseEntity<Employee>(employeeEdit, HttpStatus.OK);
         }
 
         return response;
@@ -45,17 +71,4 @@ public class EmployeeController {
 
     @GetMapping("/test/getEmployeeByUsername")
     public Employee getEmployeeByUsername(String username) { return employeeService.getEmployeeByUsername(username); }
-
-//    @PostMapping("/login")
-//    public ResponseEntity<?> loginEmployee(@RequestBody LoginForm loginForm) {
-//        ResponseEntity<?> responseEntity = null;
-//        Employee employee = employeeService.loginEmployee(loginForm);
-//        if(employee != null) {
-//            responseEntity = new ResponseEntity<Employee>(employee, HttpStatus.OK);
-//        } else {
-//            responseEntity = new ResponseEntity<String>("User or Password invalid", HttpStatus.UNAUTHORIZED);
-//        }
-//
-//        return responseEntity;
-//    }
 }
