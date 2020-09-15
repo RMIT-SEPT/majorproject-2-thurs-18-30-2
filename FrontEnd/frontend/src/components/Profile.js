@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
-import { Row, Col, Form } from 'react-bootstrap';
 import '../css/Profile.css';
 
 class Profile extends React.Component {
@@ -17,43 +16,79 @@ class Profile extends React.Component {
         if(this.props.user.userDetails)
         {
             return (
-                <Form.Group>
-                    <h2><b>Profile Page</b></h2>
-                    
-                    <Row>
-                        <Col>Name</Col>
-                        <Col>{this.props.user.userDetails.fName} {this.props.user.userDetails.lName}</Col>
-                    </Row>
-                    <Row>
-                        <Col>Username</Col>
-                        <Col>{this.props.user.userDetails.username}</Col>
-                    </Row>
-                    <Row>
-                        <Col>Password</Col>
-                        <Col>{this.props.user.userDetails.password}</Col>
+                <html>
+                <div className="jumbotron jumbotron-fluid">
+                    <div id="centre">
+                        <div className="row">
+                            <div className="col-md-4">
+                                <h2><b>{this.props.user.userDetails.username}'s Profile Page</b></h2>
+                                <img src="https://storage.pixteller.com/designs/designs-images/2016-11-19/02/thumbs/img_page_1_58305b35ebf5e.png"></img>
 
-                    </Row>
-                    <Row>
-                        <Col>Address</Col>
-                        <Col>{this.props.user.userDetails.address}</Col>
-
-                    </Row>
-                    <Row>
-                        <Col>Contact Number</Col>
-                        <Col>{this.props.user.userDetails.pNumber}</Col>
-
-                    </Row>
-                </Form.Group>
+                            </div>
+                            <div id="profile-border" className="col-md-8">
+                                <div id="borderTopAndBottom" className="row">
+                                    <div className="col-md-6">
+                                        <b><label>Username</label></b>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <p>{this.props.user.userDetails.username}</p>
+                                    </div>
+                                </div>
+                                <div id="borderTopAndBottom" className="row">
+                                    <div className="col-md-6">
+                                        <b><label>Name</label></b>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <p>{this.props.user.userDetails.fName}</p>
+                                    </div>
+                                </div>
+                                <div id="borderTopAndBottom" className="row">
+                                    <div className="col-md-6">
+                                        <b><label>Name</label></b>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <p>{this.props.user.userDetails.lName}</p>
+                                    </div>
+                                </div>
+                                <div id="borderTopAndBottom" className="row">
+                                    <div className="col-md-6">
+                                        <b><label>Email</label></b>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <p>{this.props.user.userDetails.email}</p>
+                                    </div>
+                                </div>
+                                <div id="borderTopAndBottom"className="row">
+                                    <div className="col-md-6">
+                                        <b><label>Phone</label></b>
+                                    </div>
+                                    <div  className="col-md-6">
+                                        <p>{this.props.user.userDetails.pNumber}</p>
+                                    </div>
+                                </div>
+                                <div id="borderTopAndBottom" className="row">
+                                    <div className="col-md-6">
+                                        <b><label>Address</label></b>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <p>{this.props.user.userDetails.address}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </html>
             );
         }
-    
-    else
-    {
-        return( 
-            <html>Not Logged In</html>
-        );
+
+        else
+        {
+            return(
+                <html>Not Logged In</html>
+            );
+        }
     }
-}
 }
 const mapStateToProps = state => ({
     user : state.user
