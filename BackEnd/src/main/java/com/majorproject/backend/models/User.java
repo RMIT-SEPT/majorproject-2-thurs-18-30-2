@@ -30,7 +30,6 @@ public abstract class User {
     @NotBlank(message = "Password is required")
     private String password;
     private String address;
-    @Size(min = 10, max = 10)
     private String pNumber;
 
     @JsonFormat(pattern ="yyyy-mm-dd")
