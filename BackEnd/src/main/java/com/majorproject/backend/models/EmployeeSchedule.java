@@ -1,5 +1,7 @@
 package com.majorproject.backend.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -16,6 +18,11 @@ public class EmployeeSchedule {
     @JoinColumn(name = "employee_id")
     @NotNull(message = "Employee Id required")
     private Employee employee;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "service_id")
+    @NotNull(message = "Service Id required")
+    private Services service;
 
     @Basic
     @Temporal(TemporalType.DATE)
@@ -46,6 +53,14 @@ public class EmployeeSchedule {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public Services getService() {
+        return service;
+    }
+
+    public void setService(Services service) {
+        this.service = service;
     }
 
     public Date getDate() {

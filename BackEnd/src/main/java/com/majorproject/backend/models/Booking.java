@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -15,37 +14,14 @@ public class Booking {
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "employee_id")
-    @NotNull(message = "Employee Id required")
-    private Employee employee;
+    @JoinColumn(name = "employee_schedule_id")
+    @NotNull(message = "Employee schedule Id required")
+    private EmployeeSchedule employeeSchedule;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
     @NotNull(message = "Customer Id required")
     private Customer customer;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "service_id")
-    @NotNull(message = "Service Id required")
-    private Services service;
-
-    @Basic
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-//    @NotNull(message = "Date required")
-    private Date date;
-
-    @Basic
-    @Temporal(TemporalType.TIME)
-    @DateTimeFormat(pattern = "HH:mm")
-//    @NotNull(message = "Start time required")
-    private Date startTime;
-
-    @Basic
-    @Temporal(TemporalType.TIME)
-    @DateTimeFormat(pattern = "HH:mm")
-//    @NotNull(message = "End time required")
-    private Date endTime;
 
     @JsonFormat(pattern ="yyyy-mm-dd")
     private Date createdAt;
@@ -56,18 +32,25 @@ public class Booking {
 
     }
 
-    public Booking(Employee employee, Customer customer, Services service) {
-        this.employee = employee;
+    public Booking(EmployeeSchedule employeeSchedule, Customer customer) {
+        this.employeeSchedule = employeeSchedule;
         this.customer = customer;
-        this.service = service;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public Long getId() {
+        return id;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public EmployeeSchedule getEmployeeSchedule() {
+        return employeeSchedule;
+    }
+
+    public void setEmployeeSchedule(EmployeeSchedule employeeSchedule) {
+        this.employeeSchedule = employeeSchedule;
     }
 
     public Customer getCustomer() {
@@ -76,14 +59,6 @@ public class Booking {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
-
-    public Services getService() {
-        return service;
-    }
-
-    public void setService(Services service) {
-        this.service = service;
     }
 
     public Date getCreatedAt() {
