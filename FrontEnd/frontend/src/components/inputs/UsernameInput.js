@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
+import api from '../../app/api';
 
 class UsernameInput extends React.Component {
     constructor (props) {
@@ -8,7 +9,7 @@ class UsernameInput extends React.Component {
         this.state = {
             value : '',
             valid : true,
-            border : "1px solid black",
+            border : "1px solid lightgrey",
             errMsg : ""
         };
 
@@ -32,30 +33,35 @@ class UsernameInput extends React.Component {
         }
 
         this.debounceFn = _.debounce(() => {
-            //insert api call
-            if(this.state.value == "test1") {
-                this.setState({
-                    valid : true
-                });
-            }
-            else {
-                this.setState({
-                    valid : false
-                });
-            }
+            api.get(`/user/usernameExists/${this.state.value}`)
+            .then((response) => {
+                var exists = response.data;
+                if(!exists) {
+                    this.setState({
+                        valid : true
+                    });
+                } else {
+                    this.setState({
+                        valid : false
+                    });
+                }
 
-            if(this.state.valid) {
-                this.setState({
-                    border : '1px solid green',
-                    errMsg : ""
-                });
-            }
-            else {
-                this.setState({
-                    border : '1px solid red',
-                    errMsg : "Username already exists, please try a different username"
-                });
-            }
+                if(this.state.valid) {
+                    this.setState({
+                        border : '1px solid lightgreyn',
+                        errMsg : ""
+                    });
+                }
+                else {
+                    this.setState({
+                        border : '1px solid red',
+                        errMsg : "Username already exists, please try a different username"
+                    });
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
         }, 700, { leading : false, trailing: true });
 
         this.debounceFn();

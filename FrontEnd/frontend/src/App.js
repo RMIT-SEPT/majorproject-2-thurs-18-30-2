@@ -6,6 +6,7 @@ import './css/App.css';
 
 import SubRouter from './components/utils/SubRouter';
 import NavigationBar from './components/layout/NavigationBar';
+import Modal from './components/utils/Modal';
 import router from './router/router';
 import { } from './app/reducers/userSlice';
 
@@ -14,6 +15,7 @@ class App extends React.Component {
     return (
         <React.Fragment>
             <NavigationBar />
+            <Modal />
             <Switch>
                 {router.map((route, i) => (
                         <SubRouter key={i} {...route} />
@@ -27,7 +29,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    user : state.user
+    user : state.user,
+    modal : state.modal
 });
 
 const mapDispatchToProps = () => {

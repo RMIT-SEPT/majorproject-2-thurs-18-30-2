@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
-import _ from 'lodash';
 
 class EmailInput extends React.Component {
     constructor (props) {
@@ -16,19 +15,6 @@ class EmailInput extends React.Component {
         this.setState({
             value : event.target.value
         });
-
-        event.persist();
-        if (this.debounceFn) {
-            this.debounceFn.cancel()
-            this.debounceFn = false
-          }
-        this.debounceFn = _.debounce(() => {
-            let searchString = event.target.value;
-            // Here should be API call to check if email already exists.
-            
-        }, 700, { leading : false, trailing: true });
-
-        this.debounceFn();
     }
 
     render () {

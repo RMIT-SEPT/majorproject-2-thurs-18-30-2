@@ -7,7 +7,7 @@ import UsernameInput from '../components/inputs/UsernameInput';
 export default class FormTemplates {
     logIn () {
         var form = {
-            apiCall : "/customer/verify",
+            apiCall : "/user/login",
             responseHandler : "logIn",
             redirect : "/home",
             submitText : "Log In",
@@ -33,8 +33,12 @@ export default class FormTemplates {
 
     signUp () {
         var form = {
-            apiCall : "/customer",
+            apiCall : "/customer/register",
             redirect : "/log-in",
+            modal : {
+                title : "Successfull registration",
+                body : "Thanks for choosing us, you have successfully registered"
+            },
             submitText : "SignUp",
             header : "Sign Up",
             components : [

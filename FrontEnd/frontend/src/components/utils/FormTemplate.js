@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React from 'react';
 import api from '../../app/api';
 import { Redirect } from 'react-router-dom';
 import { Row, Col,
-    Form, Button, Card, Modal} from 'react-bootstrap';
+    Form, Button, Card,
+    Alert } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import { logIn } from '../../app/reducers/userSlice';
+import { openModal } from '../../app/reducers/modalSlice';
 import FormTemplates from '../../form-templates/form-templates';
 
 class FormTemplate extends React.Component {
@@ -14,7 +16,7 @@ class FormTemplate extends React.Component {
         super(props);
         this.state = {
             redirect : null,
-            showModal : false
+            valid : true
         };
 
         // Form template which is passed down by props.router
@@ -33,51 +35,45 @@ class FormTemplate extends React.Component {
 
     }
 
-    submitForm (event) {
+    async submitForm (event) {
         event.preventDefault();
 
         var user = {};
-        this.form.components.map(component => user[component.input] = this.componentRefs[component.inputName].current.state.value);
-
-        api.post(this.form.apiCall, user)
-        .then((response) => {
-            
-            if(this.form.responseHandler) {
-                this.props[this.form.responseHandler](response.data);
-            }
-
-            this.setState({
-                    redirect : this.form.redirect
+        var valid = true;
+        await this.form.components.map(
+            function(component) {
+                user[component.input] = this.componentRefs[component.inputName].current.state.value;
+                if(this.componentRefs[component.inputName].current.state.valid != null) {
+                    valid = valid && this.componentRefs[component.inputName].current.state.valid;
                 }
-            )
-        })
-        .catch((error) => {
-            console.log(error);
+                return true;
+            }.bind(this)
+        );
+        this.setState({
+            valid : valid
         });
+        
+        if(this.state.valid) {
+            api.post(this.form.apiCall, user)
+            .then((response) => {
+                
+                if(this.form.responseHandler) {
+                    this.props[this.form.responseHandler](response.data);
+                }
+
+                if(this.form.modal) {
+                    this.props.openModal(this.form.modal);
+                }
+
+                this.setState({
+                    redirect : this.form.redirect
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        }
     }
-
-    /*
-    /* Modal function is called when account is registered successfully
-    */
-
-    // ModalForm() {
-    //     return (
-    //         <>
-    //             <Modal show={this.state.showModal} onHide={this.state.showModal}>
-    //                 <Modal.Body>You have successfully registered!</Modal.Body>
-    //                 <Modal.Footer>
-    //                     <Button variant="primary" onClick={this.setState({showModal: false})}>
-    //                         Close
-    //                     </Button>
-    //                 </Modal.Footer>
-    //             </Modal>
-    //              //this is for showing (put in the render function once registration api calls works)
-    //              {this.state.showModal && this.ModalForm()}
-    //              //this is the button implemented for the modal
-    //              <Button onClick={() => this.setState({showModal: true})}type="submit">{this.form.submitText}</Button>
-    //         </>
-    //     );
-    // }
     
     render () {
         var html;
@@ -91,6 +87,9 @@ class FormTemplate extends React.Component {
                     <Card>
                         <Card.Header>{this.form.header}</Card.Header>
                         <Card.Body>
+                            {!this.state.valid &&
+                                <Alert variant='danger' >Please fill in all fields correctly</Alert>
+                            }
                             <Form onSubmit={this.submitForm}> 
 
                                 {/* This part dynamically adds input fields to form */}
@@ -128,11 +127,13 @@ class FormTemplate extends React.Component {
 }
 
 const mapStateToProps = state => ({
+    modal :  state.modal
 });
 
 const mapDispatchToProps = () => {
-    return {
-        logIn
+    return { 
+        logIn,
+        openModal
     };
 };
 
