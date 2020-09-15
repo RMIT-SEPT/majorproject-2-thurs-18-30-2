@@ -1,10 +1,12 @@
 import React from 'react';
-import { Navbar, Nav, NavDropdown} from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { logOut } from '../../app/reducers/userSlice';
+
+import '../../css/NavBar.css';
 
 class NavigationBar extends React.Component {
     render () {
@@ -22,29 +24,48 @@ class NavigationBar extends React.Component {
                 </Nav>
                 
                 <NavDropdown 
-                    title={this.props.user.loggedIn ? this.props.user.userDetails.username :
-                        (this.props.location.pathname === "/log-in" ? "Sign Up" : "Log In")} 
-                    id="collasible-nav-dropdown" 
+                    title={
+                        <i className="far fa-user-circle fa-2x"></i>
+                    }
+                    id="nav-dropdown" 
                     className="mr-sm-2"
                 >
                     {this.props.user.loggedIn 
                         ?
                         <React.Fragment>
-                            <NavDropdown.Item href="#home">
+                            <NavDropdown.Item href="#profile">
+                                <span className="fa-stack fa-lg">
+                                    <i className="fa fa-circle fa-stack-2x fa-inverse"></i>
+                                    <i className="fa fa-user-circle fa-stack-1x"></i>
+                                </span>
                                 Profile
                             </NavDropdown.Item>
                             <NavDropdown.Divider />
                             <NavDropdown.Item href="#log-in" onClick={() => this.props.logOut()}>
+                                <span className="fa-stack fa-lg">
+                                    <i className="fa fa-circle fa-stack-2x fa-inverse"></i>
+                                    <i className="fa fa-sign-out-alt fa-stack-1x"></i>
+                                </span>
                                 Log Out
                             </NavDropdown.Item>
                         </React.Fragment>
                         :
                         <React.Fragment>
                             <NavDropdown.Item href="#sign-up">
-                                Sign Up
+                                <span className="fa-stack fa-lg">
+                                    <i className="fa fa-circle fa-stack-2x fa-inverse"></i>
+                                    <i className="fa fa-user-plus fa-stack-1x"></i>
+                                </span> 
+
+                                Sign Up     
                             </NavDropdown.Item>
                             <NavDropdown.Divider />
                             <NavDropdown.Item href="#log-in">
+                                <span className="fa-stack fa-lg">
+                                    <i className="fa fa-circle fa-stack-2x fa-inverse"></i>
+                                    <i className="fa fa-sign-in-alt fa-stack-1x"></i>
+                                </span>
+
                                 Log In
                             </NavDropdown.Item>
                         </React.Fragment>    

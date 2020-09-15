@@ -16,7 +16,8 @@ class FormTemplate extends React.Component {
         super(props);
         this.state = {
             redirect : null,
-            valid : true
+            valid : true,
+            errorMsg : 'Please fill in all fields correctly'
         };
 
         // Form template which is passed down by props.router
@@ -50,7 +51,8 @@ class FormTemplate extends React.Component {
             }.bind(this)
         );
         this.setState({
-            valid : valid
+            valid : valid,
+            errorMsg : 'Please fill in all fields correctly'
         });
         
         if(this.state.valid) {
@@ -70,7 +72,11 @@ class FormTemplate extends React.Component {
                 });
             })
             .catch((error) => {
-                console.log(error);
+                this.setState({
+                    valid : false,
+                    errorMsg : error.response.data.message
+                });
+                console.log(error.response);
             });
         }
     }
@@ -88,7 +94,7 @@ class FormTemplate extends React.Component {
                         <Card.Header>{this.form.header}</Card.Header>
                         <Card.Body>
                             {!this.state.valid &&
-                                <Alert variant='danger' >Please fill in all fields correctly</Alert>
+                                <Alert variant='danger' >{this.state.errorMsg}</Alert>
                             }
                             <Form onSubmit={this.submitForm}> 
 
