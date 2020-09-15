@@ -3,6 +3,7 @@ import Home from '../components/Home';
 import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";
 import Profile from '../components/Profile';
+import BookingsPage from '../components/BookingPage';
 
 
 const router = [
@@ -42,6 +43,10 @@ const router = [
 {
     path : "/profile",
     component : Profile
+},
+{
+    path : "/bookings",
+    component : BookingsPage
 }
 ];
 
