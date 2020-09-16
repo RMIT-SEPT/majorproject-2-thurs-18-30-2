@@ -6,13 +6,13 @@ import Profile from '../components/Profile';
 
 
 const router = [
-{
-    path: "/home",
-    component : Home,
-    routes : [
-    
-    ]
-},
+    {
+        path: "/home",
+        component : Home,
+        routes : [
+        
+        ]
+    },
     {
         path: "/about-us",
         component : AboutUs,
@@ -27,22 +27,22 @@ const router = [
 
         ]
     },
-{
-    path : "/log-in",
-    component : FormTemplate,
-    style : "centered",
-    form : "logIn"
-},
-{
-    path : "/sign-up",
-    component : FormTemplate,
-    style : "centered", 
-    form : "signUp"
-},
-{
-    path : "/profile",
-    component : Profile
-}
+    {
+        path : "/log-in",
+        component : FormTemplate,
+        style : "centered",
+        form : "logIn"
+    },
+    {
+        path : "/sign-up",
+        component : FormTemplate,
+        style : "centered", 
+        form : "signUp"
+    },
+    {
+        path : "/profile",
+        component : Profile
+    }
 ];
 
 export default router;

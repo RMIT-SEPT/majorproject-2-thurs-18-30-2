@@ -1,20 +1,27 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { List, ListItem, ListItemText, ListItemIcon } from '@material-ui/core';
+import '../../css/SideBar.css';
 
-class SideBar extends React.Component {
-    constructor (props) {
-        super(props);
-        this.state = {
-            
-        };
-    }
-
-    render () {
+function SideBar({items}) {
+       
         
-        return (
-            <h1>WELCOME HOME</h1>
-        );
-    }
-
+    return (
+        <div className="sidebar">
+            <List disablePadding dense>
+                {items.map(function({ label, name, path, icon, ...rest }) {
+                    var TagName = icon;
+                    return (
+                    <ListItem key={name} button {...rest} component={Link} to={path}>
+                        <ListItemIcon>
+                            <TagName fontSize="large" style={{ color: "white" }}/>
+                        </ListItemIcon>
+                        <ListItemText>{label}</ListItemText>
+                    </ListItem>
+                )})}
+            </List>
+        </div>
+    );
 }
 
 export default SideBar;

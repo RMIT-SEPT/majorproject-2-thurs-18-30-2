@@ -3,4 +3,23 @@
     overflow : auto;
 }
 
+.container {
+    padding-right : 0px;
+    padding-left : 0px;
+    max-width : 100%;
+    height : 100%;
+}
+
+.custom-row {
+    margin : 0;
+    width : 100%;
+}
+
+.row-full-height {
+    height : 100%;
+}
+
+.custom-col {
+    padding-left : 0;
+}
 

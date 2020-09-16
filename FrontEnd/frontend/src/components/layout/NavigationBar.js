@@ -11,7 +11,7 @@ import '../../css/NavBar.css';
 class NavigationBar extends React.Component {
     render () {
         return (
-            <Navbar bg="dark" variant="dark">
+            <Navbar className="navigationBar" bg="dark" variant="dark">
                 <Navbar.Brand href="#home">AGME</Navbar.Brand>
 
                 <Nav className="mr-auto">
@@ -25,7 +25,7 @@ class NavigationBar extends React.Component {
                 
                 <NavDropdown 
                     title={
-                        <i className="far fa-user-circle fa-2x"></i>
+                        <i className="fa fa-user-circle fa-2x"></i>
                     }
                     id="nav-dropdown" 
                     className="mr-sm-2"

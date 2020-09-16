@@ -58,7 +58,6 @@ class FormTemplate extends React.Component {
         if(this.state.valid) {
             api.post(this.form.apiCall, user)
             .then((response) => {
-                
                 if(this.form.responseHandler) {
                     this.props[this.form.responseHandler](response.data);
                 }
@@ -70,13 +69,11 @@ class FormTemplate extends React.Component {
                 this.setState({
                     redirect : this.form.redirect
                 });
-            })
-            .catch((error) => {
+            }).catch((error) => {
                 this.setState({
                     valid : false,
                     errorMsg : error.response.data.message
                 });
-                console.log(error.response);
             });
         }
     }
