@@ -37,13 +37,15 @@ public class EmployeeControllerTest {
     private MockMvc mvc;
     @MockBean
     private EmployeeService employeeService;
-//    private Employee employeeJohn =  new Employee("John", "Apple", "jApple@mail.com",
+    //    private Employee employeeJohn =  new Employee("John", "Apple", "jApple@mail.com",
 //                                                "usernameABC", "pw1234", "JohnAddress",
 //                                                "0412345678", "employee");
     @MockBean
     private EmployeeRepository employeeRepository;
     @MockBean
     private MapValidationErrorService mapValidationErrorService;
+    @MockBean
+    private EmployeeController employeeController;
     private BindingResult result;
     private Employee employeeJohn;
 
@@ -74,15 +76,23 @@ public class EmployeeControllerTest {
 
     @Test
     public void employeeEdit_Pass() throws Exception {
+        List<Employee> allEmployees = Arrays.asList(employeeJohn);
         //.isCreated(): 201 status (creating a new request)
         mvc.perform(post("/api/employee/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(Util.asJsonString(employeeJohn))).andExpect(status().isCreated());
+                .content(Util.asJsonString(employeeJohn)))
+                .andExpect(status().is2xxSuccessful());
 
+        Employee employeeJohnEdit =  new Employee("John", "Carrot", "jApple@mail.com",
+                "usernameABC", "pw1234", "JohnAddress",
+                "0412345678", "employee");
 
-//        mvc.perform(get("/api/employee/usernameABC/editEmployee")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(Util.asJsonString(employeeJohn)));
+        //given(employeeController.editEmployee(employeeJohn.getUsername(), employeeJohn, result));
+
+        mvc.perform(post("/api/employee/usernameABC/editEmployee")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Util.asJsonString(employeeJohnEdit)))
+                .andExpect(status().isOk());
     }
 
     @Test
