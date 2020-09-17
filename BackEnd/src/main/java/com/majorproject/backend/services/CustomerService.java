@@ -32,6 +32,8 @@ public class CustomerService {
         return customerNew;
     }
 
+    public Customer getCustomerByUsername(String username) { return customerRepository.findByUsername(username); }
+
 //    /* Logic */
 //    public Customer loginCustomer(LoginForm loginForm) {
 //        boolean login_success = false;

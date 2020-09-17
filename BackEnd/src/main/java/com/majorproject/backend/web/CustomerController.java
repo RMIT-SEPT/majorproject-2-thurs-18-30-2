@@ -35,4 +35,29 @@ public class CustomerController {
 
         return response;
     }
+
+    @PostMapping("/editCustomer/{username}")
+    public ResponseEntity<?> editCustomer(@Valid @PathVariable String username, @RequestBody Customer customer, BindingResult result) {
+        ResponseEntity<?> response;
+        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
+
+        if(errorMap != null) {
+            response = errorMap;
+        } else {
+            Customer customerEdit = customerService.getCustomerByUsername(username);
+
+            // Seting employee details
+            customerEdit.setfName(customer.getfName());
+            customerEdit.setlName(customer.getlName());
+            customerEdit.setEmail(customer.getEmail());
+            customerEdit.setAddress(customer.getAddress());
+            customerEdit.setPassword(customer.getPassword());
+            customerEdit.setpNumber(customer.getpNumber());
+
+            customerService.saveOrUpdateCustomer(customerEdit);
+            response = new ResponseEntity<Customer>(customerEdit, HttpStatus.OK);
+        }
+
+        return response;
+    }
 }

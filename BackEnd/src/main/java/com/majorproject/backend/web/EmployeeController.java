@@ -51,7 +51,6 @@ public class EmployeeController {
             employeeEdit.setfName(employee.getfName());
             employeeEdit.setlName(employee.getlName());
             employeeEdit.setEmail(employee.getEmail());
-            employeeEdit.setUsername(employee.getUsername());
             employeeEdit.setAddress(employee.getAddress());
             employeeEdit.setPassword(employee.getPassword());
             employeeEdit.setpNumber(employee.getpNumber());

@@ -35,12 +35,12 @@ public class EmployeeService {
         return employeeNew;
     }
 
+    public Employee getEmployeeByUsername(String username) { return employeeRepository.findByUsername(username); }
+
     /* Testing purposes */
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
     }
-
-    public Employee getEmployeeByUsername(String username) { return employeeRepository.findByUsername(username); }
 
 //    /* Logic */
 //    public Employee loginEmployee(LoginForm loginForm) {
