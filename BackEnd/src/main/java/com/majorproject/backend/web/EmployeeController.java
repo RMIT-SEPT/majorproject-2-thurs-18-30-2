@@ -37,7 +37,7 @@ public class EmployeeController {
         return response;
     }
 
-    @PostMapping("/{username}/editEmployee")
+    @PostMapping("/editEmployee/{username}")
     public ResponseEntity<?> editEmployee(@Valid @PathVariable String username, @RequestBody Employee employee, BindingResult result) {
         ResponseEntity<?> response;
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);

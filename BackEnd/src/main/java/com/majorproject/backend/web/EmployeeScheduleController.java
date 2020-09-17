@@ -26,9 +26,7 @@ public class EmployeeScheduleController {
 
     @PostMapping("")
     public ResponseEntity<?> createEmployee(@Valid @RequestBody Map<String, String> request) {
-
-
-            EmployeeSchedule employeeScheduleNew = employeeScheduleService.saveOrUpdateEmployee(request);
+        EmployeeSchedule employeeScheduleNew = employeeScheduleService.saveOrUpdateEmployee(request);
 
         return new ResponseEntity<EmployeeSchedule>(employeeScheduleNew, HttpStatus.CREATED);
     }

@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +23,7 @@ public class BookingController {
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
-    @PostMapping("")
+    @PostMapping("/create")
     public ResponseEntity<?> createBooking(@RequestBody Booking booking, BindingResult result) {
         ResponseEntity<?> response;
 
@@ -36,10 +38,17 @@ public class BookingController {
         return  response;
     }
 
-    @GetMapping("/getBookings")
-    public ResponseEntity<?> getBookings(@RequestParam Map<String,String> requestParams) {
-        List<Booking> bookingList = bookingService.displayDashboard(requestParams.get("id"), requestParams.get(""));
+//    @GetMapping("/getBookings")
+//    public ResponseEntity<?> getBookings(@RequestParam Map<String,String> requestParams) {
+//        List<Booking> bookingList = bookingService.displayDashboard(requestParams.get("id"), requestParams.get(""));
+//        return new ResponseEntity<List<Booking>>(bookingList, HttpStatus.OK);
+//    }
 
-        return new ResponseEntity<List<Booking>>(bookingList, HttpStatus.OK);
+    @GetMapping("getBookings/{username}")
+    public ResponseEntity<?> getUserBookings(@Valid @PathVariable String username) {
+        List<Booking> bookingList = bookingService.getBookingsByUser(username);
+        ResponseEntity<?> response = new ResponseEntity<List<Booking>>(bookingList, HttpStatus.OK);
+
+        return response;
     }
 }

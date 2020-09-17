@@ -34,7 +34,7 @@ public class EmployeeScheduleService {
             employeeSchedule.setStartTime(formatterTime.parse(request.get("startTime")));
             employeeSchedule.setEndTime(formatterTime.parse(request.get("endTime")));
             employeeSchedule.setEmployee(employeeRepository.findById(Long.parseLong(request.get("employee"))).get());
-            employeeSchedule.setService(serviceRepository.findById(Long.parseLong(request.get("employee"))).get());
+            employeeSchedule.setService(serviceRepository.findById(Long.parseLong(request.get("service"))).get());
             employeeScheduleNew = employeeScheduleRepository.save(employeeSchedule);
         } catch(Exception e) {
             throw new ResponseException(HttpStatus.BAD_REQUEST, "Scheduling error");

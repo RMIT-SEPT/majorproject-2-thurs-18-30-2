@@ -21,4 +21,13 @@ public interface BookingRepository extends CrudRepository<Booking, Long> {
 //
 //    @Query(value = "SELECT TOP 10 * FROM EMPLOYEE e WHERE c.username = ?1 ORDER BY desc", nativeQuery = true)
 //    List<Booking> refreshEmployeeDashboard(String username);
+
+    @Query(value = "SELECT * FROM Booking b WHERE b.customer_id = ?1 ORDER BY b.created_at", nativeQuery = true)
+    List<Booking> getAllCustomerBookings(long id);
+
+    @Query(value = "SELECT b.* FROM Booking b, Employee_Schedule es, Employee e " +
+            "WHERE b.employee_schedule_id = es.employee_schedule_id AND " +
+            "es.employee_id = e.employee_id AND " +
+            "e.employee_id = ?1 ORDER BY b.created_at", nativeQuery = true)
+    List<Booking> getAllEmployeeBookings(long id);
 }

@@ -17,6 +17,8 @@ public class BookingService {
     private EmployeeScheduleRepository employeeScehduleRepository;
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
 
     public Booking saveOrUpdateBooking(Booking booking) {
@@ -32,8 +34,24 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
-    public List<Booking> displayDashboard(String id, String userType) {
+//    public List<Booking> displayDashboard(String id, String userType) {
+//        List<Booking> bookingList = null;
+//        return bookingList;
+//    }
+
+    public List<Booking> getBookingsByUser(String username) {
         List<Booking> bookingList = null;
+        Employee employee = employeeRepository.findByUsername(username);
+
+        if (employee == null) {
+            Customer customer = customerRepository.findByUsername(username);
+            bookingList = bookingRepository.getAllCustomerBookings(customer.getId());
+        } else {
+            bookingList = bookingRepository.getAllEmployeeBookings(employee.getId());
+        }
+
+        if(bookingList == null)
+            throw new ResponseException(HttpStatus.NO_CONTENT, "There are no bookings.");
 
 
         return bookingList;
