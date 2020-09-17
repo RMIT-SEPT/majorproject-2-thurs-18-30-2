@@ -3,6 +3,7 @@ package com.majorproject.backend.services;
 import com.majorproject.backend.exceptions.ResponseException;
 import com.majorproject.backend.repositories.CustomerRepository;
 import com.majorproject.backend.models.Customer;
+import com.majorproject.backend.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -11,14 +12,23 @@ import org.springframework.stereotype.Service;
 public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     public Customer saveOrUpdateCustomer(Customer customer) {
         Customer customerNew = null;
-        try {
-            customerNew = customerRepository.save(customer);
-        } catch(Exception e) {
+        String username = customer.getUsername();
+
+        if(employeeRepository.findByUsername(username) == null) {
+            try {
+                customerNew = customerRepository.save(customer);
+            } catch(Exception e) {
+                throw new ResponseException(HttpStatus.BAD_REQUEST, "Username already in use");
+            }
+        } else {
             throw new ResponseException(HttpStatus.BAD_REQUEST, "Username already in use");
         }
+
         return customerNew;
     }
 
