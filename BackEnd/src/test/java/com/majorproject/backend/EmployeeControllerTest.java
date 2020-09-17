@@ -87,9 +87,7 @@ public class EmployeeControllerTest {
                 "usernameABC", "pw1234", "JohnAddress",
                 "0412345678", "employee");
 
-        //given(employeeController.editEmployee(employeeJohn.getUsername(), employeeJohn, result));
-
-        mvc.perform(post("/api/employee/usernameABC/editEmployee")
+        mvc.perform(post("/api/employee/editEmployee/usernameABC")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Util.asJsonString(employeeJohnEdit)))
                 .andExpect(status().isOk());
@@ -103,7 +101,7 @@ public class EmployeeControllerTest {
 
         employeeJohn = null;
 
-        mvc.perform(post("/api/employee/usernameABC/editEmployee")
+        mvc.perform(post("/api/employee/editEmployee/usernameABC")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Util.asJsonString(employeeJohn)))
                 .andExpect(status().is4xxClientError());

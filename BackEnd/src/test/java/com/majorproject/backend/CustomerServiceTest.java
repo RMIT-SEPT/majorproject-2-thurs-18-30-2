@@ -55,7 +55,7 @@ public class CustomerServiceTest {
         given(customerService.saveOrUpdateCustomer(customer)).willReturn(customer);
 
         Customer actualCustomer = customerService.saveOrUpdateCustomer(customer);
-        Assert.assertEquals(actualCustomer.getfName(), customer.getfName());
+        Assert.assertEquals(actualCustomer, customer);
 
     }
 
