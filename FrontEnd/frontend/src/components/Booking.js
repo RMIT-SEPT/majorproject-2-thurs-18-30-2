@@ -23,10 +23,12 @@ class Booking extends React.Component {
                         <p>{this.props.booking.startTime}</p>
                     </Card.Text>
                     <div id="button">
-                        <Button variant="primary" >View Details</Button>
+                        <Button variant="primary">View Details</Button>
                     </div>
+                    
                 </Card.Body>
             </Card>
+        
             </div>
         );
     }

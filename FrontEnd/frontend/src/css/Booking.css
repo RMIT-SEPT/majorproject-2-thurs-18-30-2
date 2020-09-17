@@ -15,13 +15,13 @@ p {
 }
 
 #test {
-    width: 18rem;
-    height: 16rem;
+    width: 14rem;
+    height: 14rem;
 }
 
 #button {
-    padding-top: 30%;
-    margin-bottom: 10px;
-    text-align: center;
+    left: 15px;
+    bottom: 15px;
     vertical-align: bottom;
+    position: absolute;
 }
