@@ -47,4 +47,18 @@ public class UserControllerTest {
             .content(Util.asJsonString(requestBody)))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void login_Fail() throws Exception {
+        List<Employee> allEmployees = Arrays.asList(employeeJohn);
+
+        LoginForm requestBody = new LoginForm();
+        requestBody.setUsername("usernaABC");
+        requestBody.setPassword("pw1234");
+
+        mvc.perform(post("/api/user/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Util.asJsonString(requestBody)))
+                .andExpect(status().isOk());
+    }
 }
