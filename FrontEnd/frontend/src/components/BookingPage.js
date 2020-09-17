@@ -1,7 +1,7 @@
 import React from 'react';
-import { Form, Row, Col } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import Booking from '../components/Booking';
-import '../css/Profile.css';
+import '../css/BookingPage.css';
 
 class BookingsPage extends React.Component {
     constructor (props) {
@@ -13,8 +13,6 @@ class BookingsPage extends React.Component {
     render () {
         
         var html;
-        var c = 0;
-        var r = 0;
         var call = [
                 {
                     eFName : "efirst",
@@ -39,22 +37,69 @@ class BookingsPage extends React.Component {
                     startTime : "1930",
                     endTime : "2030",
                     service : "Dine and Dash"
+                },
+                {
+                    eFName : "employeeFirstName",
+                    eLName : "employeeLastName",
+                    date : "14/09/2020",
+                    startTime : "1930",
+                    endTime : "2030",
+                    service : "Dine and Dash"
+                },
+                {
+                    eFName : "employeeFirstName",
+                    eLName : "employeeLastName",
+                    date : "14/09/2020",
+                    startTime : "1930",
+                    endTime : "2030",
+                    service : "Dine and Dash"
+                },
+                {
+                    eFName : "employeeFirstName",
+                    eLName : "employeeLastName",
+                    date : "14/09/2020",
+                    startTime : "1930",
+                    endTime : "2030",
+                    service : "Dine and Dash"
+                },
+                {
+                    eFName : "employeeFirstName",
+                    eLName : "employeeLastName",
+                    date : "14/09/2020",
+                    startTime : "1930",
+                    endTime : "2030",
+                    service : "Dine and Dash"
+                },
+                {
+                    eFName : "employeeFirstName",
+                    eLName : "employeeLastName",
+                    date : "14/09/2020",
+                    startTime : "1930",
+                    endTime : "2030",
+                    service : "Dine and Dash"
                 }
             ]
         
         html = (
             <Form.Group>
+
+                <div class="Margin">
+                <div className="row">
+
                 {       
                     call.map(
                         function(book) {
                             return  (
+                                
                                     <Booking 
                                         booking={book}
                                     />
                             );
-                        }.bind(this)
+                        }
                     ) 
                 }
+                </div>
+                </div>
             </Form.Group>
         )
         return html;

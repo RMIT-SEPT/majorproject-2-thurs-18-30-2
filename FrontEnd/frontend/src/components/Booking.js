@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
-import '../css/Profile.css';
+import '../css/Booking.css';
 
 class Booking extends React.Component {
     constructor (props) {
@@ -12,18 +12,19 @@ class Booking extends React.Component {
 
     render () {
         return (
-            <div class="col-sm">
-            <Card style={{ width: '18rem' }}>
+            <div id="card">
+            <Card id="test">
                 <Card.Body>
-                    <Card.Title>{this.props.booking.service}</Card.Title>
+                    <Card.Title><p>{this.props.booking.service}</p></Card.Title>
                     <Card.Subtitle>
-                    {this.props.booking.date}
+                        <p>{this.props.booking.date}</p>
                     </Card.Subtitle>
                     <Card.Text>
-                    {this.props.booking.startTime}
+                        <p>{this.props.booking.startTime}</p>
                     </Card.Text>
-                    
-                <Button variant="primary">View Details</Button>
+                    <div id="button">
+                        <Button variant="primary" >View Details</Button>
+                    </div>
                 </Card.Body>
             </Card>
             </div>

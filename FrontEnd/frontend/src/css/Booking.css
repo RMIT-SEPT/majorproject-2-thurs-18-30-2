@@ -2,3 +2,26 @@
     text-align: center;
     overflow : auto;
 }
+
+p {
+    text-align: center;
+}
+
+#card {
+    display: inline;
+    margin-left: 30px;
+    padding-top: 30px;
+    
+}
+
+#test {
+    width: 18rem;
+    height: 16rem;
+}
+
+#button {
+    padding-top: 30%;
+    margin-bottom: 10px;
+    text-align: center;
+    vertical-align: bottom;
+}
