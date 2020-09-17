@@ -13,7 +13,7 @@ class ContactUs extends React.Component {
 
         return (
 
-            <html>
+            <React.Fragment>
                 <h2><b>Contact Us</b></h2>
 
                 <h3>Phone</h3>
@@ -32,7 +32,7 @@ class ContactUs extends React.Component {
                 <br></br>
                 <a href="www.instagram.com">Instagram</a>
             
-            </html>
+            </React.Fragment>
         );
     }
 
