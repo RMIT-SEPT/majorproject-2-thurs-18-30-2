@@ -45,6 +45,12 @@ const router = [
     component : Profile
 },
 {
+    path : "/edit",
+    component : FormTemplate,
+    style : "centered",
+    form : "editProfile"
+},
+{
     path : "/bookings",
     component : BookingsPage
 }

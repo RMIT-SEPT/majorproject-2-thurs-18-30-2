@@ -81,4 +81,51 @@ export default class FormTemplates {
         };
         return form;
     }
+
+    editProfile () {
+        var form = {
+            apiCall : "/",
+            redirect : "/profile",
+            submitText : "Save",
+            header : "Edit Profile",
+            components : [
+                {
+                    input : "fName",
+                    inputName : "First Name",
+                    inputType : TextInput
+                },
+                {
+                    input : "lName",
+                    inputName : "Last Name",
+                    inputType : TextInput
+                },
+                {
+                    input : "email",
+                    inputName : "Email",
+                    inputType : EmailInput
+                },
+                {
+                    input : "username",
+                    inputName : "Username",
+                    inputType : UsernameInput
+                },
+                {
+                    input : "password",
+                    inputName : "Password",
+                    inputType : PasswordInputWithConf
+                },
+                {
+                    input : "address",
+                    inputName : "Address",
+                    inputType : TextInput
+                },
+                {
+                    input : "pNumber",
+                    inputName : "Phone Number",
+                    inputType : TextInput
+                }
+            ]
+        };
+        return form;
+    }
 };
