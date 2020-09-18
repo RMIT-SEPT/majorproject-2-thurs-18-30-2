@@ -108,6 +108,8 @@ class PasswordInputWithConf extends React.Component {
     }
 }
 
+//export default PasswordInputWithConf;
+
 const mapStateToProps = state => ({
     user : state.user
 });

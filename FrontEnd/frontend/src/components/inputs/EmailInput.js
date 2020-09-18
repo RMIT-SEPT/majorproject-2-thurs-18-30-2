@@ -44,6 +44,8 @@ class EmailInput extends React.Component {
     }
 }
 
+//export default EmailInput;
+
 const mapStateToProps = state => ({
     user : state.user
 });

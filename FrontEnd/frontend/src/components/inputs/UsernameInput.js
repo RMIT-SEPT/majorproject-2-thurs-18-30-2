@@ -97,6 +97,8 @@ class UsernameInput extends React.Component {
     }
 }
 
+//export default UsernameInput;
+
 const mapStateToProps = state => ({
     user : state.user
 });
