@@ -23,7 +23,7 @@ public class EmployeeController {
     private MapValidationErrorService mapValidationErrorService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> createEmployee(@Valid @RequestBody Employee employee, BindingResult result) {
+    public ResponseEntity<?> registerEmployee(@Valid @RequestBody Employee employee, BindingResult result) {
         ResponseEntity<?> response;
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
 

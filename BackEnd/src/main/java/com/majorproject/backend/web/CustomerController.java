@@ -22,7 +22,7 @@ public class CustomerController {
     private MapValidationErrorService mapValidationErrorService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> createCustomer(@Valid @RequestBody Customer customer, BindingResult result) {
+    public ResponseEntity<?> registerCustomer(@Valid @RequestBody Customer customer, BindingResult result) {
         ResponseEntity<?> response;
 
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
@@ -46,7 +46,7 @@ public class CustomerController {
         } else {
             Customer customerEdit = customerService.getCustomerByUsername(username);
 
-            // Seting employee details
+            // Seting customer details
             customerEdit.setfName(customer.getfName());
             customerEdit.setlName(customer.getlName());
             customerEdit.setEmail(customer.getEmail());

@@ -22,7 +22,7 @@ public class ServiceController {
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
-    @PostMapping("")
+    @PostMapping("/create")
     public ResponseEntity<?> createService(@Valid @RequestBody Services service, BindingResult result) {
         ResponseEntity<?> response;
 

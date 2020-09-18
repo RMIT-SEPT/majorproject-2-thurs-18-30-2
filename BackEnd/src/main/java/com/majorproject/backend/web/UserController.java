@@ -24,7 +24,6 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> loginVerification(@RequestBody LoginForm loginForm) {
         User user = userService.loginUser(loginForm);
-
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 }
