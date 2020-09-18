@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -41,5 +42,9 @@ public class EmployeeScheduleService {
         }
 
         return employeeScheduleNew;
+    }
+
+    public List<EmployeeSchedule> getEmployeeAvailability(String username) {
+        return employeeScheduleRepository.getEmployeeAvailabilityByUsername(username);
     }
 }

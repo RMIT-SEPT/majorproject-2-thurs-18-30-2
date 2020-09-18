@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -31,4 +32,11 @@ public class EmployeeScheduleController {
         return new ResponseEntity<EmployeeSchedule>(employeeScheduleNew, HttpStatus.CREATED);
     }
 
+    @GetMapping("/viewEmployeeAvailability")
+    public ResponseEntity<?> viewEmployeeAvailability(@RequestBody Employee employee) {
+        String username = employee.getUsername();
+        List<EmployeeSchedule> employeeScheduleList = employeeScheduleService.getEmployeeAvailability(username);
+
+        return new ResponseEntity<List<EmployeeSchedule>>(employeeScheduleList, HttpStatus.OK);
+    }
 }
