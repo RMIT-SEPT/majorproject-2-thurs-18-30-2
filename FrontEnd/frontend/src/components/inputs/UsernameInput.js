@@ -1,6 +1,9 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { withRouter } from 'react-router-dom';
 import api from '../../app/api';
 
 class UsernameInput extends React.Component {
@@ -10,13 +13,13 @@ class UsernameInput extends React.Component {
             value : '',
             valid : true,
             border : "1px solid lightgrey",
-            errMsg : ""
+            errMsg : "",
+            changed : false
         };
 
         this.handleChange = this.handleChange.bind(this);
-    }
 
-    
+    }
 
     handleChange (event) {
         this.setState({
@@ -33,6 +36,7 @@ class UsernameInput extends React.Component {
         }
 
         this.debounceFn = _.debounce(() => {
+            
             api.get(`/user/usernameExists/${this.state.value}`)
             .then((response) => {
                 var exists = response.data;
@@ -68,6 +72,7 @@ class UsernameInput extends React.Component {
     }
 
     render () {
+        
         return (
             <Form.Group as={Row}>
                 <Form.Label column sm={this.props.pos[0]}>
@@ -81,7 +86,22 @@ class UsernameInput extends React.Component {
                 </Col>
             </Form.Group>
         );
+        
     }
 }
 
 export default UsernameInput;
+
+/* const mapStateToProps = state => ({
+    user : state.user
+});
+
+const mapDispatchToProps = () => {
+    return {
+    };
+};
+
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps()),
+    withRouter
+)(UsernameInput); */
