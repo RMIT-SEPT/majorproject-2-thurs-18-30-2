@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -24,11 +25,17 @@ public class EmployeeScheduleController {
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
-    @PostMapping("")
-    public ResponseEntity<?> createEmployee(@Valid @RequestBody Map<String, String> request) {
+    @PostMapping("/create")
+    public ResponseEntity<?> createEmployeeSchedule(@Valid @RequestBody Map<String, String> request) {
         EmployeeSchedule employeeScheduleNew = employeeScheduleService.saveOrUpdateEmployee(request);
-
         return new ResponseEntity<EmployeeSchedule>(employeeScheduleNew, HttpStatus.CREATED);
     }
 
+    @GetMapping("/viewEmployeeAvailability")
+    public ResponseEntity<?> viewEmployeeAvailability(@Valid @RequestBody Employee employee) {
+        String username = employee.getUsername();
+        List<EmployeeSchedule> employeeScheduleList = employeeScheduleService.getEmployeeAvailability(username);
+        
+        return new ResponseEntity<List<EmployeeSchedule>>(employeeScheduleList, HttpStatus.OK);
+    }
 }

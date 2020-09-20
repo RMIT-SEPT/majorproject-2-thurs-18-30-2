@@ -3,6 +3,7 @@ import Home from '../components/Home';
 import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";
 import Profile from '../components/Profile';
+import BookingsPage from '../components/BookingPage';
 
 
 const router = [
@@ -27,22 +28,32 @@ const router = [
 
         ]
     },
-    {
-        path : "/log-in",
-        component : FormTemplate,
-        style : "centered",
-        form : "logIn"
-    },
-    {
-        path : "/sign-up",
-        component : FormTemplate,
-        style : "centered", 
-        form : "signUp"
-    },
-    {
-        path : "/profile",
-        component : Profile
-    }
+{
+    path : "/log-in",
+    component : FormTemplate,
+    style : "centered",
+    form : "logIn"
+},
+{
+    path : "/sign-up",
+    component : FormTemplate,
+    style : "centered", 
+    form : "signUp"
+},
+{
+    path : "/profile",
+    component : Profile
+},
+{
+    path : "/edit",
+    component : FormTemplate,
+    style : "centered",
+    form : "editProfile"
+},
+{
+    path : "/bookings",
+    component : BookingsPage
+}
 ];
 
 export default router;

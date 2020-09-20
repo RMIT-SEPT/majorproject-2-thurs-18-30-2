@@ -25,7 +25,6 @@ class App extends React.Component {
                 items = sideBarMenu.customerMenu();
             }
         } else {
-            console.log("guest")
             items = sideBarMenu.guestMenu();
         }
         return (

@@ -1,0 +1,27 @@
+.Booking {
+    text-align: center;
+    overflow : auto;
+}
+
+p {
+    text-align: center;
+}
+
+#card {
+    display: inline;
+    margin-left: 30px;
+    padding-top: 30px;
+    
+}
+
+#test {
+    width: 14rem;
+    height: 14rem;
+}
+
+#button {
+    left: 15px;
+    bottom: 15px;
+    vertical-align: bottom;
+    position: absolute;
+}
