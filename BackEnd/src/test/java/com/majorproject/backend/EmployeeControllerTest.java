@@ -59,13 +59,15 @@ public class EmployeeControllerTest {
     @Test
     public void employeeCreate_Pass() throws Exception {
         //.isCreated(): 201 status (creating a new request)
+        given(employeeService.getEmployeeByUsername("usernameABC")).willReturn(employeeJohn);
         mvc.perform(post("/api/employee/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(Util.asJsonString(employeeJohn))).andExpect(status().isCreated());
+                .content(Util.asJsonString(employeeJohn))).andExpect(status().is2xxSuccessful());
     }
 
     @Test
     public void employeeCreate_Fail() throws Exception {
+        given(employeeService.getEmployeeByUsername("usernameABC")).willReturn(employeeJohn);
         employeeJohn = null;
 
         mvc.perform(post("/api/employee/register")
@@ -77,6 +79,7 @@ public class EmployeeControllerTest {
     @Test
     public void employeeEdit_Pass() throws Exception {
         List<Employee> allEmployees = Arrays.asList(employeeJohn);
+        given(employeeService.getEmployeeByUsername("usernameABC")).willReturn(employeeJohn);
         //.isCreated(): 201 status (creating a new request)
         mvc.perform(post("/api/employee/register")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -90,14 +93,15 @@ public class EmployeeControllerTest {
         mvc.perform(post("/api/employee/editEmployee/usernameABC")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Util.asJsonString(employeeJohnEdit)))
-                .andExpect(status().isOk());
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
     public void employeeEdit_Fail() throws Exception {
+        given(employeeService.getEmployeeByUsername("usernameABC")).willReturn(employeeJohn);
         mvc.perform(post("/api/employee/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(Util.asJsonString(employeeJohn))).andExpect(status().isCreated());
+                .content(Util.asJsonString(employeeJohn))).andExpect(status().is2xxSuccessful());
 
         employeeJohn = null;
 
