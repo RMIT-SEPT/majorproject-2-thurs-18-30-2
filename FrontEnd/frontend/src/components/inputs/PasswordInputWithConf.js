@@ -72,15 +72,7 @@ class PasswordInputWithConf extends React.Component {
     }
 
     render () {
-        if(this.props.user.userDetails) {
-            if(!this.state.changed) {
-                this.setState({
-                    value : this.props.user.userDetails.password,
-                    valueConf : this.props.user.userDetails.password,
-                    changed : true
-                });
-            }
-        }
+        
         return (
             <React.Fragment>
                 <Form.Group as={Row}>
@@ -108,9 +100,9 @@ class PasswordInputWithConf extends React.Component {
     }
 }
 
-//export default PasswordInputWithConf;
+export default PasswordInputWithConf;
 
-const mapStateToProps = state => ({
+/* const mapStateToProps = state => ({
     user : state.user
 });
 
@@ -122,4 +114,4 @@ const mapDispatchToProps = () => {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps()),
     withRouter
-)(PasswordInputWithConf);
+)(PasswordInputWithConf); */

@@ -22,14 +22,7 @@ class EmailInput extends React.Component {
     }
 
     render () {
-        if(this.props.user.userDetails) {
-            if(!this.state.changed) {
-                this.setState({
-                    value : this.props.user.userDetails.email,
-                    changed : true
-                });
-            }
-        }
+        
         return (
             <Form.Group as={Row}>
                     <Form.Label column sm={this.props.pos[0]}>
@@ -44,9 +37,9 @@ class EmailInput extends React.Component {
     }
 }
 
-//export default EmailInput;
+export default EmailInput;
 
-const mapStateToProps = state => ({
+/* const mapStateToProps = state => ({
     user : state.user
 });
 
@@ -58,4 +51,4 @@ const mapDispatchToProps = () => {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps()),
     withRouter
-)(EmailInput);
+)(EmailInput); */
