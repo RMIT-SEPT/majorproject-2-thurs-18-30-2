@@ -84,7 +84,7 @@ export default class FormTemplates {
 
     editProfile () {
         var form = {
-            apiCall : "/",
+            apiCall : "/customer/editCustomer",
             redirect : "/profile",
             submitText : "Save",
             header : "Edit Profile",

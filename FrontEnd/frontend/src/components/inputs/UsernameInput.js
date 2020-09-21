@@ -1,16 +1,13 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { withRouter } from 'react-router-dom';
 import api from '../../app/api';
 
 class UsernameInput extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            value : '',
+            value : props.val,
             valid : true,
             border : "1px solid lightgrey",
             errMsg : "",
@@ -18,7 +15,7 @@ class UsernameInput extends React.Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-
+        console.log(props.val);
     }
 
     handleChange (event) {
@@ -92,16 +89,4 @@ class UsernameInput extends React.Component {
 
 export default UsernameInput;
 
-/* const mapStateToProps = state => ({
-    user : state.user
-});
 
-const mapDispatchToProps = () => {
-    return {
-    };
-};
-
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps()),
-    withRouter
-)(UsernameInput); */

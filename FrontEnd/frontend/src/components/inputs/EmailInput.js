@@ -1,14 +1,10 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { withRouter } from 'react-router-dom';
-
 class EmailInput extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            value : '',
+            value : props.val,
             changed : false
         };
 
