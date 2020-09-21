@@ -24,8 +24,7 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - backend-{{ checksum "pom.xml" }}
-            - backend-
+            - backend-{{ checksum "pom.xml" }}W
 
       - run: mvn dependency:go-offline
 
