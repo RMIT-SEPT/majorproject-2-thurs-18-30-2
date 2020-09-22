@@ -1,22 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useParams } from 'react-router-dom';
 import '../css/Profile.css';
 
 class Profile extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-
+            tmp : ""
         };
+        
     }
     
+    componentDidMount () {
+        console.log("componenet did m,ount");  
+        const { name } = useParams();
+        this.setState({
+            tmp : name
+        });
+    }
+
     render () {
         if(this.props.user.userDetails)
         {
             return (
                 <React.Fragment>
+                    <h1>{this.state.tmp}</h1>
                     <div className="jumbotron jumbotron-fluid">
                         <div id="centre">
                             <div className="row">
