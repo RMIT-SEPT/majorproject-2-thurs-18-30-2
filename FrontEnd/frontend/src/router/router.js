@@ -6,7 +6,11 @@ import Profile from '../components/Profile';
 import BookingsPage from '../components/BookingPage';
 import EmployeesPage from '../components/EmployeesPage';
 
-
+// This array contains all our routes.
+// In a sense we define our paths globally in this file as an array.
+// the indexes are used by component SubRouter.
+// This should later be modified so that certain routes will only be
+// available to specific users.
 const router = [
     {
         path: "/home",

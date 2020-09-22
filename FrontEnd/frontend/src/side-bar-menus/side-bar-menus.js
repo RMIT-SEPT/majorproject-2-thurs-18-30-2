@@ -5,6 +5,8 @@ import { ContactSupportRounded,
     GroupRounded,
     PersonAddRounded } from '@material-ui/icons';
 
+// This class is similar to form-templates.js as it provides a structure for the 
+// dynamic component SideBar
 export default class SideBarMenu {
     employeeMenu() {
         var items = [

@@ -4,6 +4,8 @@ import PasswordInput from '../components/inputs/PasswordInput';
 import PasswordInputWithConf from '../components/inputs/PasswordInputWithConf';
 import UsernameInput from '../components/inputs/UsernameInput';
 
+// This class's methods are used to specify the details for the dynamic FormTemplate component
+// The method name for component FormTemplate is specified in router.js.
 export default class FormTemplates {
     logIn () {
         var form = {
