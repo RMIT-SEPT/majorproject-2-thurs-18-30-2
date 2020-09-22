@@ -28,6 +28,12 @@ public class EmployeeScheduleController {
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
+    /**
+     * Creates the employee schedule
+     * @param request A map that contains the details of the request
+     * @param result BindingResult
+     * @return A response entity of the employee schedule
+     */
     @PostMapping("/create")
     public ResponseEntity<?> createEmployeeSchedule(@Valid @RequestBody Map<String, String> request, BindingResult result) {
         ResponseEntity<?> response;
@@ -41,10 +47,59 @@ public class EmployeeScheduleController {
         }
 
         return response;
-
-//        EmployeeSchedule employeeScheduleNew = employeeScheduleService.saveOrUpdateEmployeeSchedule(request);
-//        return new ResponseEntity<EmployeeSchedule>(employeeScheduleNew, HttpStatus.CREATED);
     }
+
+    /**
+     * Finds the availability of a specified employee
+     * @param employee The employee selected
+     * @return A response entity of the list of date and time when the employee is available
+     */
+    @GetMapping("/viewEmployeeAvailability")
+    public ResponseEntity<?> viewEmployeeAvailability(@Valid @RequestBody Employee employee) {
+        Long id = employee.getId();
+        boolean byWeek = false;
+        List<EmployeeAvailabilityForm> employeeAvailabilityList = employeeScheduleService.getEmployeeAvailability(id, byWeek);
+        
+        return new ResponseEntity<List<EmployeeAvailabilityForm>>(employeeAvailabilityList, HttpStatus.OK);
+    }
+
+    /**
+     * Finds the availability of a specified employee from today till a week later (7 days)
+     * @param employee The employee selected
+     * @return A response entity of the list of date and time when the employee is available
+     */
+    @GetMapping("/viewEmployeeAvailabilityWeek")
+    public ResponseEntity<?> viewEmployeeAvailabilityWeek(@Valid @RequestBody Employee employee) {
+        Long id = employee.getId();
+        boolean byWeek = true;
+        List<EmployeeAvailabilityForm> employeeAvailabilityList = employeeScheduleService.getEmployeeAvailability(id, byWeek);
+
+        return new ResponseEntity<List<EmployeeAvailabilityForm>>(employeeAvailabilityList, HttpStatus.OK);
+    }
+
+    /**
+     * Finds the services within a time specified by the user
+     * @param request A map that contains the details of the request
+     * @return A response entity of the list of services based on the time specified
+     */
+    @GetMapping("/viewServicesWithinTime")
+    public ResponseEntity<?> viewServicesWithinTime(@Valid @RequestBody Map<String, String> request) {
+        List<?> employeeScheduleTimeList = employeeScheduleService.getServicesWithinParameters(request);
+        return new ResponseEntity<List<EmployeeScheduleWithinTimeForm>>((List<EmployeeScheduleWithinTimeForm>) employeeScheduleTimeList, HttpStatus.OK);
+    }
+
+    /**
+     * Finds the services within a time and employee specified by the user
+     * @param request A map that contains the details of the request
+     * @return A response entity of the list of services based on the time and employee specified
+     */
+    @GetMapping("/viewServicesWithinTimeAndEmployee")
+    public ResponseEntity<?> viewServicesWithinTimeAndEmployee(@Valid @RequestBody Map<String, String> request) {
+        List<?> employeeScheduleTimeList = employeeScheduleService.getServicesWithinParameters(request);
+        return new ResponseEntity<List<EmployeeScheduleWithinTimeFormAndEmployee>>((List<EmployeeScheduleWithinTimeFormAndEmployee>) employeeScheduleTimeList, HttpStatus.OK);
+    }
+
+    /*** Future code ***/
 
 //    @PostMapping("/editSchedule/{id}")
 ////    public ResponseEntity<?> editEmployeeSchedule(@Valid @PathVariable String id, @RequestBody EmployeeSchedule employeeSchedule, BindingResult result) {
@@ -65,44 +120,9 @@ public class EmployeeScheduleController {
 //
 //        return response;
 //    }
-
+//
 //    @PostMapping("/deleteSchedule/{scheduleId}")
 //    public ResponseEntity<?> deleteEmployeeSchedule(@Valid @RequestBody EmployeeSchedule employeeSchedule) {
 //
 //    }
-
-    /**
-     * Returns the availability of a specified employee
-     * @param employee
-     * @return a list of date and time that the employee is available
-     */
-    @GetMapping("/viewEmployeeAvailability")
-    public ResponseEntity<?> viewEmployeeAvailability(@Valid @RequestBody Employee employee) {
-        Long id = employee.getId();
-        boolean byWeek = false;
-        List<EmployeeAvailabilityForm> employeeAvailabilityList = employeeScheduleService.getEmployeeAvailability(id, byWeek);
-        
-        return new ResponseEntity<List<EmployeeAvailabilityForm>>(employeeAvailabilityList, HttpStatus.OK);
-    }
-
-    @GetMapping("/viewEmployeeAvailabilityWeek")
-    public ResponseEntity<?> viewEmployeeAvailabilityWeek(@Valid @RequestBody Employee employee) {
-        Long id = employee.getId();
-        boolean byWeek = true;
-        List<EmployeeAvailabilityForm> employeeAvailabilityList = employeeScheduleService.getEmployeeAvailability(id, byWeek);
-
-        return new ResponseEntity<List<EmployeeAvailabilityForm>>(employeeAvailabilityList, HttpStatus.OK);
-    }
-
-    @GetMapping("/viewServicesWithinTime")
-    public ResponseEntity<?> viewServicesWithinTime(@Valid @RequestBody Map<String, String> request) {
-        List<?> employeeScheduleTimeList = employeeScheduleService.getServicesWithinParameters(request);
-        return new ResponseEntity<List<EmployeeScheduleWithinTimeForm>>((List<EmployeeScheduleWithinTimeForm>) employeeScheduleTimeList, HttpStatus.OK);
-    }
-
-    @GetMapping("/viewServicesWithinTimeAndEmployee")
-    public ResponseEntity<?> viewServicesWithinTimeAndEmployee(@Valid @RequestBody Map<String, String> request) {
-        List<?> employeeScheduleTimeList = employeeScheduleService.getServicesWithinParameters(request);
-        return new ResponseEntity<List<EmployeeScheduleWithinTimeFormAndEmployee>>((List<EmployeeScheduleWithinTimeFormAndEmployee>) employeeScheduleTimeList, HttpStatus.OK);
-    }
 }

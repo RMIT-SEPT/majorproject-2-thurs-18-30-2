@@ -22,6 +22,12 @@ public class EmployeeController {
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
+    /**
+     * Registers an employee
+     * @param employee The employee
+     * @param result BindingResult
+     * @return A response entity of the employee
+     */
     @PostMapping("/register")
     public ResponseEntity<?> registerEmployee(@Valid @RequestBody Employee employee, BindingResult result) {
         ResponseEntity<?> response;

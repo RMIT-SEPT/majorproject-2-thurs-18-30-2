@@ -18,6 +18,11 @@ public class BService {
     @NotBlank(message = "B Service description required")
     private String description;
 
+    public BService(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public BService() {
 
     }
