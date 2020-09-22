@@ -1,0 +1,57 @@
+
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+#
+version: 2
+jobs:
+  build:
+    working_directory: ~/majorproject-2-thurs-18-30-2/BackEnd
+
+    docker:
+      # specify the version you desire here
+      - image: circleci/openjdk:8-jdk-stretch
+      - image: circleci/postgres:9.6.3-alpine
+
+    environment:
+      # Customize the JVM maximum heap limit
+      POSTGRES_USER: root
+      POSTGRES_DB: circle_test
+
+    steps:
+      - checkout:
+          path: ~/majorproject-2-thurs-18-30-2
+
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - backend-{{ checksum "pom.xml" }}
+
+      - run: mvn dependency:go-offline
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: backend-{{ checksum "pom.xml" }}
+      # run tests!
+      - run: mvn package
+
+      - store_test_results:
+          path: target/surefire-reports
+
+      - store_artifacts:
+          path: target/backend-0.0.1.jar
+
+#   FrontEnd
+#  build_npm:
+#    working_directory: ~/majorproject-2-thurs-18-30-2/FrontEnd/frontend
+#
+#    docker:
+#      - image: circleci/node:7.10
+#
+#
+#    steps:
+#      - checkout:
+#          path: ~/majorproject-2-thurs-18-30-2
+#
+#      - run: npm install
+#      - run: npm test

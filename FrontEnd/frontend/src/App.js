@@ -1,26 +1,76 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Switch, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Container, Row, Col } from 'react-bootstrap';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import './css/App.css';
+
+import SubRouter from './components/utils/SubRouter';
+import NavigationBar from './components/layout/NavigationBar';
+import SideBar from './components/layout/SideBar';
+import Modal from './components/utils/Modal';
+import router from './router/router';
+import { } from './app/reducers/userSlice';
+import SideBarMenu from './side-bar-menus/side-bar-menus';
+
+class App extends React.Component {
+    render () {
+
+        var items = []
+        var sideBarMenu = new SideBarMenu();
+        if(this.props.user.userDetails) {
+            if(this.props.user.userDetails.empType) {
+                if(this.props.user.userDetails.empType === 'admin') {
+                    items = sideBarMenu.ownerMenu();
+                } else {
+                    items = sideBarMenu.employeeMenu();
+                }
+            } else {
+                items = sideBarMenu.customerMenu();
+            }
+        } else {
+            items = sideBarMenu.guestMenu();
+        }
+        return (
+            <React.Fragment>
+                <Modal />
+                <Container className="container">
+                    <Row className="custom-row">
+                        <NavigationBar />
+                    </Row>
+                    <Row className="custom-row row-full-height">
+                        <Col className="custom-col" xs="4" md="3">
+                            <SideBar items={items} />
+                        </Col>
+                        <Col xs="14" md="9">
+                            <Switch>
+                                {router.map((route, i) => (
+                                        <SubRouter key={i} {...route} />
+                                    )
+                                )}
+                                <Redirect to="/home" />
+                            </Switch>
+                        </Col>
+                    </Row>
+                    
+                </Container>
+            </React.Fragment>
+        );
+    }
 }
 
-export default App;
+const mapStateToProps = state => ({
+    user : state.user,
+    modal : state.modal
+});
+
+const mapDispatchToProps = () => {
+    return {
+        
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps()
+)(App);

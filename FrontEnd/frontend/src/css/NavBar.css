@@ -1,0 +1,26 @@
+a {
+    color : white;
+}
+
+a:hover {
+    color : rgb(180, 179, 179);
+}
+
+.dropdown-menu {
+    right : 0;
+    left : auto;
+}
+
+.dropdown-item {
+    padding-left : 0.25rem;
+    padding-right : 0.25rem;
+}
+
+.item-padding {
+    padding-left : 1rem;
+}
+
+.navigationBar {
+    width : 100vw;
+}
+

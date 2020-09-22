@@ -1,0 +1,25 @@
+h2 {
+    text-align: center;
+}
+img {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    width: 250px;
+    margin-left: 25px;
+
+}
+#centre{
+    width: 75%;
+
+    margin: auto;
+}
+
+#borderTopAndBottom{
+    border: 1px solid black;
+    border: 1px solid black;
+    text-align: center;
+    padding-top: 15px;
+    margin-bottom: 10px;
+    box-shadow: 5px 8px #888888;
+}
