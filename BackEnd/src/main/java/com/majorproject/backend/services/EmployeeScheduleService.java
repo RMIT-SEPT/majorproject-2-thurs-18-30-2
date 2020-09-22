@@ -34,6 +34,11 @@ public class EmployeeScheduleService {
     // String to Time format
     private SimpleDateFormat formatterTime = new SimpleDateFormat("HH:mm");
 
+    /**
+     * Creates the employee schedule
+     * @param request A map that contains the request details
+     * @return The employee schedule
+     */
     public EmployeeSchedule saveEmployeeSchedule(Map<String, String> request) {
         EmployeeSchedule employeeSchedule = new EmployeeSchedule();
         EmployeeSchedule employeeScheduleNew = null;
@@ -60,9 +65,11 @@ public class EmployeeScheduleService {
     }
 
     /**
-     *Find any duplicated employee schedule in the database
+     * Find any duplicated employee schedule in the database
      * If there are duplicates, return true
      * If there are no duplicates, return false
+     * @param employeeSchedule The employee's schedule
+     * @return A boolean that determine if there is any duplicates
      */
     public boolean findAnyDuplicates(EmployeeSchedule employeeSchedule) {
         boolean found = false;
@@ -82,31 +89,11 @@ public class EmployeeScheduleService {
         return found;
     }
 
-////    public EmployeeSchedule editEmployeeSchedule(EmployeeSchedule employeeSchedule) {
-//    public EmployeeSchedule editEmployeeSchedule(String id, Map <String, String> request) {
-//        Long scheduleId = Long.parseLong(id);
-//        EmployeeSchedule employeeScheduleEdit = getEmployeeScheduleById(scheduleId);
-//
-//        try {
-//            employeeScheduleEdit.setEmployee(employeeRepository.findByEmployeeId(Long.parseLong(request.get("employeeId"))));
-//            employeeScheduleEdit.setBService(bServiceRepository.findByBServiceId(Long.parseLong(request.get("bServiceId"))));
-//            employeeScheduleEdit.setDate(formatterDate.parse(request.get("date")));
-//            employeeScheduleEdit.setStartTime(formatterTime.parse(request.get("startTime")));
-//            employeeScheduleEdit.setEndTime(formatterTime.parse(request.get("endTime")));
-//        } catch(Exception e) {
-//            throw new ResponseException(HttpStatus.BAD_REQUEST, "Scheduling error");
-//        }
-//
-//        boolean foundDuplicates = findAnyDuplicates(employeeScheduleEdit);
-//        if(foundDuplicates) { // there is a duplicate
-//            throw new ResponseException(HttpStatus.BAD_REQUEST, "Duplicated schedule");
-//        } else { // No duplicate
-//            employeeScheduleEdit = employeeScheduleRepository.save(employeeScheduleEdit);
-//        }
-//
-//        return employeeScheduleEdit;
-//    }
-
+    /**
+     * Returns the employee schedule based on the schedule's Id
+     * @param scheduleId The schedule's Id
+     * @return The employee schedule
+     */
     public EmployeeSchedule getEmployeeScheduleById(Long scheduleId) {
         EmployeeSchedule employeeSchedule = employeeScheduleRepository.getEmployeeScheduleById(scheduleId);
         if(employeeSchedule == null) {
@@ -116,6 +103,13 @@ public class EmployeeScheduleService {
         return employeeSchedule;
     }
 
+    /**
+     * Returns a custom list(see form class) that contains the employee's availability based on the employee's id
+     * and week if byWeek = true
+     * @param employeeId The employee's Id
+     * @param byWeek A boolean that checks if the list should only contain dates from today till a week
+     * @return A custom list that contains the employee's availability
+     */
     public List<EmployeeAvailabilityForm> getEmployeeAvailability(Long employeeId, boolean byWeek) {
         List<EmployeeSchedule> employeeScheduleList;
         if(byWeek) { // Get only today till next week
@@ -147,6 +141,11 @@ public class EmployeeScheduleService {
         return employeeAvailability;
     }
 
+    /**
+     * Returns a custom list(see form class) based on the service, date and time specified by the user
+     * @param request A map that contains the request details
+     * @return The cusom list that contains the employee's first name, last name and service
+     */
     public List<Object> getServicesWithinParameters(Map<String, String> request) {
         boolean findAllEmployees = false;
         List<EmployeeSchedule> employeeScheduleList;
@@ -188,4 +187,31 @@ public class EmployeeScheduleService {
 
         return employeeScheduleTimeList;
     }
+
+    /*** Future code ***/
+
+////    public EmployeeSchedule editEmployeeSchedule(EmployeeSchedule employeeSchedule) {
+//    public EmployeeSchedule editEmployeeSchedule(String id, Map <String, String> request) {
+//        Long scheduleId = Long.parseLong(id);
+//        EmployeeSchedule employeeScheduleEdit = getEmployeeScheduleById(scheduleId);
+//
+//        try {
+//            employeeScheduleEdit.setEmployee(employeeRepository.findByEmployeeId(Long.parseLong(request.get("employeeId"))));
+//            employeeScheduleEdit.setBService(bServiceRepository.findByBServiceId(Long.parseLong(request.get("bServiceId"))));
+//            employeeScheduleEdit.setDate(formatterDate.parse(request.get("date")));
+//            employeeScheduleEdit.setStartTime(formatterTime.parse(request.get("startTime")));
+//            employeeScheduleEdit.setEndTime(formatterTime.parse(request.get("endTime")));
+//        } catch(Exception e) {
+//            throw new ResponseException(HttpStatus.BAD_REQUEST, "Scheduling error");
+//        }
+//
+//        boolean foundDuplicates = findAnyDuplicates(employeeScheduleEdit);
+//        if(foundDuplicates) { // there is a duplicate
+//            throw new ResponseException(HttpStatus.BAD_REQUEST, "Duplicated schedule");
+//        } else { // No duplicate
+//            employeeScheduleEdit = employeeScheduleRepository.save(employeeScheduleEdit);
+//        }
+//
+//        return employeeScheduleEdit;
+//    }
 }

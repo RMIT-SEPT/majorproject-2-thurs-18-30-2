@@ -43,6 +43,13 @@ public class EmployeeController {
         return response;
     }
 
+    /**
+     * Edits the details of an employee
+     * @param username The employee's username
+     * @param employee The employee
+     * @param result BindingResult
+     * @return A response entity of the employee with the updated details
+     */
     @PostMapping("/editEmployee/{username}")
     public ResponseEntity<?> editEmployee(@Valid @PathVariable String username, @RequestBody Employee employee, BindingResult result) {
         ResponseEntity<?> response;
@@ -69,12 +76,22 @@ public class EmployeeController {
         return response;
     }
 
+    /**
+     * Finds the employee by the username
+     * @param username The employee's username
+     * @return A response entity of the employee based on the username
+     */
     @GetMapping("/getEmployeeByUsername/{username}")
     public ResponseEntity<?> getEmployeeByUsername(@Valid @PathVariable String username) {
         Employee employee = employeeService.getEmployeeByUsername(username);
         return new ResponseEntity<Employee>(employee, HttpStatus.OK);
     }
 
+    /**
+     * Finds the employee by the id
+     * @param id The employee's id
+     * @return A response entity of the employee based on the id
+     */
     @GetMapping("/getEmployeeById/{id}")
     public ResponseEntity<?> getEmployeeById(@Valid @PathVariable String id) {
         long employeeId = Long.parseLong(id);
@@ -82,6 +99,10 @@ public class EmployeeController {
         return new ResponseEntity<Employee>(employee, HttpStatus.OK);
     }
 
+    /**
+     * Gets the list of all employees in the database
+     * @return A response entity of a list of employees in the database
+     */
     @GetMapping("/getAllEmployees")
     public ResponseEntity<?> getAllEmployees() {
         List<Employee> employeeList = employeeService.getAllEmployees();

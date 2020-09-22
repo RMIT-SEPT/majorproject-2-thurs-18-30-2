@@ -19,6 +19,11 @@ public class EmployeeService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    /**
+     * Creates an employee and saves it to the database
+     * @param employee The employee
+     * @return The employee
+     */
     public Employee saveOrUpdateEmployee(Employee employee) {
         Employee employeeNew = null;
         String username = employee.getUsername();
@@ -36,6 +41,11 @@ public class EmployeeService {
         return employeeNew;
     }
 
+    /**
+     * Returns the employee based on the username
+     * @param username The username specified by the user
+     * @return The employee if the employee with that username exists
+     */
     public Employee getEmployeeByUsername(String username) {
         Employee employee = employeeRepository.findByUsername(username);
         if(employee == null) {
@@ -45,6 +55,11 @@ public class EmployeeService {
         return employee;
     }
 
+    /**
+     * Returns the employee based on the employeeId
+     * @param employeeId The employeeId specified by the user
+     * @return The employee if the employee with that employeeId exists
+     */
     public Employee getEmployeeById(long employeeId) {
         Employee employee = employeeRepository.findByEmployeeId(employeeId);
         if(employee == null) {
@@ -54,6 +69,10 @@ public class EmployeeService {
         return employee;
     }
 
+    /**
+     * Returns a list that contains all employees
+     * @return A list that contains all employees
+     */
     public List<Employee> getAllEmployees() {
         List<Employee> employeeList = employeeRepository.findAllEmployees();
         if(employeeList.size() == 0 || employeeList == null) {
@@ -62,41 +81,4 @@ public class EmployeeService {
 
         return employeeList;
     }
-
-//    /* Logic */
-//    public Employee loginEmployee(LoginForm loginForm) {
-//        boolean login_success = false;
-//        String email = loginForm.getEmail();
-//        Employee employee = getEmployeeByEmail(email);
-//
-//        if(employee != null) {
-//            String password = loginForm.getPassword();
-//            boolean is_verified = verifyEmployeeByPassword(employee, password);
-//
-//            if(is_verified) {
-//                login_success = true;
-//            } else {
-//                employee = null;
-//            }
-//        }
-//
-//        return employee;
-//    }
-
-//    public Employee getEmployeeByEmail(String email) {
-//        return employeeRepository.findByEmail(email);
-//    }
-//
-//    public Employee getEmployeeByUsername(String username) {
-//        return employeeRepository.findByUsername(username);
-//    }
-//
-//    public boolean verifyEmployeeByPassword(Employee employee, String password) {
-//        boolean is_verified = false;
-//        if(employee.getPassword().equals(password)) {
-//            is_verified = true;
-//        }
-//
-//        return is_verified;
-//    }
 }

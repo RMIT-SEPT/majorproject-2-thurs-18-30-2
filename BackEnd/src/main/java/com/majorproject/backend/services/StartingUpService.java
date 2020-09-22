@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * This class populates the database when the application starts running
+ */
 @Service
 public class StartingUpService {
     @Autowired

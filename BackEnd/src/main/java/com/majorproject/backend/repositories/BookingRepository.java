@@ -13,21 +13,38 @@ public interface BookingRepository extends CrudRepository<Booking, Long> {
     @Override
     Iterable<Booking> findAllById(Iterable<Long> iterable);
 
+    /**
+     * This query returns a list that contains all rows in booking database
+     * @return A list based on ^
+     */
+    @Query(value = "SELECT b.* FROM Booking b", nativeQuery = true)
+    List<Booking> getAllBookings();
+
+    /**
+     * This query returns a list of bookings based on the employee's id and date
+     * @param employeeId The employee's id
+     * @param date The date
+     * @return A list based on ^
+     */
     @Query(value = "SELECT * FROM Booking b WHERE b.employee_id = ?1 AND b.date = ?2", nativeQuery = true)
-    List<Booking> getEmployeeBookingsByDate(Long id, Date date);
+    List<Booking> getEmployeeBookingsByDate(long employeeId, Date date);
 
-//    @Query(value = "SELECT TOP 10 * FROM CUSTOMER c WHERE c.username = ?1 ORDER BY desc", nativeQuery = true)
-//    List<Booking> refreshCustomerDashboard(String username);
-//
-//    @Query(value = "SELECT TOP 10 * FROM EMPLOYEE e WHERE c.username = ?1 ORDER BY desc", nativeQuery = true)
-//    List<Booking> refreshEmployeeDashboard(String username);
-
-    @Query(value = "SELECT * FROM Booking b WHERE b.customer_id = ?1 ORDER BY b.created_at", nativeQuery = true)
-    List<Booking> getAllCustomerBookings(long id);
-
+    /**
+     * This query returns a list of bookings based on the employee's id
+     * @param employeeId The employee's id
+     * @return A list based on ^
+     */
     @Query(value = "SELECT b.* FROM Booking b, Employee_Schedule es, Employee e " +
             "WHERE b.employee_schedule_id = es.employee_schedule_id AND " +
             "es.employee_id = e.employee_id AND " +
             "e.employee_id = ?1 ORDER BY b.created_at", nativeQuery = true)
-    List<Booking> getAllEmployeeBookings(long id);
+    List<Booking> getAllEmployeeBookings(long employeeId);
+
+    /**
+     * This query returns a list of bookings based on the customer's id
+     * @param customerId The customer's id
+     * @return A list based on ^
+     */
+    @Query(value = "SELECT * FROM Booking b WHERE b.customer_id = ?1 ORDER BY b.created_at", nativeQuery = true)
+    List<Booking> getAllCustomerBookings(long customerId);
 }

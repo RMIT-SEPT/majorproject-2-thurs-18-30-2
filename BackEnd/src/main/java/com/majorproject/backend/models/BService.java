@@ -4,6 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
+/**
+ * BService class
+ */
 @Entity
 @Table(name="BSERVICE")
 public class BService {

@@ -4,6 +4,10 @@ import com.majorproject.backend.models.EmployeeSchedule;
 
 import java.util.Date;
 
+/**
+ * This is the form(class) that is used to hold the list of employee schedules
+ * for getEmployeeAvailability() method in EmployeeScheduleService class
+ */
 public class EmployeeAvailabilityForm {
 
     private Long employeeScheduleId;

@@ -2,6 +2,9 @@ package com.majorproject.backend.models;
 
 import javax.persistence.*;
 
+/**
+ * Customer
+ */
 @Entity
 public class Customer extends User {
     @Id

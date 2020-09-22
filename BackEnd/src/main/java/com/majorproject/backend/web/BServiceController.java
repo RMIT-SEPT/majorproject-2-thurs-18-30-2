@@ -22,6 +22,12 @@ public class BServiceController {
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
+    /**
+     * Creates the bService
+     * @param bService The bService
+     * @param result BindingResult
+     * @return A response entity of the registered bService
+     */
     @PostMapping("/create")
     public ResponseEntity<?> createBService(@Valid @RequestBody BService bService, BindingResult result) {
         ResponseEntity<?> response;

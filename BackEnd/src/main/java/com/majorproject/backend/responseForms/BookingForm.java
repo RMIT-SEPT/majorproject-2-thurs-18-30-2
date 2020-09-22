@@ -1,5 +1,8 @@
 package com.majorproject.backend.responseForms;
 
+/**
+ * This is the form(class) when for bookings
+ */
 public class BookingForm {
     private String employeeEmail;
     private String customerEmail;

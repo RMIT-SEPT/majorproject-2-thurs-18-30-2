@@ -20,7 +20,11 @@ public class BookingService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-
+    /**
+     * Creates the booking
+     * @param booking The booking
+     * @return The booking
+     */
     public Booking saveOrUpdateBooking(Booking booking) {
         try {
             Customer customer = customerRepository.findById(booking.getCustomer().getId()).get();
@@ -36,11 +40,21 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
-//    public List<Booking> displayDashboard(String id, String userType) {
-//        List<Booking> bookingList = null;
-//        return bookingList;
-//    }
+    public List<Booking> getAllBookings() {
+        List<Booking> bookingList = bookingRepository.getAllBookings();
 
+        if(bookingList.size() == 0) {
+            throw new ResponseException(HttpStatus.NO_CONTENT, "There are no bookings.");
+        }
+
+        return bookingList;
+    }
+
+    /**
+     * Returns a list of bookings based on the user's username
+     * @param username The user's username
+     * @return A list of bookings
+     */
     public List<Booking> getBookingsByUser(String username) {
         List<Booking> bookingList = null;
         Employee employee = employeeRepository.findByUsername(username);

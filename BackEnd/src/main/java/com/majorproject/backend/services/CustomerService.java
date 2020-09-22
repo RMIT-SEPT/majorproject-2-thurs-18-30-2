@@ -15,6 +15,11 @@ public class CustomerService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    /**
+     * Creates a customer and adds it to the database
+     * @param customer The customer
+     * @return The customer
+     */
     public Customer saveOrUpdateCustomer(Customer customer) {
         Customer customerNew = null;
         String username = customer.getUsername();
@@ -32,42 +37,12 @@ public class CustomerService {
         return customerNew;
     }
 
-    public Customer getCustomerByUsername(String username) { return customerRepository.findByUsername(username); }
-
-//    /* Logic */
-//    public Customer loginCustomer(LoginForm loginForm) {
-//        boolean login_success = false;
-//        String email = loginForm.getEmail();
-//        Customer customer = getCustomerByEmail(email);
-//
-//        if(customer != null) {
-//            String password = loginForm.getPassword();
-//            boolean is_verified = verifyCustomerByPassword(customer, password);
-//
-//            if(is_verified) {
-//                login_success = true;
-//            } else {
-//                customer = null;
-//            }
-//        }
-//
-//        return customer;
-//    }
-
-//    public Customer getCustomerByEmail(String email) {
-//        return customerRepository.findByEmail(email);
-//    }
-//
-//    public Customer getCustomerByUsername(String username) {
-//        return customerRepository.findByUsername(username);
-//    }
-//
-//    public boolean verifyCustomerByPassword(Customer customer, String password) {
-//        boolean is_verified = false;
-//        if(customer.getPassword().equals(password)) {
-//            is_verified = true;
-//        }
-//
-//        return is_verified;
-//    }
+    /**
+     * Returns the customer based on the username
+     * @param username The username specified by the user
+     * @return The customer if the customer with that username exists
+     */
+    public Customer getCustomerByUsername(String username) {
+        return customerRepository.findByUsername(username);
+    }
 }
