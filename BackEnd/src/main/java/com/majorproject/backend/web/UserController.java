@@ -15,12 +15,22 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * Checks if the username exists.
+     * @param username The username of the user
+     * @return A response entity if the username exists
+     */
     @GetMapping("/usernameExists/{username}")
     public ResponseEntity<String> userNameExists(@PathVariable String username) {
         String exists = userService.userNameExists(username) ? "true" : "false";
         return new ResponseEntity<String>(exists, HttpStatus.OK);
     }
 
+    /**
+     * User logins and checks if the credentials are correct
+     * @param loginForm The login details entered by the user
+     * @return A response entity when the login is successful
+     */
     @PostMapping("/login")
     public ResponseEntity<?> loginVerification(@RequestBody LoginForm loginForm) {
         User user = userService.loginUser(loginForm);

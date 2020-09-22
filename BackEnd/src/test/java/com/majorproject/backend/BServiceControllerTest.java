@@ -32,7 +32,7 @@ public class BServiceControllerTest {
 
     @Before
     public void serviceObject() {
-        BService = new BService();
+        BService = new BService("name", "description");
     }
 
     @Test

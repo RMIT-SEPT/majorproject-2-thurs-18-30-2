@@ -11,12 +11,14 @@ public class EmployeeSchedule {
     @Column(name = "employee_schedule_id")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+//    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "employee_id")
     @NotNull(message = "Employee Id required")
     private Employee employee;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+//    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "service_id")
     @NotNull(message = "Service Id required")
     private BService bService;
@@ -36,6 +38,8 @@ public class EmployeeSchedule {
 //    @Temporal(TemporalType.DATE)
     @NotNull(message = "End time required")
     private Date endTime;
+    @Column(name = "availability")
+    private boolean availability;
 
     public Long getId() {
         return id;
@@ -83,5 +87,13 @@ public class EmployeeSchedule {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public boolean getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(boolean availability) {
+        this.availability = availability;
     }
 }

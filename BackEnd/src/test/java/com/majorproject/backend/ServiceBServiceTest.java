@@ -29,7 +29,7 @@ public class ServiceBServiceTest {
 
     @Before
     public void serviceObject() {
-        bService = new BService();
+        bService = new BService("name", "description");
     }
 
     @Test
@@ -42,7 +42,7 @@ public class ServiceBServiceTest {
 
     @Test
     public void serviceCreate_Fail() throws Exception {
-        BService bService2 = new BService();
+        BService bService2 = new BService("NO", "YIKES");
 
         given(bServiceService.saveOrUpdateBService(bService)).willReturn(bService);
         given(bServiceService.saveOrUpdateBService(bService)).willReturn(bService);

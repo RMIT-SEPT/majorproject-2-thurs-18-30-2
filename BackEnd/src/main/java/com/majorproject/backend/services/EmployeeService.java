@@ -5,6 +5,8 @@ import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.repositories.CustomerRepository;
 import com.majorproject.backend.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,6 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private CustomerRepository customerRepository;
-    
 
     public Employee saveOrUpdateEmployee(Employee employee) {
         Employee employeeNew = null;

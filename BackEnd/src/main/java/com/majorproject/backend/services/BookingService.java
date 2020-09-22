@@ -28,6 +28,8 @@ public class BookingService {
 
             EmployeeSchedule employeeSchedule = employeeScehduleRepository.findById(booking.getEmployeeSchedule().getId()).get();
             booking.setEmployeeSchedule(employeeSchedule);
+            employeeSchedule.setAvailability(false);
+
         } catch (Exception e) {
             throw new ResponseException(HttpStatus.NOT_ACCEPTABLE, "Customer, employee or service does not exist");
         }

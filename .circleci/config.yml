@@ -4,7 +4,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/majorproject-private/BackEnd
+    working_directory: ~/majorproject-2-thurs-18-30-2/BackEnd
 
     docker:
       # specify the version you desire here
@@ -18,13 +18,13 @@ jobs:
 
     steps:
       - checkout:
-          path: ~/majorproject-private
+          path: ~/majorproject-2-thurs-18-30-2
 
 
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - backend-{{ checksum "pom.xml" }}W
+            - backend-{{ checksum "pom.xml" }}
 
       - run: mvn dependency:go-offline
 
@@ -39,4 +39,19 @@ jobs:
           path: target/surefire-reports
 
       - store_artifacts:
-          path: target/backend-0.0.1-SNAPSHOT.jar
+          path: target/backend-0.0.1.jar
+
+#   FrontEnd
+#  build_npm:
+#    working_directory: ~/majorproject-2-thurs-18-30-2/FrontEnd/frontend
+#
+#    docker:
+#      - image: circleci/node:7.10
+#
+#
+#    steps:
+#      - checkout:
+#          path: ~/majorproject-2-thurs-18-30-2
+#
+#      - run: npm install
+#      - run: npm test

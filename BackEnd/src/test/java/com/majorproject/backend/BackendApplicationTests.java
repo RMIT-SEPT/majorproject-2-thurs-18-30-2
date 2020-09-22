@@ -14,7 +14,7 @@ class BackendApplicationTests {
     @MockBean
     private EmployeeScheduleRepository employeeScheduleRepository;
     @MockBean
-    private ServiceRepository serviceRepository;
+    private BServiceRepository bServiceRepository;
     @MockBean
     private CustomerRepository customerRepository;
     @MockBean

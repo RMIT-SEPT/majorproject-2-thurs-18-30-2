@@ -16,6 +16,11 @@ public class UserService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    /**
+     * Checks if the login credentials are correct
+     * @param loginForm The login details entered by the user
+     * @return The user object if credentials are correct, else throw ResponseException
+     */
     public User loginUser(LoginForm loginForm) {
         User user = null;
         String username = loginForm.getUsername();
@@ -30,6 +35,13 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Checks if the username exists
+     * @param username The username of the user
+     * @return A boolean that states if the username exists
+     * If it exists, return true
+     * else return false
+     */
     public boolean userNameExists(String username) {
         boolean exists = true;
         if (employeeRepository.findByUsername(username) == null &&
