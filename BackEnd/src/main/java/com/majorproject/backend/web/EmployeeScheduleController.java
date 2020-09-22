@@ -46,41 +46,51 @@ public class EmployeeScheduleController {
 //        return new ResponseEntity<EmployeeSchedule>(employeeScheduleNew, HttpStatus.CREATED);
     }
 
-    @PostMapping("/editSchedule/{scheduleId}")
-    public ResponseEntity<?> editEmployeeSchedule(@Valid @PathVariable String id, @RequestBody EmployeeSchedule employeeSchedule, BindingResult result) {
-        ResponseEntity<?> response;
-        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
-        Long scheduleId = Long.parseLong(id);
-
-        if(errorMap != null) {
-            response = errorMap;
-        } else {
-            EmployeeSchedule employeeScheduleEdit = employeeScheduleService.getEmployeeScheduleById(scheduleId);
-
-            // Setting employee schedule details
-            employeeScheduleEdit.setEmployee(employeeSchedule.getEmployee());
-            employeeScheduleEdit.setBService(employeeSchedule.getBService());
-            employeeScheduleEdit.setDate(employeeSchedule.getDate());
-            employeeScheduleEdit.setStartTime(employeeSchedule.getStartTime());
-            employeeScheduleEdit.setEndTime(employeeSchedule.getEndTime());
-
-            employeeScheduleService.updateEmployeeSchedule(employeeSchedule);
-            response = new ResponseEntity<EmployeeSchedule>(employeeScheduleEdit, HttpStatus.OK);
-        }
-
-        return response;
-    }
+//    @PostMapping("/editSchedule/{id}")
+////    public ResponseEntity<?> editEmployeeSchedule(@Valid @PathVariable String id, @RequestBody EmployeeSchedule employeeSchedule, BindingResult result) {
+//    public ResponseEntity<?> editEmployeeSchedule(@Valid @PathVariable String id,
+//                                                  @RequestBody Map<String, String> request, BindingResult result) {
+//        ResponseEntity<?> response;
+//
+//        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
+//        Long scheduleId = Long.parseLong(id);
+//
+//        if(errorMap != null) {
+//            response = errorMap;
+//        } else {
+////            EmployeeSchedule employeeScheduleEdit = employeeScheduleService.editEmployeeSchedule(id, request);
+//            EmployeeSchedule employeeScheduleEdit = employeeScheduleService.saveEmployeeSchedule(request);
+//            response = new ResponseEntity<EmployeeSchedule>(employeeScheduleEdit, HttpStatus.OK);
+//        }
+//
+//        return response;
+//    }
 
 //    @PostMapping("/deleteSchedule/{scheduleId}")
 //    public ResponseEntity<?> deleteEmployeeSchedule(@Valid @RequestBody EmployeeSchedule employeeSchedule) {
 //
 //    }
 
+    /**
+     * Returns the availability of a specified employee
+     * @param employee
+     * @return a list of date and time that the employee is available
+     */
     @GetMapping("/viewEmployeeAvailability")
     public ResponseEntity<?> viewEmployeeAvailability(@Valid @RequestBody Employee employee) {
         Long id = employee.getId();
-        List<EmployeeAvailabilityForm> employeeAvailabilityList = employeeScheduleService.getEmployeeAvailability(id);
+        boolean byWeek = false;
+        List<EmployeeAvailabilityForm> employeeAvailabilityList = employeeScheduleService.getEmployeeAvailability(id, byWeek);
         
+        return new ResponseEntity<List<EmployeeAvailabilityForm>>(employeeAvailabilityList, HttpStatus.OK);
+    }
+
+    @GetMapping("/viewEmployeeAvailabilityWeek")
+    public ResponseEntity<?> viewEmployeeAvailabilityWeek(@Valid @RequestBody Employee employee) {
+        Long id = employee.getId();
+        boolean byWeek = true;
+        List<EmployeeAvailabilityForm> employeeAvailabilityList = employeeScheduleService.getEmployeeAvailability(id, byWeek);
+
         return new ResponseEntity<List<EmployeeAvailabilityForm>>(employeeAvailabilityList, HttpStatus.OK);
     }
 

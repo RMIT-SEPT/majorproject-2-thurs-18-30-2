@@ -36,6 +36,8 @@ public class EmployeeSchedule {
 //    @Temporal(TemporalType.DATE)
     @NotNull(message = "End time required")
     private Date endTime;
+    @Column(name = "availability")
+    private boolean availability;
 
     public Long getId() {
         return id;
@@ -83,5 +85,13 @@ public class EmployeeSchedule {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public boolean getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(boolean availability) {
+        this.availability = availability;
     }
 }

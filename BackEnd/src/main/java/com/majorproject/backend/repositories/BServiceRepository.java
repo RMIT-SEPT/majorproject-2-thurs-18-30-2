@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.majorproject.backend.models.BService;
 
 @Repository
-public interface BServicesRepository extends CrudRepository<BService, Long> {
+public interface BServiceRepository extends CrudRepository<BService, Long> {
 
     @Override
     Iterable<BService> findAllById(Iterable<Long> iterable);

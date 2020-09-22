@@ -18,19 +18,31 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
     List<EmployeeSchedule> getAllEmployeeSchedules();
 
     @Query(value = "SELECT es.* FROM Employee_Schedule es WHERE es.employee_schedule_id = ?1", nativeQuery = true)
-    EmployeeSchedule getEmployeeScheduleById(long id);
+    EmployeeSchedule getEmployeeScheduleById(Long scheduleId);
 
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es, Employee e " +
             "WHERE es.employee_id = e.employee_id AND " +
+            "es.availability = true AND " +
             "e.employee_id = ?1 " +
             "ORDER BY es.date", nativeQuery = true)
-    List<EmployeeSchedule> getEmployeeAvailabilityById(Long id); // should check by username since its unique
+    List<EmployeeSchedule> getEmployeeAvailabilityById(Long employeeId);
+
+    @Query(value = "SELECT es.* " +
+            "FROM Employee_Schedule es, Employee e " +
+            "WHERE es.employee_id = e.employee_id AND " +
+            "es.availability = true AND " +
+            "e.employee_id = ?1 AND " +
+            "es.date >= ?2 AND " +
+            "es.date <= ?3 " +
+            "ORDER BY es.date", nativeQuery = true)
+    List<EmployeeSchedule> getEmployeeAvailabilityByIdInWeek(Long employeeId, Date now, Date nextWeekDate);
 
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es, Employee e, BService bs " +
             "WHERE es.employee_id = e.employee_id AND " +
             "es.service_id = bs.bservice_id AND " +
+            "es.availability = true AND " +
             "bs.bservice_id = ?1 AND " +
             "es.date = ?2 AND " +
             "es.start_time >= ?3 AND " +
@@ -41,6 +53,7 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
             "FROM Employee_Schedule es, Employee e, BService bs " +
             "WHERE es.employee_id = e.employee_id AND " +
             "es.service_id = bs.bservice_id AND " +
+            "es.availability = true AND " +
             "bs.bservice_id = ?1 AND " +
             "e.employee_id = ?2 AND " +
             "es.date = ?3 AND " +
