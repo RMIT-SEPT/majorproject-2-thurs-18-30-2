@@ -12,15 +12,18 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
     @Override
     Iterable<Employee> findAllById(Iterable<Long> iterable);
 
-    @Override
-    List<Employee> findAll();
+    @Query(value = "SELECT e.* FROM Employee e", nativeQuery = true)
+    List<Employee> findAllEmployees();
 
-    @Query(value = "SELECT * FROM EMPLOYEE e WHERE e.email = ?1", nativeQuery = true)
+    @Query(value = "SELECT e.* FROM Employee e WHERE e.email = ?1", nativeQuery = true)
     Employee findByEmail(String email);
 
-    @Query(value = "SELECT * FROM EMPLOYEE e WHERE e.username = ?1 AND e.password = ?2", nativeQuery = true)
+    @Query(value = "SELECT e.* FROM Employee e WHERE e.username = ?1 AND e.password = ?2", nativeQuery = true)
     Employee findByUsernameAndPassword(String username, String password);
 
-    @Query(value = "SELECT * FROM EMPLOYEE e WHERE e.username = ?1", nativeQuery = true)
+    @Query(value = "SELECT e.* FROM Employee e WHERE e.username = ?1", nativeQuery = true)
     Employee findByUsername(String username);
+
+    @Query(value = "SELECT e.* FROM Employee e WHERE e.employee_id = ?1", nativeQuery = true)
+    Employee findByEmployeeId(long employeeId);
 }

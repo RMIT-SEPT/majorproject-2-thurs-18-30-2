@@ -5,20 +5,20 @@ import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Entity
-@Table(name="SERVICE")
-public class Services {
+@Table(name="BSERVICE")
+public class BService {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "service_id")
+    @Column(name = "bservice_id")
     private Long id;
 
-    @NotBlank(message = "Service name required")
+    @NotBlank(message = "B Service name required")
     private String name;
 
-    @NotBlank(message = "Service description required")
+    @NotBlank(message = "B Service description required")
     private String description;
 
-    public Services() {
+    public BService() {
 
     }
 

@@ -52,6 +52,7 @@ public class EmployeeController {
             employeeEdit.setlName(employee.getlName());
             employeeEdit.setEmail(employee.getEmail());
             employeeEdit.setAddress(employee.getAddress());
+            employeeEdit.setUsername(employee.getUsername());
             employeeEdit.setPassword(employee.getPassword());
             employeeEdit.setpNumber(employee.getpNumber());
 
@@ -62,12 +63,22 @@ public class EmployeeController {
         return response;
     }
 
-    /* Testing Purposes */
-    @GetMapping("/test/getAllEmployees")
-    public List<Employee> getAllEmployees() {
-        return employeeService.getAllEmployees();
+    @GetMapping("/getEmployeeByUsername/{username}")
+    public ResponseEntity<?> getEmployeeByUsername(@Valid @PathVariable String username) {
+        Employee employee = employeeService.getEmployeeByUsername(username);
+        return new ResponseEntity<Employee>(employee, HttpStatus.OK);
     }
 
-    @GetMapping("/test/getEmployeeByUsername")
-    public Employee getEmployeeByUsername(String username) { return employeeService.getEmployeeByUsername(username); }
+    @GetMapping("/getEmployeeById/{id}")
+    public ResponseEntity<?> getEmployeeById(@Valid @PathVariable String id) {
+        long employeeId = Long.parseLong(id);
+        Employee employee = employeeService.getEmployeeById(employeeId);
+        return new ResponseEntity<Employee>(employee, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllEmployees")
+    public ResponseEntity<?> getAllEmployees() {
+        List<Employee> employeeList = employeeService.getAllEmployees();
+        return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
+    }
 }

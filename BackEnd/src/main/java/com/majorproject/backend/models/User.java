@@ -23,7 +23,7 @@ public abstract class User {
     @NotBlank(message = "email is required")
     private String email;
 
-    @Column(unique=true)
+    @Column(unique = true)
     @NotBlank(message = "username is required")
     private String username;
 

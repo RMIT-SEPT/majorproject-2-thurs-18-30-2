@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserService.class)
-public class UserServiceTest {
+public class UserBServiceTest {
     @Autowired
     private UserService userService;
 

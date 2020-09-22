@@ -1,9 +1,6 @@
 package com.majorproject.backend.models;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -22,7 +19,7 @@ public class EmployeeSchedule {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "service_id")
     @NotNull(message = "Service Id required")
-    private Services service;
+    private BService bService;
 
     @Basic
     @Temporal(TemporalType.DATE)
@@ -36,6 +33,7 @@ public class EmployeeSchedule {
 
     @Basic
     @Temporal(TemporalType.TIME)
+//    @Temporal(TemporalType.DATE)
     @NotNull(message = "End time required")
     private Date endTime;
 
@@ -55,12 +53,12 @@ public class EmployeeSchedule {
         this.employee = employee;
     }
 
-    public Services getService() {
-        return service;
+    public BService getBService() {
+        return bService;
     }
 
-    public void setService(Services service) {
-        this.service = service;
+    public void setBService(BService bService) {
+        this.bService = bService;
     }
 
     public Date getDate() {

@@ -3,7 +3,6 @@ package com.majorproject.backend;
 import com.majorproject.backend.models.Customer;
 import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.repositories.CustomerRepository;
-import com.majorproject.backend.repositories.EmployeeRepository;
 import com.majorproject.backend.services.CustomerService;
 import com.majorproject.backend.services.EmployeeService;
 import com.majorproject.backend.services.MapValidationErrorService;
@@ -33,42 +32,45 @@ import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(EmployeeService.class)
-public class EmployeeServiceTest {
+@WebMvcTest(CustomerService.class)
+public class CustomerBServiceTest {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private EmployeeService employeeService;
+    private CustomerService customerService;
     @MockBean
     private MapValidationErrorService mapValidationErrorService;
 
-    Employee employee;
+    Customer customer;
 
     @Before
     public void createCustomer(){
-        employee =  new Employee("John", "Apple", "jApple@mail.com",
+        customer =  new Customer("John", "Apple", "jApple@mail.com",
                 "usernameABC", "pw1234", "JohnAddress",
-                "0412345678", "employee");
+                "0412345678");
     }
 
     @Test
     public void customerCreate_Pass() throws Exception {
-        given(employeeService.saveOrUpdateEmployee(employee)).willReturn(employee);
+        given(customerService.saveOrUpdateCustomer(customer)).willReturn(customer);
 
-        Employee actualEmployee = employeeService.saveOrUpdateEmployee(employee);
-        Assert.assertEquals(actualEmployee, employee);
+        Customer actualCustomer = customerService.saveOrUpdateCustomer(customer);
+        Assert.assertEquals(actualCustomer, customer);
+
     }
 
     @Test
-    public void employeeCreate_Fail() throws Exception {
-        Employee employee2 =  new Employee("John", "Apple", "jApple@mail.com",
+    public void customerCreate_Fail() throws Exception {
+        Customer customer2 =  new Customer("John", "Apple", "jApple@mail.com",
                 "usernameABC", "pw1234", "JohnAddress",
-                "0412345678", "employee");
+                "0412345678");
 
-        given(employeeService.saveOrUpdateEmployee(employee)).willReturn(employee);
-        given(employeeService.saveOrUpdateEmployee(employee2)).willReturn(employee2);
+        given(customerService.saveOrUpdateCustomer(customer)).willReturn(customer);
+        given(customerService.saveOrUpdateCustomer(customer2)).willReturn(customer2);
 
-        Assert.assertNotEquals(employee2, employee);
+        //Customer actualCustomer = customerService.saveOrUpdateCustomer(customer2);
+        Assert.assertNotEquals(customer2, customer);
+
     }
 
 //    @Test

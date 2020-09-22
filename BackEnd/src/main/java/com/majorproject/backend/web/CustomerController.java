@@ -26,7 +26,7 @@ public class CustomerController {
         ResponseEntity<?> response;
 
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
-        if (errorMap != null) {
+        if(errorMap != null) {
             response = errorMap;
         } else {
             Customer customerNew = customerService.saveOrUpdateCustomer(customer);
@@ -51,6 +51,7 @@ public class CustomerController {
             customerEdit.setlName(customer.getlName());
             customerEdit.setEmail(customer.getEmail());
             customerEdit.setAddress(customer.getAddress());
+            customerEdit.setUsername(customer.getUsername());
             customerEdit.setPassword(customer.getPassword());
             customerEdit.setpNumber(customer.getpNumber());
 

@@ -1,8 +1,8 @@
 package com.majorproject.backend.web;
 
-import com.majorproject.backend.models.Services;
+import com.majorproject.backend.models.BService;
 import com.majorproject.backend.services.MapValidationErrorService;
-import com.majorproject.backend.services.ServiceService;
+import com.majorproject.backend.services.BServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,26 +12,26 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("api/service")
+@RequestMapping("api/bService")
 @CrossOrigin
-public class ServiceController {
+public class BServiceController {
 
     @Autowired
-    ServiceService serviceService;
+    BServiceService bServiceService;
 
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createService(@Valid @RequestBody Services service, BindingResult result) {
+    public ResponseEntity<?> createBService(@Valid @RequestBody BService bService, BindingResult result) {
         ResponseEntity<?> response;
 
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
         if (errorMap != null) {
             response = errorMap;
         } else {
-            Services serviceNew = serviceService.saveOrUpdateService(service);
-            response = new ResponseEntity<Services>(service, HttpStatus.CREATED);
+            BService bServiceNew = bServiceService.saveOrUpdateBService(bService);
+            response = new ResponseEntity<BService>(bService, HttpStatus.CREATED);
         }
 
         return response;

@@ -35,11 +35,31 @@ public class EmployeeService {
         return employeeNew;
     }
 
-    public Employee getEmployeeByUsername(String username) { return employeeRepository.findByUsername(username); }
+    public Employee getEmployeeByUsername(String username) {
+        Employee employee = employeeRepository.findByUsername(username);
+        if(employee == null) {
+            throw new ResponseException(HttpStatus.BAD_REQUEST, "Employee does not exist");
+        }
 
-    /* Testing purposes */
+        return employee;
+    }
+
+    public Employee getEmployeeById(long employeeId) {
+        Employee employee = employeeRepository.findByEmployeeId(employeeId);
+        if(employee == null) {
+            throw new ResponseException(HttpStatus.BAD_REQUEST, "Employee does not exist");
+        }
+
+        return employee;
+    }
+
     public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+        List<Employee> employeeList = employeeRepository.findAllEmployees();
+        if(employeeList.size() == 0 || employeeList == null) {
+            throw new ResponseException(HttpStatus.BAD_REQUEST, "No employees exist");
+        }
+
+        return employeeList;
     }
 
 //    /* Logic */
