@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
-import '../css/Booking.css';
+import '../css/Card.css';
 
 class EmployeeCard extends React.Component {
     constructor (props) {

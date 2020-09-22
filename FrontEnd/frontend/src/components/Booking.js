@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
-import '../css/Booking.css';
+import '../css/Card.css';
 
 class Booking extends React.Component {
     constructor (props) {
