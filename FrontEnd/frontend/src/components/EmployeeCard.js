@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
-import { Route, Redirect } from 'react-router-dom';
-import Profile from './Profile.js'
+import { Redirect } from 'react-router-dom';
 import '../css/Card.css';
 
 class EmployeeCard extends React.Component {
@@ -15,7 +14,22 @@ class EmployeeCard extends React.Component {
 
     employeeProfile() {
         console.log("link to employee profile");
-        return <Route path="/employees/:eId" component={Profile} />;
+
+        /* api.get(`/user/usernameExists/${this.state.value}`)
+            .then((response) => {
+                var exists = response.data;
+                if(!exists) {
+                    this.setState({
+                        valid : true
+                    });
+                } 
+            })
+            .catch((error) => {
+                console.log(error);
+            }); */
+        var url = "/employees/" + this.props.id;
+
+        return <Redirect path={url} />;
     }
 
     render () {
