@@ -4,6 +4,7 @@ import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";
 import Profile from '../components/Profile';
 import BookingsPage from '../components/BookingPage';
+import EmployeesPage from '../components/EmployeesPage';
 
 
 const router = [
@@ -53,6 +54,10 @@ const router = [
 {
     path : "/bookings",
     component : BookingsPage
+},
+{
+    path : "/employees",
+    component : EmployeesPage
 }
 ];
 
