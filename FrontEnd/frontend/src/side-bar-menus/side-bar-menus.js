@@ -1,43 +1,46 @@
 import { ContactSupportRounded, 
     InfoRounded,
-    AccountCircleRounded } from '@material-ui/icons';
+    AccountCircleRounded,
+    LibraryBooksRounded,
+    GroupRounded,
+    PersonAddRounded } from '@material-ui/icons';
 
 export default class SideBarMenu {
     employeeMenu() {
         var items = [
-            { 
-                name : 'profile', 
-                label : 'Profile',
-                path : '/profile',
-                icon : AccountCircleRounded
-            }
+            
         ];
+        items.push(...this.general());
         items.push(...this.guestMenu());
         return items;    
     }
 
     customerMenu() {
         var items = [
-            { 
-                name : 'profile', 
-                label : 'Profile',
-                path : '/profile',
-                icon : AccountCircleRounded
-            }
+            
         ];
+        items.push(...this.general());
         items.push(...this.guestMenu());
         return items;
     }
 
     ownerMenu() {
-        var items = [
+        var items = [];
+        items.push(...this.general());
+        items.push(...[
             { 
-                name : 'profile', 
-                label : 'Profile',
-                path : '/profile',
-                icon : AccountCircleRounded
+                name : 'employees', 
+                label : 'Employees',
+                path : '/employees',
+                icon : GroupRounded
+            },
+            {
+                name : 'employees', 
+                label : 'Add Employee',
+                path : '/add-employee',
+                icon : PersonAddRounded
             }
-        ];
+        ]);
         items.push(...this.guestMenu());
         return items;
     }
@@ -57,5 +60,22 @@ export default class SideBarMenu {
                 icon :  InfoRounded
             }
         ]
+    }
+
+    general() {
+        return [
+            { 
+                name : 'profile', 
+                label : 'Profile',
+                path : '/profile',
+                icon : AccountCircleRounded
+            },
+            {
+                name : 'bookings',
+                label : 'Bookings',
+                path : '/bookings',
+                icon :  LibraryBooksRounded
+            }
+        ];
     }
 }

@@ -31,6 +31,16 @@ export default class FormTemplates {
 
     }
 
+    employeeSignUp () {
+        var form = this.signUp();
+        form.redirect = "/home";
+        form.apiCall = "/employee/register";
+        form.modal.body = "Employee has been recruited";
+        form.header = "Employee Sign Up";
+
+        return form;
+    }
+
     signUp () {
         var form = {
             apiCall : "/customer/register",
@@ -82,10 +92,23 @@ export default class FormTemplates {
         return form;
     }
 
+    editEmployeeProfile () {
+        var form = {...this.editProfile()};
+        form.apiCall = "/employee/editEmployee";
+        form.redirect = "/employee";
+        form.header = "Edit Employee";
+        return form;
+    }
+
     editProfile () {
         var form = {
             apiCall : "/customer/editCustomer",
             redirect : "/profile",
+            prefill : true,
+            modal : {
+                title : "Edit Successfull",
+                body : "Good News, profile edited without an issue"
+            },
             submitText : "Save",
             header : "Edit Profile",
             components : [

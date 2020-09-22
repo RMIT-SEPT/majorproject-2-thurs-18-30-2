@@ -9,6 +9,18 @@ class BookingsPage extends React.Component {
         this.state = {
         };
     }
+
+    // async componentDidMount() {
+    //     try {
+    //         const response = await api.get('/employee/getAllEmployees');
+    //         await this.setState({
+    //             employees : response.data
+    //         });
+    //     } catch(error) {
+    //         console.log(error.response);
+    //     }
+    // }
+
     //A contact us page
     render () {
         
