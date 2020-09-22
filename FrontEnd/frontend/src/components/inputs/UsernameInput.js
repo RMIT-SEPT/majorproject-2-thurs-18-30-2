@@ -7,16 +7,16 @@ class UsernameInput extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            value : '',
+            value : props.val,
             valid : true,
             border : "1px solid lightgrey",
-            errMsg : ""
+            errMsg : "",
+            changed : false
         };
 
         this.handleChange = this.handleChange.bind(this);
+        console.log(props.val);
     }
-
-    
 
     handleChange (event) {
         this.setState({
@@ -33,6 +33,7 @@ class UsernameInput extends React.Component {
         }
 
         this.debounceFn = _.debounce(() => {
+            
             api.get(`/user/usernameExists/${this.state.value}`)
             .then((response) => {
                 var exists = response.data;
@@ -68,6 +69,7 @@ class UsernameInput extends React.Component {
     }
 
     render () {
+        
         return (
             <Form.Group as={Row}>
                 <Form.Label column sm={this.props.pos[0]}>
@@ -81,7 +83,10 @@ class UsernameInput extends React.Component {
                 </Col>
             </Form.Group>
         );
+        
     }
 }
 
 export default UsernameInput;
+
+

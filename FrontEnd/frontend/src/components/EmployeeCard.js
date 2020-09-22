@@ -1,17 +1,21 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
+import { Route, Redirect } from 'react-router-dom';
+import Profile from './Profile.js'
 import '../css/Card.css';
 
-class Booking extends React.Component {
+class EmployeeCard extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
+
         };
 
     }
 
-    moreDeatils() {
-        console.log("Link this to more details");
+    employeeProfile() {
+        console.log("link to employee profile");
+        return <Route path="/employees/:eId" component={Profile} />;
     }
 
     render () {
@@ -19,16 +23,15 @@ class Booking extends React.Component {
             <div id="card">
             <Card id="test">
                 <Card.Body>
-                    <Card.Title><p>{this.props.booking.service}</p></Card.Title>
+                    <Card.Title><p>{this.props.username}</p></Card.Title>
                     <Card.Subtitle>
-                        <p>{this.props.booking.date}</p>
+                        <p>{this.props.fName} {this.props.lName}</p>
                     </Card.Subtitle>
                     <Card.Text>
-                        <p>{this.props.booking.startTime}</p>
+                        <p>{this.props.email}</p>
                     </Card.Text>
                     <div id="button">
-                        <Button variant="primary" onClick={this.moreDeatils}>View Details</Button>
-                        
+                        <Button variant="primary" onClick={this.employeeProfile}>View Details</Button>
                     </div>
                     
                 </Card.Body>
@@ -39,4 +42,4 @@ class Booking extends React.Component {
     }
 }
 
-export default Booking;
+export default EmployeeCard;

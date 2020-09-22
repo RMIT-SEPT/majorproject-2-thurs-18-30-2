@@ -100,12 +100,20 @@ class FormTemplate extends React.Component {
                                     this.form.components.map(
                                         function(component) {
                                             var TagName = component.inputType;
+                                            var val = null;
+                                            if(this.props.user.userDetails) {
+                                                val = this.props.user.userDetails[component.input];
+                                            }
+                                            else {
+                                                val = '';
+                                            }
                                             return  (
                                                 <TagName 
                                                     key={component.inputName} 
                                                     ref={this.componentRefs[component.inputName]} 
                                                     naming={component.inputName} 
                                                     pos={[3,9]} 
+                                                    val={val}
                                                 />
                                                 
                                             );
@@ -130,7 +138,8 @@ class FormTemplate extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    modal :  state.modal
+    modal :  state.modal,
+    user : state.user
 });
 
 const mapDispatchToProps = () => {

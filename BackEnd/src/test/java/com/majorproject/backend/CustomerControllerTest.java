@@ -45,6 +45,7 @@ public class CustomerControllerTest {
 
     @Test
     public void customerCreate_Pass() throws Exception {
+
         //.isCreated(): 201 status (creating a new request)
         mvc.perform(post("/api/customer/register")
                 .contentType(MediaType.APPLICATION_JSON)

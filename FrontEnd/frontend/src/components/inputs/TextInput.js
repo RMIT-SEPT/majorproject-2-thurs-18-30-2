@@ -5,7 +5,8 @@ class TextInput extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            value : ''
+            value : props.val,
+            changed : false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -18,9 +19,8 @@ class TextInput extends React.Component {
     }
 
     render () {
+        
         return (
-
-            
             <Form.Group as={Row}>
                 <Form.Label column sm={this.props.pos[0]}>
                     {this.props.naming}

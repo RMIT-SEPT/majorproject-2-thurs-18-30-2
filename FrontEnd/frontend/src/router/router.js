@@ -4,6 +4,7 @@ import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";
 import Profile from '../components/Profile';
 import BookingsPage from '../components/BookingPage';
+import EmployeesPage from '../components/EmployeesPage';
 
 
 const router = [
@@ -45,8 +46,18 @@ const router = [
     component : Profile
 },
 {
+    path : "/edit",
+    component : FormTemplate,
+    style : "centered",
+    form : "editProfile"
+},
+{
     path : "/bookings",
     component : BookingsPage
+},
+{
+    path : "/employees",
+    component : EmployeesPage
 }
 ];
 

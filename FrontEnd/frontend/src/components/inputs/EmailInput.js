@@ -1,11 +1,11 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
-
 class EmailInput extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            value : ''
+            value : props.val,
+            changed : false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -18,6 +18,7 @@ class EmailInput extends React.Component {
     }
 
     render () {
+        
         return (
             <Form.Group as={Row}>
                     <Form.Label column sm={this.props.pos[0]}>
@@ -33,3 +34,17 @@ class EmailInput extends React.Component {
 }
 
 export default EmailInput;
+
+/* const mapStateToProps = state => ({
+    user : state.user
+});
+
+const mapDispatchToProps = () => {
+    return {
+    };
+};
+
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps()),
+    withRouter
+)(EmailInput); */
