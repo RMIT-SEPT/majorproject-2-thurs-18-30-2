@@ -21,6 +21,12 @@ public class CustomerController {
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
+    /**
+     * Registers the customer
+     * @param customer The customer
+     * @param result BindingResult
+     * @return A response entity that returns the customer when it is registered
+     */
     @PostMapping("/register")
     public ResponseEntity<?> registerCustomer(@Valid @RequestBody Customer customer, BindingResult result) {
         ResponseEntity<?> response;
@@ -36,6 +42,13 @@ public class CustomerController {
         return response;
     }
 
+    /**
+     * Edits the customer details
+     * @param username The customer's username
+     * @param customer The customer
+     * @param result BindingResult
+     * @return A response entity of the customer with the updated details
+     */
     @PostMapping("/editCustomer/{username}")
     public ResponseEntity<?> editCustomer(@Valid @PathVariable String username, @RequestBody Customer customer, BindingResult result) {
         ResponseEntity<?> response;

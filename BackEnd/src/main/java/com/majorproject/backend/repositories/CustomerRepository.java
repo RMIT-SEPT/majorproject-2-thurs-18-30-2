@@ -10,6 +10,11 @@ public interface CustomerRepository extends CrudRepository<Customer, Long> {
     @Override
     Iterable<Customer> findAllById(Iterable<Long> iterable);
 
+    /**
+     * This query returns a customer if a
+     * @param email
+     * @return
+     */
     @Query(value = "SELECT * FROM CUSTOMER c WHERE c.email = ?1", nativeQuery = true)
     Customer findByEmail(String email);
 

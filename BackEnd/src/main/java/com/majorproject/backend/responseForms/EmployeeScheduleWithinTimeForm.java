@@ -2,6 +2,10 @@ package com.majorproject.backend.responseForms;
 
 import com.majorproject.backend.models.EmployeeSchedule;
 
+/**
+ * This is the form(class) that is used to hold the list of employee schedules
+ * for getServicesWithinParameters() method in EmployeeScheduleService class
+ */
 public class EmployeeScheduleWithinTimeForm {
 
     private Long employeeScheduleId;

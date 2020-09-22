@@ -51,5 +51,4 @@ public class UserService {
 
         return exists;
     }
-
 }

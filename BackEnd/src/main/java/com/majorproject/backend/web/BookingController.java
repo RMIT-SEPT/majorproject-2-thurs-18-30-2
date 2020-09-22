@@ -23,6 +23,12 @@ public class BookingController {
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
+    /**
+     * Creates the booking
+     * @param booking The booking
+     * @param result BindingResult
+     * @return A response entity of the registered booking
+     */
     @PostMapping("/create")
     public ResponseEntity<?> createBooking(@RequestBody Booking booking, BindingResult result) {
         ResponseEntity<?> response;
@@ -35,15 +41,22 @@ public class BookingController {
             response = new ResponseEntity<Booking>(booking1, HttpStatus.CREATED);
         }
 
-        return  response;
+        return response;
     }
 
-//    @GetMapping("/getBookings")
-//    public ResponseEntity<?> getBookings(@RequestParam Map<String,String> requestParams) {
-//        List<Booking> bookingList = bookingService.displayDashboard(requestParams.get("id"), requestParams.get(""));
-//        return new ResponseEntity<List<Booking>>(bookingList, HttpStatus.OK);
-//    }
+    @GetMapping("getAllBookings")
+    public ResponseEntity<?> getAllBookings() {
+        List<Booking> bookingList = bookingService.getAllBookings();
+        ResponseEntity<?> response = new ResponseEntity<List<Booking>>(bookingList, HttpStatus.OK);
 
+        return response;
+    }
+
+    /**
+     * Gets the bookings based on the user's username
+     * @param username The user's username
+     * @return A response entity of the list of bookings based on the user's username
+     */
     @GetMapping("getBookings/{username}")
     public ResponseEntity<?> getUserBookings(@Valid @PathVariable String username) {
         List<Booking> bookingList = bookingService.getBookingsByUser(username);

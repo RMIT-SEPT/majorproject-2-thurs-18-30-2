@@ -10,6 +10,11 @@ public class BServiceService {
     @Autowired
     private BServiceRepository BServiceRepository;
 
+    /**
+     * Creates the bService
+     * @param bService The bService
+     * @return The bService
+     */
     public BService saveOrUpdateBService(BService bService) {
         BService bServiceNew = null;
         bServiceNew = BServiceRepository.save(bService);
