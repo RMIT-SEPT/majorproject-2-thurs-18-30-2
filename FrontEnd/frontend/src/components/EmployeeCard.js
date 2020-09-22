@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
-import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../css/Card.css';
 
 class EmployeeCard extends React.Component {
@@ -12,41 +12,34 @@ class EmployeeCard extends React.Component {
 
     }
 
-    employeeProfile() {
-        console.log("link to employee profile");
+    // employeeProfile() {
+    //     console.log("link to employee profile");
 
-        /* api.get(`/user/usernameExists/${this.state.value}`)
-            .then((response) => {
-                var exists = response.data;
-                if(!exists) {
-                    this.setState({
-                        valid : true
-                    });
-                } 
-            })
-            .catch((error) => {
-                console.log(error);
-            }); */
-        var url = "/employees/" + this.props.id;
+        
+    //     var url = "/employees/" + this.props.id;
 
-        return <Redirect path={url} />;
-    }
+    //     return <Redirect path={url} />;
+    // }
 
     render () {
         return (
             <div id="card">
             <Card id="test">
                 <Card.Body>
-                    <Card.Title><p>{this.props.username}</p></Card.Title>
+                    <Card.Title><p>{this.props.employee.username}</p></Card.Title>
                     <Card.Subtitle>
-                        <p>{this.props.fName} {this.props.lName}</p>
+                        <p>{this.props.employee.fName} {this.props.employee.lName}</p>
                     </Card.Subtitle>
                     <Card.Text>
-                        <p>{this.props.email}</p>
+                        <p>{this.props.employee.email}</p>
                     </Card.Text>
-                    <div id="button">
-                        <Button variant="primary" onClick={this.employeeProfile}>View Details</Button>
-                    </div>
+                    
+                    <Link to={"/employee/" + this.props.employee.id}>
+                        <div id="button">
+                            <Button variant="primary">View Details</Button>
+                        </div>
+                    </Link>
+                    
                     
                 </Card.Body>
             </Card>

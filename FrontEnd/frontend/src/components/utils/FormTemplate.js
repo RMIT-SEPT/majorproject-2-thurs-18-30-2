@@ -17,7 +17,8 @@ class FormTemplate extends React.Component {
         this.state = {
             redirect : null,
             valid : true,
-            errorMsg : 'Please fill in all fields correctly'
+            errorMsg : 'Please fill in all fields correctly',
+            preFillValues : null
         };
 
         // Form template which is passed down by props.router
@@ -34,6 +35,43 @@ class FormTemplate extends React.Component {
 
         this.submitForm = this.submitForm.bind(this);
 
+    }
+
+    async componentDidMount() {
+        if(this.form.prefill) {
+            var id = this.props.router.computedMatch.params.eId;
+            if(id) {
+                try {
+                    const response = await api.get('/employee/getEmployeeById/' + id);
+                    
+                    this.setState({
+                        preFillValues : {...response.data}
+                    });
+                    this.form.apiCall += '/' + response.data.username;
+                    this.form.redirect += '/' + id;
+
+                } catch(error) {
+                    console.log(error.response);
+                }
+            } else {
+                await this.setState({
+                    preFillValues : {...this.props.user.userDetails}
+                });
+
+                this.form.apiCall += '/' + this.props.user.userDetails.username;
+            }
+            
+            this.form.components.map(
+                function(component) {
+                    this.componentRefs[component.inputName].current.setState({
+                        value : this.state.preFillValues[component.input],
+                        valid : true
+                    });
+                    return true;
+                }.bind(this)
+            );
+            
+        }
     }
 
     async submitForm (event) {
@@ -100,13 +138,13 @@ class FormTemplate extends React.Component {
                                     this.form.components.map(
                                         function(component) {
                                             var TagName = component.inputType;
-                                            var val = null;
-                                            if(this.props.user.userDetails) {
-                                                val = this.props.user.userDetails[component.input];
-                                            }
-                                            else {
-                                                val = '';
-                                            }
+                                            var val = '';
+                                            // if(this.state.preFillValues) {
+                                            //     val = this.state.preFillValues[component.input];
+                                            // }
+                                            // else {
+                                            //     val = '';
+                                            // }
                                             return  (
                                                 <TagName 
                                                     key={component.inputName} 
@@ -138,7 +176,7 @@ class FormTemplate extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    modal :  state.modal,
+    modal : state.modal,
     user : state.user
 });
 

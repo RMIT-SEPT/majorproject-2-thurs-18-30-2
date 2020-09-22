@@ -1,64 +1,48 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import api from '../app/api';
 import EmployeeCard from './EmployeeCard';
 
 class EmployeesPage extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
+            employees : null
         };
+    }
+
+    async componentDidMount() {
+        try {
+            const response = await api.get('/employee/getAllEmployees');
+            await this.setState({
+                employees : response.data
+            });
+        } catch(error) {
+            console.log(error.response);
+        }
     }
     
     render () {
         
         var html;
-        var call = [
-            {
-                username : 'testUsername',
-                fName : 'first name',
-                lName : 'last name',
-                email : 'testemail@email.com'
-            },
-            {
-                username : 'testUsername',
-                fName : 'first name',
-                lName : 'last name',
-                email : 'testemail@email.com'
-            },
-            {
-                username : 'testUsername',
-                fName : 'first name',
-                lName : 'last name',
-                email : 'testemail@email.com'
-            },
-            {
-                username : 'testUsername',
-                fName : 'first name',
-                lName : 'last name',
-                email : 'testemail@email.com'
-            }
-        ]
+        
         html = (
             <Form.Group>
 
-                <div class="Margin">
-                <div className="row">
+                <div className="Margin">
+                    <div className="row">
 
-                {       
-                    call.map(
-                        function() {
-                            return  (
-                                
-                                    <EmployeeCard
-                                    username='testUsername'
-                                    fName='first name'
-                                    lName='last name'
-                                    email='testemail@email.com'/>
-                            );
-                        }
-                    ) 
-                }
-                </div>
+                    {this.state.employees &&    
+                        this.state.employees.map(
+                            function(e) {
+                                return  (
+                                    
+                                    <EmployeeCard key={e.id} employee={e}/>
+                                );
+                            }
+                        ) 
+                    }
+                    </div>
                 </div>
             </Form.Group>
         )

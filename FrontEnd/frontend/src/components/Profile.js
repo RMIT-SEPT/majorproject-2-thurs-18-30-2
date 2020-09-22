@@ -1,115 +1,112 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { withRouter, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import api from '../app/api';
 import '../css/Profile.css';
+import { Button } from 'react-bootstrap';
 
-class Profile extends React.Component {
-    constructor (props) {
-        super(props);
-        this.state = {
-            tmp : ""
-        };
-        
-    }
-    
-    componentDidMount () {
-        console.log("componenet did m,ount");  
-        const { name } = useParams();
-        this.setState({
-            tmp : name
-        });
-    }
+function Profile({ router }) {
 
-    render () {
-        if(this.props.user.userDetails)
-        {
-            return (
-                <React.Fragment>
-                    <h1>{this.state.tmp}</h1>
-                    <div className="jumbotron jumbotron-fluid">
-                        <div id="centre">
-                            <div className="row">
-                                <div className="col-md-4">
-                                    <h2><b>{this.props.user.userDetails.username}'s Profile Page</b></h2>
-                                    <img src="https://storage.pixteller.com/designs/designs-images/2016-11-19/02/thumbs/img_page_1_58305b35ebf5e.png"></img>
+    var mainUser = useSelector(state => state.user);
+    const [user, setUser] = useState();
+    const [editUrl, setEditUrl] = useState('/edit');
 
+    useEffect(() => {
+        if(router.computedMatch.params.eId) {
+            async function getApi() {
+                var url = '/employee/getEmployeeById/' + router.computedMatch.params.eId;
+                try {
+                    const response = await api.get(url)
+            
+                    setUser({...response.data});
+                    setEditUrl('/edit/employee/' + router.computedMatch.params.eId);
+
+                } catch(error) {
+                    console.log(error.response);
+                }
+            }
+
+            getApi();    
+        } else {
+            setUser({...mainUser.userDetails})
+        }
+    }, [mainUser.userDetails, router.computedMatch.params.eId]);
+
+
+    if(user) {
+        return (
+            <React.Fragment>  
+                <div className="jumbotron jumbotron-fluid">
+                    <div id="centre">
+                        <div className="row">
+                            <div className="col-md-4">
+                                <h2><b>{user.username}'s Profile Page</b></h2>
+                                <img src="https://storage.pixteller.com/designs/designs-images/2016-11-19/02/thumbs/img_page_1_58305b35ebf5e.png"></img>
+                                <Link to={editUrl}>
+                                    <Button>Edit</Button>
+                                </Link>
+                            </div>
+                            <div id="profile-border" className="col-md-8">
+                                <div id="borderTopAndBottom" className="row">
+                                    <div className="col-md-6">
+                                        <b><label>Username</label></b>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <p>{user.username}</p>
+                                    </div>
                                 </div>
-                                <div id="profile-border" className="col-md-8">
-                                    <div id="borderTopAndBottom" className="row">
-                                        <div className="col-md-6">
-                                            <b><label>Username</label></b>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>{this.props.user.userDetails.username}</p>
-                                        </div>
+                                <div id="borderTopAndBottom" className="row">
+                                    <div className="col-md-6">
+                                        <b><label>First Name</label></b>
                                     </div>
-                                    <div id="borderTopAndBottom" className="row">
-                                        <div className="col-md-6">
-                                            <b><label>First Name</label></b>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>{this.props.user.userDetails.fName}</p>
-                                        </div>
+                                    <div className="col-md-6">
+                                        <p>{user.fName}</p>
                                     </div>
-                                    <div id="borderTopAndBottom" className="row">
-                                        <div className="col-md-6">
-                                            <b><label>Last Name</label></b>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>{this.props.user.userDetails.lName}</p>
-                                        </div>
+                                </div>
+                                <div id="borderTopAndBottom" className="row">
+                                    <div className="col-md-6">
+                                        <b><label>Last Name</label></b>
                                     </div>
-                                    <div id="borderTopAndBottom" className="row">
-                                        <div className="col-md-6">
-                                            <b><label>Email</label></b>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>{this.props.user.userDetails.email}</p>
-                                        </div>
+                                    <div className="col-md-6">
+                                        <p>{user.lName}</p>
                                     </div>
-                                    <div id="borderTopAndBottom"className="row">
-                                        <div className="col-md-6">
-                                            <b><label>Phone</label></b>
-                                        </div>
-                                        <div  className="col-md-6">
-                                            <p>{this.props.user.userDetails.pNumber}</p>
-                                        </div>
+                                </div>
+                                <div id="borderTopAndBottom" className="row">
+                                    <div className="col-md-6">
+                                        <b><label>Email</label></b>
                                     </div>
-                                    <div id="borderTopAndBottom" className="row">
-                                        <div className="col-md-6">
-                                            <b><label>Address</label></b>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>{this.props.user.userDetails.address}</p>
-                                        </div>
+                                    <div className="col-md-6">
+                                        <p>{user.email}</p>
+                                    </div>
+                                </div>
+                                <div id="borderTopAndBottom"className="row">
+                                    <div className="col-md-6">
+                                        <b><label>Phone</label></b>
+                                    </div>
+                                    <div  className="col-md-6">
+                                        <p>{user.pNumber}</p>
+                                    </div>
+                                </div>
+                                <div id="borderTopAndBottom" className="row">
+                                    <div className="col-md-6">
+                                        <b><label>Address</label></b>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <p>{user.address}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </React.Fragment>
-            );
-        }
-
-        else
-        {
-            return(
-                <React.Fragment>Not Logged In</React.Fragment>
-            );
-        }
+                </div>
+            </React.Fragment>
+        );
+    } else {
+        return(
+            <React.Fragment>Not Logged In</React.Fragment>
+        );
     }
 }
-const mapStateToProps = state => ({
-    user : state.user
-});
 
-const mapDispatchToProps = () => {
-    return {
-    };
-};
-
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps()),
-    withRouter
-)(Profile);
+export default Profile;

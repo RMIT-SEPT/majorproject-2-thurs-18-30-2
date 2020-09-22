@@ -15,7 +15,6 @@ class UsernameInput extends React.Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        console.log(props.val);
     }
 
     handleChange (event) {

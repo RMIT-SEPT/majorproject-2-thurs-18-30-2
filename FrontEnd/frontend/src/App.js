@@ -20,7 +20,11 @@ class App extends React.Component {
         var sideBarMenu = new SideBarMenu();
         if(this.props.user.userDetails) {
             if(this.props.user.userDetails.empType) {
-
+                if(this.props.user.userDetails.empType === 'admin') {
+                    items = sideBarMenu.ownerMenu();
+                } else {
+                    items = sideBarMenu.employeeMenu();
+                }
             } else {
                 items = sideBarMenu.customerMenu();
             }

@@ -42,8 +42,20 @@ const router = [
     form : "signUp"
 },
 {
-    path : "/profile",
+    path : "/add-employee",
+    component : FormTemplate,
+    style : "centered", 
+    form : "employeeSignUp"
+},
+{
+    path : "/employee/:eId",
     component : Profile
+},
+{
+    path : "/edit/employee/:eId",
+    component : FormTemplate,
+    style : "centered",
+    form : "editEmployeeProfile"
 },
 {
     path : "/edit",
@@ -58,6 +70,10 @@ const router = [
 {
     path : "/employees",
     component : EmployeesPage
+},
+{
+    path : "/profile",
+    component : Profile
 }
 ];
 
