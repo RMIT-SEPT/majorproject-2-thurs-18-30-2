@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
-import { Redirect } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
+import Profile from './Profile.js'
 import '../css/Card.css';
 
 class EmployeeCard extends React.Component {
@@ -14,7 +15,7 @@ class EmployeeCard extends React.Component {
 
     employeeProfile() {
         console.log("link to employee profile");
-        return <Redirect to='/contact-us'/>;
+        return <Route path="/employees/:eId" component={Profile} />;
     }
 
     render () {

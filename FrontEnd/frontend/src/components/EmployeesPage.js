@@ -8,7 +8,7 @@ class EmployeesPage extends React.Component {
         this.state = {
         };
     }
-    //A contact us page
+    
     render () {
         
         var html;
