@@ -11,6 +11,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
+/**
+ * User class
+ */
 @MappedSuperclass
 public abstract class User {
     @NotBlank(message = "First name is required")

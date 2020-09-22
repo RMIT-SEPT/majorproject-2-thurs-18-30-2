@@ -4,6 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+/**
+ * Employee Schedule class
+ */
 @Entity
 public class EmployeeSchedule {
     @Id

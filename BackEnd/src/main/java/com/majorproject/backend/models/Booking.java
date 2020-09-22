@@ -7,6 +7,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+/**
+ * Booking class
+ */
 @Entity
 public class Booking {
     @Id
