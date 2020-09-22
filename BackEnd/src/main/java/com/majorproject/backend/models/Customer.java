@@ -2,6 +2,9 @@ package com.majorproject.backend.models;
 
 import javax.persistence.*;
 
+/**
+ * Customer
+ */
 @Entity
 public class Customer extends User {
     @Id
@@ -9,13 +12,13 @@ public class Customer extends User {
     @Column(name = "customer_id")
     private Long id;
 
-    public Customer(String fName, String lName, String email, String password,
-                    String address, String pNumber) {
-        super(fName, lName, email, password, address, pNumber);
-    }
-
     public Customer() {
 
+    }
+
+    public Customer(String fName, String lName, String email, String username,
+                    String password, String address, String pNumber) {
+        super(fName, lName, email, username, password, address, pNumber);
     }
 
     public Long getId() {
