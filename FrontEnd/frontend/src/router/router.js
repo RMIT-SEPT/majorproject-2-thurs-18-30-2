@@ -2,7 +2,7 @@ import FormTemplate from '../components/utils/FormTemplate';
 import Home from '../components/Home';
 import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";
-// import ProfileC from '../components/Profile';
+// import ProfileC from '../components/unusedComponents/Profile';
 import BookingsPage from '../components/BookingPage';
 import EmployeesPage from '../components/EmployeesPage';
 import Profile from '../components/Profile';
