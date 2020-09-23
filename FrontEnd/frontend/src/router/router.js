@@ -2,9 +2,10 @@ import FormTemplate from '../components/utils/FormTemplate';
 import Home from '../components/Home';
 import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";
-import Profile from '../components/Profile';
+// import ProfileC from '../components/Profile';
 import BookingsPage from '../components/BookingPage';
 import EmployeesPage from '../components/EmployeesPage';
+import Profile from '../components/Profile';
 
 // This array contains all our routes.
 // In a sense we define our paths globally in this file as an array.
@@ -33,52 +34,52 @@ const router = [
 
         ]
     },
-{
-    path : "/log-in",
-    component : FormTemplate,
-    style : "centered",
-    form : "logIn"
-},
-{
-    path : "/sign-up",
-    component : FormTemplate,
-    style : "centered", 
-    form : "signUp"
-},
-{
-    path : "/add-employee",
-    component : FormTemplate,
-    style : "centered", 
-    form : "employeeSignUp"
-},
-{
-    path : "/employee/:eId",
-    component : Profile
-},
-{
-    path : "/edit/employee/:eId",
-    component : FormTemplate,
-    style : "centered",
-    form : "editEmployeeProfile"
-},
-{
-    path : "/edit",
-    component : FormTemplate,
-    style : "centered",
-    form : "editProfile"
-},
-{
-    path : "/bookings",
-    component : BookingsPage
-},
-{
-    path : "/employees",
-    component : EmployeesPage
-},
-{
-    path : "/profile",
-    component : Profile
-}
+    {
+        path : "/log-in",
+        component : FormTemplate,
+        style : "centered",
+        form : "logIn"
+    },
+    {
+        path : "/sign-up",
+        component : FormTemplate,
+        style : "centered", 
+        form : "signUp"
+    },
+    {
+        path : "/add-employee",
+        component : FormTemplate,
+        style : "centered", 
+        form : "employeeSignUp"
+    },
+    {
+        path : "/employee/:eId",
+        component : Profile
+    },
+    {
+        path : "/edit/employee/:eId",
+        component : FormTemplate,
+        style : "centered",
+        form : "editEmployeeProfile"
+    },
+    {
+        path : "/edit",
+        component : FormTemplate,
+        style : "centered",
+        form : "editProfile"
+    },
+    {
+        path : "/bookings",
+        component : BookingsPage
+    },
+    {
+        path : "/employees",
+        component : EmployeesPage
+    },
+    {
+        path : "/profile",
+        component : Profile
+    }
 ];
 
 export default router;
