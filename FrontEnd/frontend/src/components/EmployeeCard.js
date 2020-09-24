@@ -12,32 +12,23 @@ class EmployeeCard extends React.Component {
 
     }
 
-    // employeeProfile() {
-    //     console.log("link to employee profile");
-
-        
-    //     var url = "/employees/" + this.props.id;
-
-    //     return <Redirect path={url} />;
-    // }
-
     render () {
         return (
             <div id="card">
             <Card id="test">
                 <Card.Body>
-                    <Card.Title><p>{this.props.employee.username}</p></Card.Title>
+                    <Card.Title>{this.props.employee.username}</Card.Title>
                     <Card.Subtitle>
-                        <p>{this.props.employee.fName} {this.props.employee.lName}</p>
+                        {this.props.employee.fName} {this.props.employee.lName}
                     </Card.Subtitle>
                     <Card.Text>
-                        <p>{this.props.employee.email}</p>
+                        {this.props.employee.email}
                     </Card.Text>
                     
                     <Link to={"/employee/" + this.props.employee.id}>
-                        <div id="button">
+                        
                             <Button variant="primary">View Details</Button>
-                        </div>
+                        
                     </Link>
                     
                     

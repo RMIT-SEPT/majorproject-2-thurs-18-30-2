@@ -18,7 +18,6 @@ class FormTemplate extends React.Component {
             redirect : null,
             valid : true,
             errorMsg : 'Please fill in all fields correctly',
-            // preFillValues : null,
             inputValues : {},
             inputValidity : {}
         };
@@ -75,19 +74,19 @@ class FormTemplate extends React.Component {
             }
             
             if(valuesToFill) {
-                var tmpValues = this.state.inputValues;
-                var tmpValidity = this.state.inputValidity;
-                await this.form.components.map((component) => {
-                        tmpValues[component.input] = valuesToFill[component.input];
-                        tmpValidity[component.input] = true;
-                        
-                        return true;
-                    }
-                );
+                var tmpValues = {...this.state.inputValues};
+                var tmpValidity = {...this.state.inputValidity};
 
+                var component;
+                for(component of this.form.components) {
+                    
+                    tmpValues[component.input] = valuesToFill[component.input];
+                    tmpValidity[component.input] = true;
+                } 
+                
                 this.setState({
-                    inputValues : tmpValues,
-                    inputValidity : tmpValidity
+                    inputValues : {...tmpValues},
+                    inputValidity : {...tmpValidity}
                 });
             }
             
@@ -98,16 +97,18 @@ class FormTemplate extends React.Component {
         event.preventDefault();
         
         var valid = true;
-        await this.form.components.map((component) => 
+        var component;
+        for(component of this.form.components) {
             valid = valid && this.state.inputValidity[component.input]
-        );
+        }
+        
         this.setState({
             valid : valid,
             errorMsg : 'Please fill in all fields correctly'
         });
         
         if(this.state.valid) {
-            api.post(this.form.apiCall, this.state.inputValues)
+            await api.post(this.form.apiCall, this.state.inputValues)
             .then((response) => {
                 if(this.form.responseHandler) {
                     this.props[this.form.responseHandler](response.data);
