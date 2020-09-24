@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import api from '../app/api';
 import profilePic from '../images/dwight1.jpg';
-import background from '../images/background.jpg';
+import background from '../images/background3.jpg';
 import '../css/Profile.css';
 import { Image, Card, Col, Row, Button } from 'react-bootstrap';
 

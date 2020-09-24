@@ -33,13 +33,14 @@ class EmployeesPage extends React.Component {
         for(j = 0; j !== this.state.employees.length; ++j) {
             tmpList.push(this.state.employees[j])
             i++;
-            if(i === 4 || j + 1 === this.state.employees.length) {
+            if(i === 3 || j + 1 === this.state.employees.length) {
                 
                 rowList.push(
                     <Row key={j}>
                         {tmpList.map((employeeCol) => {
                             return ( 
-                                <Col key={employeeCol.id}>
+                                <Col md="4" key={employeeCol.id}>
+
                                     <EmployeeCard employee={employeeCol}/>
                                 </Col>
                             );
