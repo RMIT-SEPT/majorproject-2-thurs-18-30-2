@@ -1,21 +1,21 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import api from '../app/api';
-import EmployeeCard from './EmployeeCard';
 
-class EmployeesPage extends React.Component {
+class CardsListPage extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            employees : []
+            items : []
         };
     }
 
     async componentDidMount() {
+        
         try {
-            const response = await api.get('/employee/getAllEmployees');
+            const response = await api.get(this.props.router.listApi);
             this.setState({
-                employees : response.data
+                items : response.data
             });
         } catch(error) {
             console.log(error.response);
@@ -30,18 +30,18 @@ class EmployeesPage extends React.Component {
         var tmpList = [];
         var i = 0;
         var j = 0;
-        for(j = 0; j !== this.state.employees.length; ++j) {
-            tmpList.push(this.state.employees[j])
+        for(j = 0; j !== this.state.items.length; ++j) {
+            tmpList.push(this.state.items[j])
             i++;
-            if(i === 3 || j + 1 === this.state.employees.length) {
+            if(i === 3 || j + 1 === this.state.items.length) {
                 
                 rowList.push(
                     <Row key={j}>
-                        {tmpList.map((employeeCol) => {
+                        {tmpList.map((itemCol) => {
                             return ( 
-                                <Col md="4" key={employeeCol.id}>
+                                <Col md="4" key={itemCol.id}>
 
-                                    <EmployeeCard employee={employeeCol}/>
+                                    <this.props.router.card item={itemCol}/>
                                 </Col>
                             );
                         })}
@@ -54,7 +54,7 @@ class EmployeesPage extends React.Component {
         
         html = (
             <React.Fragment>
-                    {this.state.employees &&    
+                    {this.state.items &&    
                         rowList.map((row) => {
                             return row;
                         })
@@ -67,4 +67,4 @@ class EmployeesPage extends React.Component {
 
 }
 
-export default EmployeesPage;
+export default CardsListPage;

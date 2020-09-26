@@ -3,8 +3,11 @@ import Home from '../components/Home';
 import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";
 // import ProfileC from '../components/unusedComponents/Profile';
-import BookingsPage from '../components/BookingPage';
-import EmployeesPage from '../components/EmployeesPage';
+// import BookingsPage from '../components/BookingPage';
+import BookingCard from '../components/BookingCard';
+import ServiceCard from '../components/ServiceCard'
+import EmployeeCard from '../components/EmployeeCard';
+import CardsListPage from '../components/CardsListPage';
 import Profile from '../components/Profile';
 
 // This array contains all our routes.
@@ -69,12 +72,22 @@ const router = [
         form : "editProfile"
     },
     {
+        path : "/services",
+        component : CardsListPage,
+        listApi : "bService/getAllServices",
+        card : ServiceCard
+    },
+    {
         path : "/bookings",
-        component : BookingsPage
+        component : CardsListPage,
+        listApi : "booking/getAllBookings",
+        card : BookingCard
     },
     {
         path : "/employees",
-        component : EmployeesPage
+        component : CardsListPage,
+        listApi : "/employee/getAllEmployees",
+        card : EmployeeCard
     },
     {
         path : "/profile",

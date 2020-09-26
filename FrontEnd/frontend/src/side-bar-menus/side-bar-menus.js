@@ -3,7 +3,8 @@ import { ContactSupportRounded,
     AccountCircleRounded,
     LibraryBooksRounded,
     GroupRounded,
-    PersonAddRounded } from '@material-ui/icons';
+    PersonAddRounded,
+    BusinessRounded } from '@material-ui/icons';
 
 // This class is similar to form-templates.js as it provides a structure for the 
 // dynamic component SideBar
@@ -71,6 +72,12 @@ export default class SideBarMenu {
                 label : 'Profile',
                 path : '/profile',
                 icon : AccountCircleRounded
+            },
+            {
+                name : 'services',
+                label : 'Services',
+                path : '/services',
+                icon :  BusinessRounded
             },
             {
                 name : 'bookings',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
-import Booking from '../components/Booking';
+import Booking from './BookingCard';
 import '../css/BookingPage.css';
 
 class BookingsPage extends React.Component {

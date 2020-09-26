@@ -1,9 +1,13 @@
-.employee-card {
+.card {
     margin-top : 25px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     /* border: 5px solid rgb(255, 255, 255); */
-    background : #88A2AA;
+   
     /* background : rgb(82, 160, 212); */
+}
+
+.employee-card {
+    background : #88A2AA;
 }
 
 .card-profile-pic {
