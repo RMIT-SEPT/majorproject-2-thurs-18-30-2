@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import Paper from '@material-ui/core/Paper';
+import { ViewState } from '@devexpress/dx-react-scheduler';
+import { Scheduler, DayView, Appointments } from '@devexpress/dx-react-scheduler-material-ui';
+
 import api from '../app/api';
 import profilePic from '../images/dwight1.jpg';
 import background from '../images/background3.jpg';
@@ -13,6 +17,12 @@ function Profile({ router }) {
     var mainUser = useSelector(state => state.user);
     const [user, setUser] = useState();
     const [editUrl, setEditUrl] = useState('/edit');
+    
+    const currentDate = '2018-11-01';
+    const schedulerData = [
+  { startDate: '2018-11-01T09:45', endDate: '2018-11-01T11:00', title: 'Meeting' },
+  { startDate: '2018-11-01T12:00', endDate: '2018-11-01T13:30', title: 'Go to a gym' }
+];
 
     useEffect(() => {
         if(router.computedMatch.params.eId) {
@@ -38,7 +48,7 @@ function Profile({ router }) {
     var html;
     if(user) {
         html = (
-
+            <React.Fragment>
             <Card className="bg-dark text-white" style={{marginTop : '20px'}}>
                 <Card.Img src={background} alt="Card image" className="bg-dark background-image" />
                 <Card.ImgOverlay>
@@ -120,6 +130,22 @@ function Profile({ router }) {
                 </Row>
                 </Card.ImgOverlay>
             </Card>
+            <br></br>
+            <Paper>
+                <Scheduler
+                data={schedulerData}
+                >
+                <ViewState
+                    currentDate={currentDate}
+                />
+                <DayView
+                    startDayHour={9}
+                    endDayHour={14}
+                />
+                <Appointments />
+                </Scheduler>
+            </Paper>
+            </React.Fragment>
         )
     } else {
         html = <React.Fragment>Loading...</React.Fragment>
