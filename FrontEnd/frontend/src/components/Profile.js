@@ -13,6 +13,7 @@ function Profile({ router }) {
     var mainUser = useSelector(state => state.user);
     const [user, setUser] = useState();
     const [editUrl, setEditUrl] = useState('/edit');
+    const [scheduleUrl, setScheduleUrl] = useState('/schedule');
 
     useEffect(() => {
         if(router.computedMatch.params.eId) {
@@ -23,6 +24,7 @@ function Profile({ router }) {
             
                     setUser({...response.data});
                     setEditUrl('/edit/employee/' + router.computedMatch.params.eId);
+                    setScheduleUrl('/schedule/employee/' + router.computedMatch.params.eId);
 
                 } catch(error) {
                     console.log(error.response);
@@ -31,7 +33,8 @@ function Profile({ router }) {
 
             getApi();    
         } else {
-            setUser({...mainUser.userDetails})
+            setUser({...mainUser.userDetails});
+            // Here if it is employee profile as main user
         }
     }, [mainUser.userDetails, router.computedMatch.params.eId]);
 
@@ -53,11 +56,20 @@ function Profile({ router }) {
                                 <Col xs="10">
                                     <Card.Title style={{fontSize: '30px'}}>{user.username}</Card.Title>
                                 </Col>
-                                <Col>
-                                    <Link to={editUrl}>
-                                        <Button variant="info">Edit</Button>
-                                    </Link>
-                                </Col>
+                                {(mainUser.userDetails.empType === 'admin' || !mainUser.userDetails.empType) &&
+                                    <Col>
+                                        <Link to={editUrl}>
+                                            <Button variant="info">Edit</Button>
+                                        </Link>
+                                    </Col>
+                                }
+                                {mainUser.userDetails.empType &&
+                                    <Col>
+                                        <Link to={scheduleUrl}>
+                                            <Button variant="info">Edit</Button>
+                                        </Link>
+                                    </Col>
+                                }
                             </Row>
                             <br />  
                             <Row>
