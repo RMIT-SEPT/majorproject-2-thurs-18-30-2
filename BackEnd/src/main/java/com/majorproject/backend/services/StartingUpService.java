@@ -42,29 +42,29 @@ public class StartingUpService {
     public void runApplication(ApplicationReadyEvent event) {
         // Add the business owner
         Employee businessOwner = new Employee("Homeyyy", "Ash", "hAsh@mail.com",
-                "hAshAdmin", "homeyyyAsh123", "10 Software Avenue",
+                "hAshAdmin", "hA123", "10 Software Avenue",
                 "0123456789", "admin");
         employeeRepository.save(businessOwner);
 
         // Add 2 customers
         Customer customer1 = new Customer("CusTee", "hehe", "cth@mail.com", "cth",
-                "cth1234567890","cth address", "0386376921");
+                "cth123","cth address", "0386376921");
         customerRepository.save(customer1);
 
         Customer customer2 = new Customer("CusWow", "reee", "cwr@mail.com", "cwr",
-                "cwr0987654321","cwr address", "0472573568");
+                "cwr123","cwr address", "0472573568");
         customerRepository.save(customer2);
 
         // Add 3 employees
-        Employee employee1 = new Employee ("a", "a", "a@mail.com", "a", "a1234567890",
+        Employee employee1 = new Employee ("a", "a", "a@mail.com", "a", "a123",
                 "a address", "0573296381", "employee");
         employeeRepository.save(employee1);
 
-        Employee employee2 = new Employee ("b", "b", "b@mail.com", "b", "b1234567890",
+        Employee employee2 = new Employee ("b", "b", "b@mail.com", "b", "b123",
                 "b address", "0683765938", "employee");
         employeeRepository.save(employee2);
 
-        Employee employee3 = new Employee ("c", "c", "c@mail.com", "c", "c1234567890",
+        Employee employee3 = new Employee ("c", "c", "c@mail.com", "c", "c123",
                 "c address", "0184574819", "employee");
         employeeRepository.save(employee3);
 
