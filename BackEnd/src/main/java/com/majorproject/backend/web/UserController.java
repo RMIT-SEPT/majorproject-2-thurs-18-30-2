@@ -17,12 +17,12 @@ public class UserController {
 
     /**
      * Checks if the username exists.
-     * @param username The username of the user
+     * @param usernameAPI The username of the user
      * @return A response entity if the username exists
      */
-    @GetMapping("/usernameExists/{username}")
-    public ResponseEntity<String> userNameExists(@PathVariable String username) {
-        String exists = userService.userNameExists(username) ? "true" : "false";
+    @GetMapping("/usernameExists/{usernameAPI}")
+    public ResponseEntity<String> userNameExists(@PathVariable String usernameAPI) {
+        String exists = userService.userNameExists(usernameAPI) ? "true" : "false";
         return new ResponseEntity<String>(exists, HttpStatus.OK);
     }
 
