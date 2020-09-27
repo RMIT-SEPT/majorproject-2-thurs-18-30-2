@@ -3,6 +3,9 @@ package com.majorproject.backend.responseForms;
 import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.models.EmployeeSchedule;
 
+/**
+ * Class not used
+ */
 public class EmployeeResponseObject {
     private String lName, fName;
     private Long id;

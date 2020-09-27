@@ -2,6 +2,7 @@ package com.majorproject.backend.responseForms;
 
 import com.majorproject.backend.models.EmployeeSchedule;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -12,14 +13,17 @@ public class EmployeeAvailabilityForm {
 
     private Long employeeScheduleId;
     private String bServiceName;
-    private Date date;
+    private String date;
     private Date startTime;
     private Date endTime;
 
     public EmployeeAvailabilityForm(EmployeeSchedule employeeSchedule) {
         this.employeeScheduleId = employeeSchedule.getId();
         this.bServiceName = employeeSchedule.getBService().getName();
-        this.date = employeeSchedule.getDate();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        this.date = sdf.format(employeeSchedule.getDate());
+
         this.startTime = employeeSchedule.getStartTime();
         this.endTime = employeeSchedule.getEndTime();
     }
@@ -40,11 +44,11 @@ public class EmployeeAvailabilityForm {
         this.bServiceName = bServiceName;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

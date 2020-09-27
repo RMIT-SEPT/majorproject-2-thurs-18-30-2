@@ -5,6 +5,9 @@ import com.majorproject.backend.models.BService;
 
 import java.util.Date;
 
+/**
+ * Class not used
+ */
 public class EmployeeScheduleResponseObject {
     private EmployeeResponseObject employee;
     private BService BService;

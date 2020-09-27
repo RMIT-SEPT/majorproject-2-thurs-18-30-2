@@ -42,36 +42,51 @@ public class CustomerController {
         return response;
     }
 
-    /**
-     * Edits the customer details
-     * @param username The customer's username
-     * @param customer The customer
-     * @param result BindingResult
-     * @return A response entity of the customer with the updated details
-     */
-    @PostMapping("/editCustomer/{username}")
-    public ResponseEntity<?> editCustomer(@Valid @PathVariable String username, @RequestBody Customer customer, BindingResult result) {
+    @PutMapping("/editCustomer/{idAPI}")
+    public ResponseEntity<?> editCustomer(@Valid @PathVariable String idAPI, @RequestBody Customer customer, BindingResult result) {
         ResponseEntity<?> response;
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
 
         if(errorMap != null) {
             response = errorMap;
         } else {
-            Customer customerEdit = customerService.getCustomerByUsername(username);
-
-            // Seting customer details
-            customerEdit.setfName(customer.getfName());
-            customerEdit.setlName(customer.getlName());
-            customerEdit.setEmail(customer.getEmail());
-            customerEdit.setAddress(customer.getAddress());
-            customerEdit.setUsername(customer.getUsername());
-            customerEdit.setPassword(customer.getPassword());
-            customerEdit.setpNumber(customer.getpNumber());
-
-            customerService.saveOrUpdateCustomer(customerEdit);
+            Customer customerEdit = customerService.editCustomer(idAPI, customer);
             response = new ResponseEntity<Customer>(customerEdit, HttpStatus.OK);
         }
 
         return response;
     }
+
+//    /**
+//     * Edits the customer details
+//     * @param usernameAPI The customer's username
+//     * @param customer The customer
+//     * @param result BindingResult
+//     * @return A response entity of the customer with the updated details
+//     */
+//    @PutMapping("/editCustomer/{usernameAPI}")
+//    public ResponseEntity<?> editCustomer(@Valid @PathVariable String usernameAPI, @RequestBody Customer customer, BindingResult result) {
+//        ResponseEntity<?> response;
+//        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
+//
+//        if(errorMap != null) {
+//            response = errorMap;
+//        } else {
+//            Customer customerEdit = customerService.getCustomerByUsername(usernameAPI);
+//
+//            // Seting customer details
+//            customerEdit.setfName(customer.getfName());
+//            customerEdit.setlName(customer.getlName());
+//            customerEdit.setEmail(customer.getEmail());
+//            customerEdit.setAddress(customer.getAddress());
+//            customerEdit.setUsername(customer.getUsername());
+//            customerEdit.setPassword(customer.getPassword());
+//            customerEdit.setpNumber(customer.getpNumber());
+//
+//            customerService.saveOrUpdateCustomer(customerEdit);
+//            response = new ResponseEntity<Customer>(customerEdit, HttpStatus.OK);
+//        }
+//
+//        return response;
+//    }
 }

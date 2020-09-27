@@ -75,10 +75,35 @@ public class EmployeeService {
      */
     public List<Employee> getAllEmployees() {
         List<Employee> employeeList = employeeRepository.findAllEmployees();
-        if(employeeList.size() == 0 || employeeList == null) {
+        if(employeeList.isEmpty()) {
             throw new ResponseException(HttpStatus.BAD_REQUEST, "No employees exist");
         }
 
         return employeeList;
+    }
+
+    public Employee editEmployee(String idAPI, Employee employee) {
+        Long employeeId;
+
+        try {
+            employeeId = Long.parseLong(idAPI);
+        } catch(Exception e) {
+            throw new ResponseException(HttpStatus.BAD_REQUEST, "ID error");
+        }
+
+        Employee employeeEdit = employeeRepository.findByEmployeeId(employeeId);
+
+        // Seting employee details
+        employeeEdit.setfName(employee.getfName());
+        employeeEdit.setlName(employee.getlName());
+        employeeEdit.setEmail(employee.getEmail());
+        employeeEdit.setAddress(employee.getAddress());
+        employeeEdit.setUsername(employee.getUsername());
+        employeeEdit.setPassword(employee.getPassword());
+        employeeEdit.setpNumber(employee.getpNumber());
+
+        saveOrUpdateEmployee(employeeEdit);
+
+        return employeeEdit;
     }
 }

@@ -15,7 +15,7 @@ public interface CustomerRepository extends CrudRepository<Customer, Long> {
      * @param email The email entered by the user
      * @return A customer if the customer exists, otherwise null
      */
-    @Query(value = "SELECT * FROM CUSTOMER c WHERE c.email = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM Customer c WHERE c.email = ?1", nativeQuery = true)
     Customer findByEmail(String email);
 
     /**
@@ -25,7 +25,7 @@ public interface CustomerRepository extends CrudRepository<Customer, Long> {
      * @param password The password entered by the user
      * @return A customer if the customer exists, otherwise null
      */
-    @Query(value = "SELECT * FROM CUSTOMER c WHERE c.username = ?1 AND c.password = ?2", nativeQuery = true)
+    @Query(value = "SELECT * FROM Customer c WHERE c.username = ?1 AND c.password = ?2", nativeQuery = true)
     Customer findByUsernameAndPassword(String username, String password);
 
     /**
@@ -33,6 +33,9 @@ public interface CustomerRepository extends CrudRepository<Customer, Long> {
      * @param username The email entered by the user
      * @return A customer if the customer exists, otherwise null
      */
-    @Query(value = "SELECT * FROM CUSTOMER c WHERE c.username = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM Customer c WHERE c.username = ?1", nativeQuery = true)
     Customer findByUsername(String username);
+
+    @Query(value = "SELECT * FROM Customer c WHERE c.customer_id = ?1", nativeQuery = true)
+    Customer findByCustomerId(long customerId);
 }

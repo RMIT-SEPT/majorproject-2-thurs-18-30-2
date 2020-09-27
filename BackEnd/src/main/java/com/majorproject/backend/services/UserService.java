@@ -43,10 +43,11 @@ public class UserService {
      * else return false
      */
     public boolean userNameExists(String username) {
-        boolean exists = true;
-        if (employeeRepository.findByUsername(username) == null &&
-                customerRepository.findByUsername(username) == null ) {
-            exists = false;
+        boolean exists = false;
+
+        if(employeeRepository.findByUsername(username) != null ||
+            customerRepository.findByUsername(username) != null) {
+            exists = true;
         }
 
         return exists;

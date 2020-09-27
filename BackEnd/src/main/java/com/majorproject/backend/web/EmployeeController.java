@@ -44,57 +44,24 @@ public class EmployeeController {
     }
 
     /**
-     * Edits the details of an employee
-     * @param username The employee's username
-     * @param employee The employee
-     * @param result BindingResult
-     * @return A response entity of the employee with the updated details
-     */
-    @PostMapping("/editEmployee/{username}")
-    public ResponseEntity<?> editEmployee(@Valid @PathVariable String username, @RequestBody Employee employee, BindingResult result) {
-        ResponseEntity<?> response;
-        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
-
-        if(errorMap != null) {
-            response = errorMap;
-        } else {
-            Employee employeeEdit = employeeService.getEmployeeByUsername(username);
-
-            // Seting employee details
-            employeeEdit.setfName(employee.getfName());
-            employeeEdit.setlName(employee.getlName());
-            employeeEdit.setEmail(employee.getEmail());
-            employeeEdit.setAddress(employee.getAddress());
-            employeeEdit.setUsername(employee.getUsername());
-            employeeEdit.setPassword(employee.getPassword());
-            employeeEdit.setpNumber(employee.getpNumber());
-
-            employeeService.saveOrUpdateEmployee(employeeEdit);
-            response = new ResponseEntity<Employee>(employeeEdit, HttpStatus.OK);
-        }
-
-        return response;
-    }
-
-    /**
      * Finds the employee by the username
-     * @param username The employee's username
+     * @param usernameAPI The employee's username
      * @return A response entity of the employee based on the username
      */
-    @GetMapping("/getEmployeeByUsername/{username}")
-    public ResponseEntity<?> getEmployeeByUsername(@Valid @PathVariable String username) {
-        Employee employee = employeeService.getEmployeeByUsername(username);
+    @GetMapping("/getEmployeeByUsername/{usernameAPI}")
+    public ResponseEntity<?> getEmployeeByUsername(@Valid @PathVariable String usernameAPI) {
+        Employee employee = employeeService.getEmployeeByUsername(usernameAPI);
         return new ResponseEntity<Employee>(employee, HttpStatus.OK);
     }
 
     /**
      * Finds the employee by the id
-     * @param id The employee's id
+     * @param idAPI The employee's id
      * @return A response entity of the employee based on the id
      */
-    @GetMapping("/getEmployeeById/{id}")
-    public ResponseEntity<?> getEmployeeById(@Valid @PathVariable String id) {
-        long employeeId = Long.parseLong(id);
+    @GetMapping("/getEmployeeById/{idAPI}")
+    public ResponseEntity<?> getEmployeeById(@Valid @PathVariable String idAPI) {
+        long employeeId = Long.parseLong(idAPI);
         Employee employee = employeeService.getEmployeeById(employeeId);
         return new ResponseEntity<Employee>(employee, HttpStatus.OK);
     }
@@ -108,4 +75,52 @@ public class EmployeeController {
         List<Employee> employeeList = employeeService.getAllEmployees();
         return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
     }
+
+    @PutMapping("/editEmployee/{idAPI}")
+    public ResponseEntity<?> editEmployee(@Valid @PathVariable String idAPI, @RequestBody Employee employee, BindingResult result) {
+        ResponseEntity<?> response;
+        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
+
+        if(errorMap != null) {
+            response = errorMap;
+        } else {
+            Employee employeeEdit = employeeService.editEmployee(idAPI, employee);
+            response = new ResponseEntity<Employee>(employeeEdit, HttpStatus.OK);
+        }
+
+        return response;
+    }
+
+//    /**
+//     * Edits the details of an employee
+//     * @param usernameAPI The employee's username
+//     * @param employee The employee
+//     * @param result BindingResult
+//     * @return A response entity of the employee with the updated details
+//     */
+//    @PostMapping("/editEmployee/{usernameAPI}")
+//    public ResponseEntity<?> editEmployee(@Valid @PathVariable String usernameAPI, @RequestBody Employee employee, BindingResult result) {
+//        ResponseEntity<?> response;
+//        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
+//
+//        if(errorMap != null) {
+//            response = errorMap;
+//        } else {
+//            Employee employeeEdit = employeeService.getEmployeeByUsername(usernameAPI );
+//
+//            // Seting employee details
+//            employeeEdit.setfName(employee.getfName());
+//            employeeEdit.setlName(employee.getlName());
+//            employeeEdit.setEmail(employee.getEmail());
+//            employeeEdit.setAddress(employee.getAddress());
+//            employeeEdit.setUsername(employee.getUsername());
+//            employeeEdit.setPassword(employee.getPassword());
+//            employeeEdit.setpNumber(employee.getpNumber());
+//
+//            employeeService.saveOrUpdateEmployee(employeeEdit);
+//            response = new ResponseEntity<Employee>(employeeEdit, HttpStatus.OK);
+//        }
+//
+//        return response;
+//    }
 }
