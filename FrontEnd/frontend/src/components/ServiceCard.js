@@ -1,29 +1,24 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import '../css/Card.css';
+import cafe from '../images/cafe.jpg';
 
 function ServiceCard (props) {
     
-    function moreDeatils() {
-        console.log("Link this to more details");
-    }
-
     return (
         
         <Card className="card">
+            <Card.Img src={cafe} alt="Card image" thumbnail/>
             <Card.Body>
-                <Card.Title>{props.item.service}</Card.Title>
-                <Card.Subtitle>
-                    {props.item.date}
-                </Card.Subtitle>
+                <Card.Title>{props.item.name}</Card.Title>
+               
                 <Card.Text>
-                    {props.item.startTime}
+                    {props.item.description}
                 </Card.Text>
-                <div id="button">
-                    <Button variant="primary" onClick={moreDeatils}>View Details</Button>
-                    
-                </div>
-                
+                <Link to={"booking url"}>
+                    <Button variant="primary">Make Booking</Button>
+                </Link>    
             </Card.Body>
         </Card>
     
