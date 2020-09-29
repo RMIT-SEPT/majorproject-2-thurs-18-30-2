@@ -45,4 +45,29 @@ public class CustomerService {
     public Customer getCustomerByUsername(String username) {
         return customerRepository.findByUsername(username);
     }
+
+    public Customer editCustomer(String idAPI, Customer customer) {
+        Long customerId;
+
+        try {
+            customerId = Long.parseLong(idAPI);
+        } catch(Exception e) {
+            throw new ResponseException(HttpStatus.BAD_REQUEST, "ID error");
+        }
+
+        Customer customerEdit = customerRepository.findByCustomerId(customerId);
+
+        // Seting customer details
+        customerEdit.setfName(customer.getfName());
+        customerEdit.setlName(customer.getlName());
+        customerEdit.setEmail(customer.getEmail());
+        customerEdit.setAddress(customer.getAddress());
+        customerEdit.setUsername(customer.getUsername());
+        customerEdit.setPassword(customer.getPassword());
+        customerEdit.setpNumber(customer.getpNumber());
+
+        saveOrUpdateCustomer(customerEdit);
+
+        return customerEdit;
+    }
 }

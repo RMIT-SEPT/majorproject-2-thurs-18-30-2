@@ -1,6 +1,7 @@
 package com.majorproject.backend.web;
 
 import com.majorproject.backend.models.Booking;
+import com.majorproject.backend.responseForms.BookingMainForm;
 import com.majorproject.backend.services.BookingService;
 import com.majorproject.backend.services.MapValidationErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.xml.ws.Response;
 import java.util.List;
 import java.util.Map;
 
@@ -46,22 +48,38 @@ public class BookingController {
 
     @GetMapping("getAllBookings")
     public ResponseEntity<?> getAllBookings() {
-        List<Booking> bookingList = bookingService.getAllBookings();
-        ResponseEntity<?> response = new ResponseEntity<List<Booking>>(bookingList, HttpStatus.OK);
+        List<BookingMainForm> bookingMainFormList = bookingService.getAllBookings();
+        ResponseEntity<?> response = new ResponseEntity<List<BookingMainForm>>(bookingMainFormList, HttpStatus.OK);
 
         return response;
     }
 
-    /**
-     * Gets the bookings based on the user's username
-     * @param username The user's username
-     * @return A response entity of the list of bookings based on the user's username
-     */
-    @GetMapping("getBookings/{username}")
-    public ResponseEntity<?> getUserBookings(@Valid @PathVariable String username) {
-        List<Booking> bookingList = bookingService.getBookingsByUser(username);
-        ResponseEntity<?> response = new ResponseEntity<List<Booking>>(bookingList, HttpStatus.OK);
+    @GetMapping("getBookings/{userTypeAPI}/{idAPI}")
+    public ResponseEntity<?> getCustomerBookings(@Valid @PathVariable String userTypeAPI, @PathVariable String idAPI) {
+        List<BookingMainForm> bookingMainFormList = bookingService.getBookingsForUserById(userTypeAPI, idAPI);
+        ResponseEntity<?> response = new ResponseEntity<List<BookingMainForm>>(bookingMainFormList, HttpStatus.OK);
 
         return response;
     }
+
+    @GetMapping("getBookings/{userTypeAPI}/{idAPI}")
+    public ResponseEntity<?> getEmployeeBookings(@Valid @PathVariable String userTypeAPI, @PathVariable String idAPI) {
+        List<BookingMainForm> bookingMainFormList = bookingService.getBookingsForUserById(userTypeAPI, idAPI);
+        ResponseEntity<?> response = new ResponseEntity<List<BookingMainForm>>(bookingMainFormList, HttpStatus.OK);
+
+        return response;
+    }
+
+//    /**
+//     * Gets the bookings based on the user's username
+//     * @param usernameAPI The user's username
+//     * @return A response entity of the list of bookings based on the user's username
+//     */
+//    @GetMapping("getBookings/{usernameAPI}")
+//    public ResponseEntity<?> getUserBookings(@Valid @PathVariable String usernameAPI) {
+//        List<Booking> bookingList = bookingService.getBookingsByUser(usernameAPI);
+//        ResponseEntity<?> response = new ResponseEntity<List<Booking>>(bookingList, HttpStatus.OK);
+//
+//        return response;
+//    }
 }

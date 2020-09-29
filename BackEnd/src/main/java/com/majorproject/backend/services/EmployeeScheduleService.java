@@ -29,7 +29,7 @@ public class EmployeeScheduleService {
     BServiceRepository bServiceRepository;
 
     // String to Date format
-    private SimpleDateFormat formatterDate = new SimpleDateFormat("dd-MM-yyyy");
+    private SimpleDateFormat formatterDate = new SimpleDateFormat("yyyy-MM-dd");
 
     // String to Time format
     private SimpleDateFormat formatterTime = new SimpleDateFormat("HH:mm");
@@ -114,28 +114,28 @@ public class EmployeeScheduleService {
         List<EmployeeSchedule> employeeScheduleList;
         if(byWeek) { // Get only today till next week
             try {
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 LocalDateTime currentDate = LocalDateTime.now();
                 Date now = formatterDate.parse(currentDate.format(dtf));
                 LocalDateTime currentWeekFromDate = currentDate.plusWeeks(1);
                 Date nextWeekDate = formatterDate.parse(currentWeekFromDate.format(dtf));
                 employeeScheduleList = employeeScheduleRepository.getEmployeeAvailabilityByIdInWeek(employeeId, now, nextWeekDate);
             } catch(Exception e) {
-                    throw new ResponseException(HttpStatus.BAD_REQUEST, "Date Error");
+                throw new ResponseException(HttpStatus.BAD_REQUEST, "Date Error");
             }
 
         } else { // Get all employee availability
             employeeScheduleList = employeeScheduleRepository.getEmployeeAvailabilityById(employeeId);
         }
 
+        if(employeeScheduleList.isEmpty()) {
+            throw new ResponseException(HttpStatus.BAD_REQUEST, "No time available");
+        }
+
         List<EmployeeAvailabilityForm> employeeAvailability = new ArrayList<EmployeeAvailabilityForm>();
 
         for(int i = 0; i < employeeScheduleList.size(); ++i) {
             employeeAvailability.add(new EmployeeAvailabilityForm(employeeScheduleList.get(i)));
-        }
-
-        if(employeeAvailability.size() == 0) {
-            throw new ResponseException(HttpStatus.NO_CONTENT, "No time available");
         }
 
         return employeeAvailability;
@@ -150,7 +150,7 @@ public class EmployeeScheduleService {
         boolean findAllEmployees = false;
         List<EmployeeSchedule> employeeScheduleList;
         List<Object> employeeScheduleTimeList = new ArrayList<Object>();
-        SimpleDateFormat formatterDate = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formatterDate = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat formatterTime = new SimpleDateFormat("HH:mm");
 
         try {
@@ -171,8 +171,8 @@ public class EmployeeScheduleService {
             throw new ResponseException(HttpStatus.BAD_REQUEST, "Date Error");
         }
 
-        if(employeeScheduleList.size() == 0) {
-            throw new ResponseException(HttpStatus.NO_CONTENT, "No services available");
+        if(employeeScheduleList.isEmpty()) {
+            throw new ResponseException(HttpStatus.BAD_REQUEST, "No services available");
         }
 
         if(findAllEmployees) { // find all employees

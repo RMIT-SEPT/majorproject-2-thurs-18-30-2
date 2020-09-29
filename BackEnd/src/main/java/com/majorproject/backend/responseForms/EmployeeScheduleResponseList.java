@@ -4,6 +4,9 @@ import com.majorproject.backend.models.EmployeeSchedule;
 
 import java.util.List;
 
+/**
+ * Class not in used
+ */
 public class EmployeeScheduleResponseList {
     private List<EmployeeScheduleResponseObject> employeeSchedules;
     public EmployeeScheduleResponseList(List<EmployeeSchedule> employeeSchedules) {
