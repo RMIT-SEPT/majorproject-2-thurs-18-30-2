@@ -9,7 +9,8 @@ import ServiceCard from '../components/ServiceCard'
 import EmployeeCard from '../components/EmployeeCard';
 import CardsListPage from '../components/CardsListPage';
 import Profile from '../components/Profile';
-import WorkingTimes from '../components/WorkingTimes';
+import BookingForm from '../components/BookingForm';
+import Schedule from '../components/Schedule';
 
 // This array contains all our routes.
 // In a sense we define our paths globally in this file as an array.
@@ -95,8 +96,12 @@ const router = [
         component : Profile
     },
     {
-        path : "/working-times",
-        component : WorkingTimes
+        path : "/booking-form",
+        component : BookingForm
+    },
+    {
+        path : "/schedule",
+        component : Schedule
     }
 ];
 

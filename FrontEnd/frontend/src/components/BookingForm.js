@@ -73,8 +73,11 @@ const ong = (props) => {
     );
   };
 
+  
 
-class WorkingTimes extends React.Component {
+
+
+class BookingForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -86,7 +89,8 @@ class WorkingTimes extends React.Component {
       service : '0',
       employee : '0',
       startTime : 8,
-      endTime : 18
+      endTime : 18,
+      bookingBuffer : []
     };
 
     this.commitChanges = this.commitChanges.bind(this);
@@ -95,6 +99,27 @@ class WorkingTimes extends React.Component {
     this.changeEditingAppointment = this.changeEditingAppointment.bind(this);
     this.handleChangeService = this.handleChangeService.bind(this);
     this.handleChangeEmployee = this.handleChangeEmployee.bind(this);
+    this.appointmentClickHandler = this.appointmentClickHandler.bind(this);
+    this.appointmentComponent = this.appointmentComponent.bind(this);
+  }
+
+  appointmentComponent(props) {
+    return <Appointments.Appointment {...props} style={{ ...props.style }} onClick={e => this.appointmentClickHandler(e)} onDoubleClick={this.appointmentClickHandler}/>;
+  };
+
+  appointmentClickHandler(appt) {
+    //dos omething
+    console.log(appt.data.id);
+    if(this.state.bookingBuffer.indexOf(appt.data.id) === -1)
+    {
+      this.state.bookingBuffer.push(appt.data.id);
+    }
+    else
+    {
+      var index = this.state.bookingBuffer.indexOf(appt.data.id);
+      this.state.bookingBuffer.splice(index, 1);
+    }
+    console.log(this.state.bookingBuffer);
   }
 
   handleChangeService(event) {
@@ -107,7 +132,6 @@ class WorkingTimes extends React.Component {
     this.setState({
         employee : event.target.value
     });
-    console.log("test");
   }
 
   changeAddedAppointment(addedAppointment) {
@@ -210,7 +234,9 @@ class WorkingTimes extends React.Component {
                     <AllDayPanel />
                     <EditRecurrenceMenu />
                     <ConfirmationDialog />
-                    <Appointments />
+                    <Appointments 
+                      appointmentComponent={this.appointmentComponent}
+                    />
                     <AppointmentTooltip
                         showOpenButton
                         showDeleteButton
@@ -228,4 +254,4 @@ class WorkingTimes extends React.Component {
     );
   }
 }
-export default WorkingTimes;
+export default BookingForm;

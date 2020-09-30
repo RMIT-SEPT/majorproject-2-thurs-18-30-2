@@ -62,13 +62,13 @@ public class BookingController {
         return response;
     }
 
-    @GetMapping("getBookings/{userTypeAPI}/{idAPI}")
-    public ResponseEntity<?> getEmployeeBookings(@Valid @PathVariable String userTypeAPI, @PathVariable String idAPI) {
-        List<BookingMainForm> bookingMainFormList = bookingService.getBookingsForUserById(userTypeAPI, idAPI);
-        ResponseEntity<?> response = new ResponseEntity<List<BookingMainForm>>(bookingMainFormList, HttpStatus.OK);
-
-        return response;
-    }
+//    @GetMapping("getBookings/{userTypeAPI}/{idAPI}")
+//    public ResponseEntity<?> getEmployeeBookings(@Valid @PathVariable String userTypeAPI, @PathVariable String idAPI) {
+//        List<BookingMainForm> bookingMainFormList = bookingService.getBookingsForUserById(userTypeAPI, idAPI);
+//        ResponseEntity<?> response = new ResponseEntity<List<BookingMainForm>>(bookingMainFormList, HttpStatus.OK);
+//
+//        return response;
+//    }
 
 //    /**
 //     * Gets the bookings based on the user's username
