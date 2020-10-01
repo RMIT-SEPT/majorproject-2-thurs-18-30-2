@@ -12,7 +12,6 @@ import {
   ConfirmationDialog,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { appointments } from './appointments';
-import { Form } from 'react-bootstrap';
 
 
 
@@ -139,6 +138,7 @@ class Schedule extends React.Component {
       return { data };
     });
   }
+  // make booking needs customer id, time slot id
 
   render() {
     const {

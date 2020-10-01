@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
 import {
@@ -13,6 +13,7 @@ import {
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { appointments } from './appointments';
 import { Form } from 'react-bootstrap';
+//import '../css/BookingForm.css';
 
 
 
@@ -90,7 +91,8 @@ class BookingForm extends React.Component {
       employee : '0',
       startTime : 8,
       endTime : 18,
-      bookingBuffer : []
+      bookingBuffer : [],
+      style : {backgroundColor: '#FFC107', borderRadius: '8px'}
     };
 
     this.commitChanges = this.commitChanges.bind(this);
@@ -103,23 +105,39 @@ class BookingForm extends React.Component {
     this.appointmentComponent = this.appointmentComponent.bind(this);
   }
 
+  // componentDidUpdate() {
+  //   this.appointmentComponent = (props) => {
+  //     return <Appointments.Appointment {...props} style={ this.state.style } onClick={e => this.appointmentClickHandler(e)} onDoubleClick={e => this.appointmentClickHandler(e)}/>;
+  //   }
+  // }
+
   appointmentComponent(props) {
-    return <Appointments.Appointment {...props} style={{ ...props.style }} onClick={e => this.appointmentClickHandler(e)} onDoubleClick={this.appointmentClickHandler}/>;
+    var [style, setStyle] = useState(this.state.style)
+    var [selected, setSelected] = useState(false)
+    return <Appointments.Appointment {...props} style={ style } onClick={e => {
+      if(selected) {
+        setSelected(false)
+        setStyle({backgroundColor: '#FFC107', borderRadius: '8px'})
+      } else {
+        setSelected(true)
+        setStyle({backgroundColor: '#FF0000', borderRadius: '8px'})
+      }
+      
+      this.appointmentClickHandler(e)}} onDoubleClick={e => this.appointmentClickHandler(e)}/>;
   };
 
   appointmentClickHandler(appt) {
-    //dos omething
     console.log(appt.data.id);
-    if(this.state.bookingBuffer.indexOf(appt.data.id) === -1)
-    {
-      this.state.bookingBuffer.push(appt.data.id);
+    if(appt) {
+      if(this.state.bookingBuffer.indexOf(appt.data.id) === -1) {
+          this.state.bookingBuffer.push(appt.data.id);
+        }
+        else {
+          var index = this.state.bookingBuffer.indexOf(appt.data.id);
+          this.state.bookingBuffer.splice(index, 1);
+        }
+        console.log(this.state.bookingBuffer);
     }
-    else
-    {
-      var index = this.state.bookingBuffer.indexOf(appt.data.id);
-      this.state.bookingBuffer.splice(index, 1);
-    }
-    console.log(this.state.bookingBuffer);
   }
 
   handleChangeService(event) {
@@ -210,7 +228,7 @@ class BookingForm extends React.Component {
                 <Paper>
                     <Scheduler
                     data={data}
-                    height={500}
+                    height={1000}
                     >
                     <ViewState
                         currentDate={currentDate}
@@ -249,7 +267,9 @@ class BookingForm extends React.Component {
                     />
                     </Scheduler>
                 </Paper>
+                
             }
+            
         </React.Fragment>
     );
   }
