@@ -21,7 +21,6 @@ import java.util.Map;
 public class BookingController {
     @Autowired
     private BookingService bookingService;
-
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
@@ -55,15 +54,7 @@ public class BookingController {
     }
 
     @GetMapping("getBookings/{userTypeAPI}/{idAPI}")
-    public ResponseEntity<?> getCustomerBookings(@Valid @PathVariable String userTypeAPI, @PathVariable String idAPI) {
-        List<BookingMainForm> bookingMainFormList = bookingService.getBookingsForUserById(userTypeAPI, idAPI);
-        ResponseEntity<?> response = new ResponseEntity<List<BookingMainForm>>(bookingMainFormList, HttpStatus.OK);
-
-        return response;
-    }
-
-    @GetMapping("getBookings/{userTypeAPI}/{idAPI}")
-    public ResponseEntity<?> getEmployeeBookings(@Valid @PathVariable String userTypeAPI, @PathVariable String idAPI) {
+    public ResponseEntity<?> getUserBookings(@Valid @PathVariable String userTypeAPI, @PathVariable String idAPI) {
         List<BookingMainForm> bookingMainFormList = bookingService.getBookingsForUserById(userTypeAPI, idAPI);
         ResponseEntity<?> response = new ResponseEntity<List<BookingMainForm>>(bookingMainFormList, HttpStatus.OK);
 
