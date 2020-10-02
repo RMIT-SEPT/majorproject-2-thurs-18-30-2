@@ -52,4 +52,22 @@ public class UserService {
 
         return exists;
     }
+
+    public String checkIfUsernameExists(String usernameAPI) {
+        String exists;
+        boolean result = false;
+
+        if(employeeRepository.findByUsername(usernameAPI) != null ||
+                customerRepository.findByUsername(usernameAPI) != null) {
+            result = true;
+        }
+
+        if(result) { // if result is true
+            exists = "true";
+        } else { // if result is false
+            exists = "false";
+        }
+
+        return exists;
+    }
 }

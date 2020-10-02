@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import com.majorproject.backend.models.BService;
 
+import java.util.List;
+
 @Repository
 public interface BServiceRepository extends CrudRepository<BService, Long> {
 
@@ -19,4 +21,7 @@ public interface BServiceRepository extends CrudRepository<BService, Long> {
      */
     @Query(value = "SELECT bs.* FROM BService bs WHERE bs.bservice_id = ?1", nativeQuery = true)
     BService findByBServiceId(long id);
+
+    @Query(value = "SELECT bs.* FROM BService bs", nativeQuery = true)
+    List<BService> findAllBServices();
 }

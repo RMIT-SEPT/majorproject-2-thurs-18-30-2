@@ -4,7 +4,6 @@ import com.majorproject.backend.exceptions.ResponseException;
 import com.majorproject.backend.models.*;
 import com.majorproject.backend.repositories.*;
 import com.majorproject.backend.responseForms.BookingMainForm;
-import com.majorproject.backend.responseForms.EmployeeAvailabilityForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,6 +21,9 @@ public class BookingService {
     private CustomerRepository customerRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    private IdErrorService idErrorService = new IdErrorService();
+    private ListEmptyErrorService listEmptyErrorService = new ListEmptyErrorService();
 
     /**
      * Creates the booking
@@ -45,13 +47,9 @@ public class BookingService {
 
     public List<BookingMainForm> getAllBookings() {
         List<Booking> bookingList = bookingRepository.getAllBookings();
-
-        // If there are no bookings
-        if(bookingList.isEmpty()) {
-            throw new ResponseException(HttpStatus.BAD_REQUEST, "There are no bookings.");
-        }
-
         List<BookingMainForm> bookingMainFormList = new ArrayList<BookingMainForm>();
+
+        listEmptyErrorService.checkListEmpty(bookingList, "Booking");
 
         for(int i = 0; i < bookingList.size(); ++i) {
             bookingMainFormList.add(new BookingMainForm(bookingList.get(i)));
@@ -61,57 +59,21 @@ public class BookingService {
     }
 
     public List<BookingMainForm> getBookingsForUserById(String userTypeAPI, String idAPI) {
-        List<BookingMainForm> bookingMainFormList;
-        Long id;
-
-        try {
-            id = Long.parseLong(idAPI);
-        } catch(Exception e) {
-            throw new ResponseException(HttpStatus.BAD_REQUEST, "ID error");
-        }
-
-        try {
-            if (userTypeAPI.equals("customer")) { // if user is a customer
-                bookingMainFormList = getBookingsForCustomerById(id);
-            } else { // if user is an employee
-                bookingMainFormList = getBookingsForEmployeeById(id);
-            }
-        } catch(Exception e) {
-            throw new ResponseException(HttpStatus.BAD_REQUEST, "There are no bookings.");
-        }
-
-        return bookingMainFormList;
-    }
-
-    public List<BookingMainForm> getBookingsForCustomerById(Long customerId) {
-        List<Booking> bookingList = null;
+        List<Booking> bookingList = new ArrayList<Booking>();
         List<BookingMainForm> bookingMainFormList = new ArrayList<BookingMainForm>();
 
-        bookingList = bookingRepository.getAllCustomerBookings(customerId);
+        Long userId = idErrorService.idStringToLong(idAPI);
 
-        if(bookingList.isEmpty()) {
-            throw new ResponseException(HttpStatus.BAD_REQUEST, "There are no bookings");
+        if (userTypeAPI.equals("customer")) { // if user is a customer
+            bookingList = bookingRepository.getAllCustomerBookings(userId);
+        } else { // if user is an employee
+            bookingList = bookingRepository.getAllEmployeeBookings(userId);
         }
+
+        listEmptyErrorService.checkListEmpty(bookingList, "Booking");
 
         for(int i = 0; i < bookingList.size(); ++i) {
             bookingMainFormList.add(new BookingMainForm(bookingList.get(i)));
-        }
-
-        return bookingMainFormList;
-    }
-
-    public List<BookingMainForm> getBookingsForEmployeeById(Long employeeId) {
-        List<Booking> bookingList = null;
-        List<BookingMainForm> bookingMainFormList = new ArrayList<BookingMainForm>();
-
-        bookingList = bookingRepository.getAllEmployeeBookings(employeeId);
-
-        if(bookingList.isEmpty()) {
-            throw new ResponseException(HttpStatus.BAD_REQUEST, "There are no bookings");
-        }
-
-        for(int i = 0; i < bookingList.size(); ++i) {
-                bookingMainFormList.add(new BookingMainForm(bookingList.get(i)));
         }
 
         return bookingMainFormList;

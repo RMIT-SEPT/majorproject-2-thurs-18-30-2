@@ -15,6 +15,8 @@ public class CustomerService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    private IdErrorService idErrorService = new IdErrorService();
+
     /**
      * Creates a customer and adds it to the database
      * @param customer The customer
@@ -47,14 +49,7 @@ public class CustomerService {
     }
 
     public Customer editCustomer(String idAPI, Customer customer) {
-        Long customerId;
-
-        try {
-            customerId = Long.parseLong(idAPI);
-        } catch(Exception e) {
-            throw new ResponseException(HttpStatus.BAD_REQUEST, "ID error");
-        }
-
+        Long customerId = idErrorService.idStringToLong(idAPI);
         Customer customerEdit = customerRepository.findByCustomerId(customerId);
 
         // Seting customer details

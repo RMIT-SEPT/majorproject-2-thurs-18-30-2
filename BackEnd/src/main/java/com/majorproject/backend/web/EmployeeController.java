@@ -61,8 +61,7 @@ public class EmployeeController {
      */
     @GetMapping("/getEmployeeById/{idAPI}")
     public ResponseEntity<?> getEmployeeById(@Valid @PathVariable String idAPI) {
-        long employeeId = Long.parseLong(idAPI);
-        Employee employee = employeeService.getEmployeeById(employeeId);
+        Employee employee = employeeService.getEmployeeById(idAPI);
         return new ResponseEntity<Employee>(employee, HttpStatus.OK);
     }
 
