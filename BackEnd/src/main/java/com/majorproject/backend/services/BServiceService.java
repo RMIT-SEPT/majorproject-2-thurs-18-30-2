@@ -4,11 +4,13 @@ import com.majorproject.backend.models.BService;
 import com.majorproject.backend.repositories.BServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 
 @org.springframework.stereotype.Service
 public class BServiceService {
     @Autowired
-    private BServiceRepository BServiceRepository;
+    private BServiceRepository bServiceRepository;
 
     /**
      * Creates the bService
@@ -17,8 +19,12 @@ public class BServiceService {
      */
     public BService saveOrUpdateBService(BService bService) {
         BService bServiceNew = null;
-        bServiceNew = BServiceRepository.save(bService);
+        bServiceNew = bServiceRepository.save(bService);
 
         return bServiceNew;
+    }
+
+    public List<BService> getAllBServices() {
+        return bServiceRepository.findAllBServices();
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/bService")
@@ -41,5 +42,11 @@ public class BServiceController {
         }
 
         return response;
+    }
+
+    @GetMapping("/getAllBServices")
+    public ResponseEntity<?> getAllBServices() {
+        List<BService> bServiceList = bServiceService.getAllBServices();
+        return new ResponseEntity<List<BService>>(bServiceList, HttpStatus.OK);
     }
 }

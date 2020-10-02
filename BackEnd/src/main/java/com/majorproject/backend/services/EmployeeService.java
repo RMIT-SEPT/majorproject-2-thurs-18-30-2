@@ -19,6 +19,10 @@ public class EmployeeService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    private ListEmptyErrorService listEmptyErrorService = new ListEmptyErrorService();
+    private ObjectEmptyErrorService objectEmptyErrorService = new ObjectEmptyErrorService();
+    private IdErrorService idErrorService = new IdErrorService();
+
     /**
      * Creates an employee and saves it to the database
      * @param employee The employee
@@ -55,16 +59,11 @@ public class EmployeeService {
         return employee;
     }
 
-    /**
-     * Returns the employee based on the employeeId
-     * @param employeeId The employeeId specified by the user
-     * @return The employee if the employee with that employeeId exists
-     */
-    public Employee getEmployeeById(long employeeId) {
+    public Employee getEmployeeById(String idAPI) {
+        Long employeeId = idErrorService.idStringToLong(idAPI);
         Employee employee = employeeRepository.findByEmployeeId(employeeId);
-        if(employee == null) {
-            throw new ResponseException(HttpStatus.BAD_REQUEST, "Employee does not exist");
-        }
+
+        objectEmptyErrorService.checkIfNull(employee, "Employee does not exist");
 
         return employee;
     }
@@ -75,22 +74,13 @@ public class EmployeeService {
      */
     public List<Employee> getAllEmployees() {
         List<Employee> employeeList = employeeRepository.findAllEmployees();
-        if(employeeList.isEmpty()) {
-            throw new ResponseException(HttpStatus.BAD_REQUEST, "No employees exist");
-        }
+        listEmptyErrorService.checkListEmpty(employeeList, "Employee");
 
         return employeeList;
     }
 
     public Employee editEmployee(String idAPI, Employee employee) {
-        Long employeeId;
-
-        try {
-            employeeId = Long.parseLong(idAPI);
-        } catch(Exception e) {
-            throw new ResponseException(HttpStatus.BAD_REQUEST, "ID error");
-        }
-
+        Long employeeId = idErrorService.idStringToLong(idAPI);
         Employee employeeEdit = employeeRepository.findByEmployeeId(employeeId);
 
         // Seting employee details
