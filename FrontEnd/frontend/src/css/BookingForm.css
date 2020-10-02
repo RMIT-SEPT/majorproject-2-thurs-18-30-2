@@ -1,3 +1,7 @@
-.apptCell {
-    border: 5px solid red;
+#submitForm {
+    margin-top: 10px;
+    margin-right: 10px;
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
 }

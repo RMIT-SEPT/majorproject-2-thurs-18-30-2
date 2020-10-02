@@ -12,8 +12,8 @@ import {
   ConfirmationDialog,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { appointments } from './appointments';
-import { Form } from 'react-bootstrap';
-//import '../css/BookingForm.css';
+import { Form, Button } from 'react-bootstrap';
+import '../css/BookingForm.css';
 
 
 
@@ -103,6 +103,7 @@ class BookingForm extends React.Component {
     this.handleChangeEmployee = this.handleChangeEmployee.bind(this);
     this.appointmentClickHandler = this.appointmentClickHandler.bind(this);
     this.appointmentComponent = this.appointmentComponent.bind(this);
+    this.makeBooking = this.makeBooking.bind(this);
   }
 
   // componentDidUpdate() {
@@ -110,6 +111,9 @@ class BookingForm extends React.Component {
   //     return <Appointments.Appointment {...props} style={ this.state.style } onClick={e => this.appointmentClickHandler(e)} onDoubleClick={e => this.appointmentClickHandler(e)}/>;
   //   }
   // }
+  makeBooking() {
+    //this.state.bookingBuffer.forEach(element => api call to make booking);
+  }
 
   appointmentComponent(props) {
     var [style, setStyle] = useState(this.state.style)
@@ -117,10 +121,10 @@ class BookingForm extends React.Component {
     return <Appointments.Appointment {...props} style={ style } onClick={e => {
       if(selected) {
         setSelected(false)
-        setStyle({backgroundColor: '#FFC107', borderRadius: '8px'})
+        setStyle({backgroundColor: '#FFC107', borderColor: '#FFC107', borderRadius: '8px'})
       } else {
         setSelected(true)
-        setStyle({backgroundColor: '#FF0000', borderRadius: '8px'})
+        setStyle({backgroundColor: '#FFC107', borderColor: '#FF0000', borderRadius: '8px'})
       }
       
       this.appointmentClickHandler(e)}} onDoubleClick={e => this.appointmentClickHandler(e)}/>;
@@ -189,7 +193,6 @@ class BookingForm extends React.Component {
     return (
         <React.Fragment>
             <br></br>
-            <br></br>
             <Form.Group controlId="ServiceSelection">
                 <Form.Label>Select the service you would like to make a booking for</Form.Label>
                 {/* Insert api call here and map to see all services that are available (maybe hardcode) | <br> are for testing purposes only*/}
@@ -203,8 +206,6 @@ class BookingForm extends React.Component {
                     <option value='5'>5</option>
                 </Form.Control>
             </Form.Group>
-            <br></br>
-            <br></br>
             <br></br>
 
             {this.state.service !== '0' &&
@@ -222,52 +223,52 @@ class BookingForm extends React.Component {
                 </Form.Group>   
             }
             <br></br>
-            <br></br>
-            <br></br>
             {this.state.employee !== '0' &&
-                <Paper>
-                    <Scheduler
-                    data={data}
-                    height={1000}
-                    >
-                    <ViewState
-                        currentDate={currentDate}
-                    />
-                    <EditingState
-                        onCommitChanges={this.commitChanges}
+                <React.Fragment>
+                  <Paper>
+                      <Scheduler
+                      data={data}
+                      height={700}
+                      >
+                      <ViewState
+                          currentDate={currentDate}
+                      />
+                      <EditingState
+                          onCommitChanges={this.commitChanges}
 
-                        addedAppointment={addedAppointment}
-                        onAddedAppointmentChange={this.changeAddedAppointment}
+                          addedAppointment={addedAppointment}
+                          onAddedAppointmentChange={this.changeAddedAppointment}
 
-                        appointmentChanges={appointmentChanges}
-                        onAppointmentChangesChange={this.changeAppointmentChanges}
+                          appointmentChanges={appointmentChanges}
+                          onAppointmentChangesChange={this.changeAppointmentChanges}
 
-                        editingAppointment={editingAppointment}
-                        onEditingAppointmentChange={this.changeEditingAppointment}
-                    />
-                    <WeekView
-                        startDayHour={this.state.startTime}
-                        endDayHour={this.state.endTime}
-                    />
-                    <AllDayPanel />
-                    <EditRecurrenceMenu />
-                    <ConfirmationDialog />
-                    <Appointments 
-                      appointmentComponent={this.appointmentComponent}
-                    />
-                    <AppointmentTooltip
-                        showOpenButton
-                        showDeleteButton
-                    />
-                    <AppointmentForm 
-                        basicLayoutComponent={BasicLayout}
-                        textEditorComponent={TextEditor}
-                        selectComponent={ong}
-                        messages={messages}
-                    />
-                    </Scheduler>
-                </Paper>
-                
+                          editingAppointment={editingAppointment}
+                          onEditingAppointmentChange={this.changeEditingAppointment}
+                      />
+                      <WeekView
+                          startDayHour={this.state.startTime}
+                          endDayHour={this.state.endTime}
+                      />
+                      <AllDayPanel />
+                      <EditRecurrenceMenu />
+                      <ConfirmationDialog />
+                      <Appointments 
+                        appointmentComponent={this.appointmentComponent}
+                      />
+                      <AppointmentTooltip
+                          showOpenButton
+                          showDeleteButton
+                      />
+                      <AppointmentForm 
+                          basicLayoutComponent={BasicLayout}
+                          textEditorComponent={TextEditor}
+                          selectComponent={ong}
+                          messages={messages}
+                      />
+                      </Scheduler>
+                  </Paper>
+                  <Button id="submitForm" variant="primary">Primary</Button>
+                </React.Fragment>
             }
             
         </React.Fragment>
