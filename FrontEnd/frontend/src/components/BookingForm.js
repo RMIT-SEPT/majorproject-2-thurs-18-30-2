@@ -103,7 +103,7 @@ class BookingForm extends React.Component {
     this.handleChangeEmployee = this.handleChangeEmployee.bind(this);
     this.appointmentClickHandler = this.appointmentClickHandler.bind(this);
     this.appointmentComponent = this.appointmentComponent.bind(this);
-    this.makeBooking = this.makeBooking.bind(this);
+    this.makeBookings = this.makeBookings.bind(this);
   }
 
   // componentDidUpdate() {
@@ -111,8 +111,9 @@ class BookingForm extends React.Component {
   //     return <Appointments.Appointment {...props} style={ this.state.style } onClick={e => this.appointmentClickHandler(e)} onDoubleClick={e => this.appointmentClickHandler(e)}/>;
   //   }
   // }
-  makeBooking() {
-    //this.state.bookingBuffer.forEach(element => api call to make booking);
+  makeBookings() {
+    this.state.bookingBuffer.forEach(element => console.log(element)/*api call to make booking*/);
+    
   }
 
   appointmentComponent(props) {
@@ -131,7 +132,6 @@ class BookingForm extends React.Component {
   };
 
   appointmentClickHandler(appt) {
-    console.log(appt.data.id);
     if(appt) {
       if(this.state.bookingBuffer.indexOf(appt.data.id) === -1) {
           this.state.bookingBuffer.push(appt.data.id);
@@ -140,7 +140,6 @@ class BookingForm extends React.Component {
           var index = this.state.bookingBuffer.indexOf(appt.data.id);
           this.state.bookingBuffer.splice(index, 1);
         }
-        console.log(this.state.bookingBuffer);
     }
   }
 
@@ -267,7 +266,7 @@ class BookingForm extends React.Component {
                       />
                       </Scheduler>
                   </Paper>
-                  <Button id="submitForm" variant="primary">Primary</Button>
+                  <Button id="submitForm" variant="primary" onClick={this.makeBookings}>Make Bookings</Button>
                 </React.Fragment>
             }
             
