@@ -1,8 +1,10 @@
 package com.majorproject.backend.web;
 
+import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.models.EmployeeSchedule;
 import com.majorproject.backend.responseForms.EmployeeScheduleAvailabilityForm;
 import com.majorproject.backend.services.EmployeeScheduleService;
+import com.majorproject.backend.services.ListWithTimeboundService;
 import com.majorproject.backend.services.MapValidationErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,12 +27,6 @@ public class EmployeeScheduleController {
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
-    /**
-     * Creates the employee schedule
-     * @param request A map that contains the details of the request
-     * @param result BindingResult
-     * @return A response entity of the employee schedule
-     */
     @PostMapping("/create")
     public ResponseEntity<?> createEmployeeSchedule(@Valid @RequestBody Map<String, String> request, BindingResult result) {
         ResponseEntity<?> response;
@@ -40,6 +36,7 @@ public class EmployeeScheduleController {
             response = errorMap;
         } else {
             EmployeeSchedule employeeScheduleNew = employeeScheduleService.saveEmployeeSchedule(request);
+//            EmployeeSchedule employeeScheduleNew = employeeScheduleService.saveOrUpdateEmployeeSchedule(employeeSchedule);
             response = new ResponseEntity<EmployeeSchedule>(employeeScheduleNew, HttpStatus.CREATED);
         }
 
@@ -48,12 +45,14 @@ public class EmployeeScheduleController {
 
     // Finds all employee schedule based on time requested by user
     // (Method done)
-    @GetMapping("/viewSchedulesWithinTime/{dateAPI}/{startTimeAPI}/{endTimeAPI}")
+    @GetMapping("/getSchedules/time/{dateAPI}/{startTimeAPI}/{endTimeAPI}")
     public ResponseEntity<?> viewSchedulesWithinTime(@Valid @PathVariable String dateAPI,
                                                      @PathVariable String startTimeAPI,
                                                      @PathVariable String endTimeAPI) {
-        List<EmployeeScheduleAvailabilityForm> employeeScheduleList = employeeScheduleService.getSchedulesWithinTime(dateAPI, startTimeAPI, endTimeAPI);
-        return new ResponseEntity<List<EmployeeScheduleAvailabilityForm>>(employeeScheduleList, HttpStatus.OK);
+//        List<EmployeeScheduleAvailabilityForm> employeeScheduleList = employeeScheduleService.getSchedulesWithinTime(dateAPI, startTimeAPI, endTimeAPI);
+//        return new ResponseEntity<List<EmployeeScheduleAvailabilityForm>>(employeeScheduleList, HttpStatus.OK);
+        ListWithTimeboundService listWithTimeboundService = employeeScheduleService.getSchedulesWithinTime(dateAPI, startTimeAPI, endTimeAPI);
+        return new ResponseEntity<ListWithTimeboundService>(listWithTimeboundService, HttpStatus.OK);
     }
 
 //    // This method is to find all employee schedules based on an employee {id}
@@ -73,18 +72,22 @@ public class EmployeeScheduleController {
 
     // New method for /viewEmployeeAvailability, except it shows all schedules (availability = true and false) based on employee Id
     // (Method done)
-    @GetMapping("/viewSchedules/{employeeIdAPI}")
+    @GetMapping("/getSchedules/employee/{employeeIdAPI}")
     public ResponseEntity<?> viewSchedulesByEmployeeId(@Valid @PathVariable String employeeIdAPI) {
-        List<EmployeeScheduleAvailabilityForm> employeeScheduleAvailabilityList = employeeScheduleService.getSchedulesByEmployeeId(employeeIdAPI, "all");
-        return new ResponseEntity<List<EmployeeScheduleAvailabilityForm>>(employeeScheduleAvailabilityList, HttpStatus.OK);
+//        List<EmployeeScheduleAvailabilityForm> employeeScheduleAvailabilityList = employeeScheduleService.getSchedulesByEmployeeId(employeeIdAPI, "all");
+//        return new ResponseEntity<List<EmployeeScheduleAvailabilityForm>>(employeeScheduleAvailabilityList, HttpStatus.OK);
+        ListWithTimeboundService listWithTimeboundService = employeeScheduleService.getSchedulesByEmployeeId(employeeIdAPI, "all");
+        return new ResponseEntity<ListWithTimeboundService>(listWithTimeboundService, HttpStatus.OK);
     }
 
     // New method for /viewEmployeeAvailability, except it shows only available schedules (availability = true) based on employee Id
     // (Method done)
-    @GetMapping("/viewSchedules/available/{employeeIdAPI}")
+    @GetMapping("/getSchedules/employee/available/{employeeIdAPI}")
     public ResponseEntity<?> viewSchedulesByEmployeeIdByAvailable(@Valid @PathVariable String employeeIdAPI) {
-        List<EmployeeScheduleAvailabilityForm> employeeScheduleAvailabilityList = employeeScheduleService.getSchedulesByEmployeeId(employeeIdAPI, "byAvailable");
-        return new ResponseEntity<List<EmployeeScheduleAvailabilityForm>>(employeeScheduleAvailabilityList, HttpStatus.OK);
+//        List<EmployeeScheduleAvailabilityForm> employeeScheduleAvailabilityList = employeeScheduleService.getSchedulesByEmployeeId(employeeIdAPI, "byAvailable");
+//        return new ResponseEntity<List<EmployeeScheduleAvailabilityForm>>(employeeScheduleAvailabilityList, HttpStatus.OK);
+        ListWithTimeboundService listWithTimeboundService = employeeScheduleService.getSchedulesByEmployeeId(employeeIdAPI, "byAvailable");
+        return new ResponseEntity<ListWithTimeboundService>(listWithTimeboundService, HttpStatus.OK);
     }
 
 //    // This method is to find all employee schedules from today to next week based on employee {id}
@@ -105,11 +108,28 @@ public class EmployeeScheduleController {
     // New method for /viewEmployeeAvailabilityWeek
     // Only takes in employeeId and the Date (from front end)
     // (Method done)
-    @GetMapping("/viewSchedules/week/{dateAPI}/{employeeIdAPI}")
-    public ResponseEntity<?> viewSchedulesByEmployeeIdByWeek(@Valid @PathVariable String dateAPI,
-                                                             @PathVariable String employeeIdAPI) {
-        List<EmployeeScheduleAvailabilityForm> employeeScheduleAvailabilityList = employeeScheduleService.getSchedulesByEmployeeIdAndDate(employeeIdAPI, dateAPI);
-        return new ResponseEntity<List<EmployeeScheduleAvailabilityForm>>(employeeScheduleAvailabilityList, HttpStatus.OK);
+    @GetMapping("/getSchedules/week/{employeeIdAPI}/{dateAPI}/{weekAPI}")
+    public ResponseEntity<?> viewSchedulesByEmployeeIdByWeek(@Valid @PathVariable String employeeIdAPI,
+                                                             @PathVariable String dateAPI, @PathVariable String weekAPI) {
+//        List<EmployeeScheduleAvailabilityForm> employeeScheduleAvailabilityList = employeeScheduleService.getSchedulesByEmployeeIdAndDate(employeeIdAPI, dateAPI);
+//        return new ResponseEntity<List<EmployeeScheduleAvailabilityForm>>(employeeScheduleAvailabilityList, HttpStatus.OK);
+        ListWithTimeboundService listWithTimeboundService = employeeScheduleService.getSchedulesByEmployeeIdAndDate(employeeIdAPI, dateAPI, weekAPI);
+        return new ResponseEntity<ListWithTimeboundService>(listWithTimeboundService, HttpStatus.OK);
+    }
+
+    @PutMapping("/editSchedule/{scheduleIdAPI}")
+    public ResponseEntity<?> editSchedule(@Valid @PathVariable String scheduleIdAPI, @RequestBody Map<String, String> request, BindingResult result) {
+        ResponseEntity<?> response;
+        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
+
+        if(errorMap != null) {
+            response = errorMap;
+        } else {
+            EmployeeSchedule employeeScheduleEdit = employeeScheduleService.editSchedule(scheduleIdAPI, request);
+            response = new ResponseEntity<EmployeeSchedule>(employeeScheduleEdit, HttpStatus.OK);
+        }
+
+        return response;
     }
 
     /*** Future code ***/

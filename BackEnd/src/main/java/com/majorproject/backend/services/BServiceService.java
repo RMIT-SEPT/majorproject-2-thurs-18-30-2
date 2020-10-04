@@ -25,6 +25,6 @@ public class BServiceService {
     }
 
     public List<BService> getAllBServices() {
-        return bServiceRepository.findAllBServices();
+        return bServiceRepository.getAllBServices();
     }
 }

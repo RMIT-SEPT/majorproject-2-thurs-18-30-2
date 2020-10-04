@@ -20,8 +20,8 @@ public interface BServiceRepository extends CrudRepository<BService, Long> {
      * @return A bService if it exists, otherwise null
      */
     @Query(value = "SELECT bs.* FROM BService bs WHERE bs.bservice_id = ?1", nativeQuery = true)
-    BService findByBServiceId(long id);
+    BService getBServiceById(long id);
 
     @Query(value = "SELECT bs.* FROM BService bs", nativeQuery = true)
-    List<BService> findAllBServices();
+    List<BService> getAllBServices();
 }

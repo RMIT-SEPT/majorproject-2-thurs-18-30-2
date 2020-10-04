@@ -22,8 +22,8 @@ public class EmployeeSchedule {
 
 //    @ManyToOne(cascade = CascadeType.ALL)
     @ManyToOne
-    @JoinColumn(name = "service_id")
-    @NotNull(message = "Service Id required")
+    @JoinColumn(name = "bservice_id")
+    @NotNull(message = "BService Id required")
     private BService bService;
 
     @Basic
@@ -41,6 +41,7 @@ public class EmployeeSchedule {
 //    @Temporal(TemporalType.DATE)
     @NotNull(message = "End time required")
     private Date endTime;
+
     @Column(name = "availability")
     private boolean availability;
 

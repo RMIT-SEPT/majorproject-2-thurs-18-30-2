@@ -16,7 +16,7 @@ public class BookingService {
     @Autowired
     private BookingRepository bookingRepository;
     @Autowired
-    private EmployeeScheduleRepository employeeScehduleRepository;
+    private EmployeeScheduleRepository employeeScheduleRepository;
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
@@ -32,16 +32,18 @@ public class BookingService {
      */
     public Booking saveOrUpdateBooking(Booking booking) {
         try {
-            Customer customer = customerRepository.findById(booking.getCustomer().getId()).get();
-            booking.setCustomer(customer);
+//            Customer customer = customerRepository.findById(booking.getCustomer().getId()).get();
+//            booking.setCustomer(customer);
 
-            EmployeeSchedule employeeSchedule = employeeScehduleRepository.findById(booking.getEmployeeSchedule().getId()).get();
-            booking.setEmployeeSchedule(employeeSchedule);
-            employeeSchedule.setAvailability(false);
+//            EmployeeSchedule employeeSchedule = employeeScheduleRepository.findById(booking.getEmployeeSchedule().getId()).get();
+//            booking.setEmployeeSchedule(employeeSchedule);
+//            employeeSchedule.setAvailability(false);
+            booking.getEmployeeSchedule().setAvailability(false);
 
         } catch (Exception e) {
             throw new ResponseException(HttpStatus.NOT_ACCEPTABLE, "Customer, employee or service does not exist");
         }
+
         return bookingRepository.save(booking);
     }
 
