@@ -60,6 +60,15 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
             "ORDER BY es.date", nativeQuery = true)
     List<EmployeeSchedule> getEmployeeScheduleByBServiceId(long bServiceId);
 
+    @Query(value = "SELECT es.* " +
+            "FROM Employee_Schedule es, BService bs " +
+            "WHERE es.bservice_id = bs.bservice_id AND " +
+            "bs.bservice_id = ?1 AND " +
+            "es.date >= ?2 AND " +
+            "es.start_time >= ?3 " +
+            "ORDER BY es.date", nativeQuery = true)
+    List<EmployeeSchedule> getEmployeeScheduleByBServiceIdAndNow(long bServiceId, Date date, Date currTime);
+
     /**
      * This query returns a list of employee schedules that are based on the employee's id,
      * today's date and next week's date

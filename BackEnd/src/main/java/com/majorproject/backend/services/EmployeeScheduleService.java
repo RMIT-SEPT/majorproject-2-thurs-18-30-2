@@ -8,6 +8,7 @@ import com.majorproject.backend.repositories.EmployeeRepository;
 import com.majorproject.backend.repositories.EmployeeScheduleRepository;
 import com.majorproject.backend.repositories.BServiceRepository;
 import com.majorproject.backend.responseForms.EmployeeScheduleAvailabilityForm;
+import com.majorproject.backend.responseForms.EmployeeScheduleServicesAndDateForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -119,8 +120,8 @@ public class EmployeeScheduleService {
         List<EmployeeScheduleAvailabilityForm> employeeScheduleAvailabilityList = new ArrayList<EmployeeScheduleAvailabilityForm>();
 
         Date date = dateErrorService.convertingDateType(dateAPI, "date");
-        Date startTime = dateErrorService.convertingDateType(startTimeAPI, "startTime");
-        Date endTime = dateErrorService.convertingDateType(endTimeAPI, "endTime");
+        Date startTime = dateErrorService.convertingDateType(startTimeAPI, "time");
+        Date endTime = dateErrorService.convertingDateType(endTimeAPI, "time");
 
         employeeScheduleList = employeeScheduleRepository.findSchedulesByDateAndTime(date, startTime, endTime);
         listEmptyErrorService.checkListEmpty(employeeScheduleList, "Employee Schedule");
@@ -203,11 +204,29 @@ public class EmployeeScheduleService {
 
     public List<EmployeeScheduleAvailabilityForm> convertToAvailabilityList(List<EmployeeSchedule> listOld,
                                                                             List<EmployeeScheduleAvailabilityForm> listNew) {
-        for(int i = 0; i <listOld.size(); ++i) {
+        for(int i = 0; i < listOld.size(); ++i) {
             listNew.add(new EmployeeScheduleAvailabilityForm(listOld.get(i)));
         }
 
         return listNew;
+    }
+
+    public List<EmployeeScheduleServicesAndDateForm> getSchedulesByBServiceIdAndNow(String bServiceIdAPI, String dateAPI, String currTimeAPI) {
+        List<EmployeeSchedule> employeeScheduleList = new ArrayList<EmployeeSchedule>();
+        List<EmployeeScheduleServicesAndDateForm> employeeScheduleServicesAndDateFormList = new ArrayList<EmployeeScheduleServicesAndDateForm>();
+
+        long bServiceId = idErrorService.idStringToLong(bServiceIdAPI);
+        Date date = dateErrorService.convertingDateType(dateAPI, "date");
+        Date currTime = dateErrorService.convertingDateType(currTimeAPI, "time");
+
+        employeeScheduleList = employeeScheduleRepository.getEmployeeScheduleByBServiceIdAndNow(bServiceId, date, currTime);
+        listEmptyErrorService.checkListEmpty(employeeScheduleList, "Employee Schedule");
+
+        for(int i = 0; i < employeeScheduleList.size(); ++i) {
+            employeeScheduleServicesAndDateFormList.add(new EmployeeScheduleServicesAndDateForm(employeeScheduleList.get(i)));
+        }
+
+        return employeeScheduleServicesAndDateFormList;
     }
 
     public EmployeeSchedule editSchedule(String scheduleIdAPI, Map<String, String> request) {
@@ -226,10 +245,10 @@ public class EmployeeScheduleService {
         Date date = dateErrorService.convertingDateType(request.get("date"), "date");
         employeeScheduleEdit.setDate(date);
 
-        Date startTime = dateErrorService.convertingDateType(request.get("startTime"), "startTime");
+        Date startTime = dateErrorService.convertingDateType(request.get("startTime"), "time");
         employeeScheduleEdit.setStartTime(startTime);
 
-        Date endTime = dateErrorService.convertingDateType(request.get("endTime"), "endTime");
+        Date endTime = dateErrorService.convertingDateType(request.get("endTime"), "time");
         employeeScheduleEdit.setEndTime(endTime);
 
         boolean availability = Boolean.parseBoolean(request.get("availability"));

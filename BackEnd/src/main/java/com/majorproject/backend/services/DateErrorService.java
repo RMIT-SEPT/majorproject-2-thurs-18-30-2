@@ -20,11 +20,14 @@ public class DateErrorService {
         try {
              if(dateType.equals("date")) {
                  date = dateStringToDate(variableAPI);
-             } else if(dateType.equals("startTime")) {
-                 date = startTimeStringToDate(variableAPI);
-             } else { // if(dateType.equals("endTime"))
-                 date = endTimeStringToDate(variableAPI);
+             } else { // if(dateType.equals("time"))
+                 date = timeStringToDate(variableAPI);
              }
+//             } else if(dateType.equals("startTime")) {
+//                 date = startTimeStringToDate(variableAPI);
+//             } else { // if(dateType.equals("endTime"))
+//                 date = endTimeStringToDate(variableAPI);
+//             }
         } catch (Exception e) {
             throw new ResponseException(HttpStatus.BAD_REQUEST, "Date Error");
         }
@@ -37,13 +40,18 @@ public class DateErrorService {
         return date;
     }
 
-    public Date startTimeStringToDate(String startTimeAPI) throws ParseException {
-        Date startTime = formatterTime.parse(startTimeAPI);
-        return startTime;
-    }
+//    public Date startTimeStringToDate(String startTimeAPI) throws ParseException {
+//        Date startTime = formatterTime.parse(startTimeAPI);
+//        return startTime;
+//    }
+//
+//    public Date endTimeStringToDate(String endTimeAPI) throws ParseException {
+//        Date endTime = formatterTime.parse(endTimeAPI);
+//        return endTime;
+//    }
 
-    public Date endTimeStringToDate(String endTimeAPI) throws ParseException {
-        Date endTime = formatterTime.parse(endTimeAPI);
-        return endTime;
+    public Date timeStringToDate(String timeAPI) throws ParseException {
+        Date time = formatterTime.parse(timeAPI);
+        return time;
     }
 }

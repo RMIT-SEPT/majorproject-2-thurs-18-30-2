@@ -3,6 +3,7 @@ package com.majorproject.backend.web;
 import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.models.EmployeeSchedule;
 import com.majorproject.backend.responseForms.EmployeeScheduleAvailabilityForm;
+import com.majorproject.backend.responseForms.EmployeeScheduleServicesAndDateForm;
 import com.majorproject.backend.services.EmployeeScheduleService;
 import com.majorproject.backend.services.ListWithTimeboundService;
 import com.majorproject.backend.services.MapValidationErrorService;
@@ -115,6 +116,13 @@ public class EmployeeScheduleController {
 //        return new ResponseEntity<List<EmployeeScheduleAvailabilityForm>>(employeeScheduleAvailabilityList, HttpStatus.OK);
         ListWithTimeboundService listWithTimeboundService = employeeScheduleService.getSchedulesByEmployeeIdAndDate(employeeIdAPI, dateAPI, weekAPI);
         return new ResponseEntity<ListWithTimeboundService>(listWithTimeboundService, HttpStatus.OK);
+    }
+
+    @GetMapping("/getBServices/{bServiceIdAPI}/{dateAPI}/{timeAPI}")
+    public ResponseEntity<?> viewBServicesFromToday(@Valid @PathVariable String bServiceIdAPI,
+                                                    @PathVariable String dateAPI, @PathVariable String timeAPI) {
+        List<EmployeeScheduleServicesAndDateForm> employeeScheduleServicesAndDateFormList = employeeScheduleService.getSchedulesByBServiceIdAndNow(bServiceIdAPI, dateAPI, timeAPI);
+        return new ResponseEntity<List<EmployeeScheduleServicesAndDateForm>>(employeeScheduleServicesAndDateFormList, HttpStatus.OK);
     }
 
     @PutMapping("/editSchedule/{scheduleIdAPI}")
