@@ -1,0 +1,11 @@
+version: '3'
+services:
+  react-docker-compose-app-container:
+    image: react-docker-compose-app:1
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - /data/react-docker-compose-app
+    ports:
+      - "3000:3000"
