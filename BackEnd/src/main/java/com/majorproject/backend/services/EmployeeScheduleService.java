@@ -134,33 +134,34 @@ public class EmployeeScheduleService {
             throw new ResponseException(HttpStatus.BAD_REQUEST, "Duplicated schedule");
         }
 
-            // Setting details
-            Long employeeId = idErrorService.idStringToLong(employeeIdString);
-            Employee employee = employeeRepository.findByEmployeeId(employeeId);
-            employeeSchedule.setEmployee(employee);
+        // Setting details
+        Long employeeId = idErrorService.idStringToLong(employeeIdString);
+        Employee employee = employeeRepository.findByEmployeeId(employeeId);
+        employeeSchedule.setEmployee(employee);
 
-            Long bServiceId = idErrorService.idStringToLong(bServiceIdString);
-            BService bService = bServiceRepository.getBServiceById(bServiceId);
-            employeeSchedule.setBService(bService);
+        Long bServiceId = idErrorService.idStringToLong(bServiceIdString);
+        BService bService = bServiceRepository.getBServiceById(bServiceId);
+        employeeSchedule.setBService(bService);
 
-            Date date = dateErrorService.convertingDateType(dateString, "date");
-            employeeSchedule.setDate(date);
+        Date date = dateErrorService.convertingDateType(dateString, "date");
+        employeeSchedule.setDate(date);
 
-            Date startTime = dateErrorService.convertingDateType(startTimeString, "time");
-            employeeSchedule.setStartTime(startTime);
+        Date startTime = dateErrorService.convertingDateType(startTimeString, "time");
+        employeeSchedule.setStartTime(startTime);
 
-            Date endTime = dateErrorService.convertingDateType(endTimeString, "time");
-            employeeSchedule.setEndTime(endTime);
+        Date endTime = dateErrorService.convertingDateType(endTimeString, "time");
+        employeeSchedule.setEndTime(endTime);
 
-            employeeScheduleRepository.save(employeeSchedule);
+        employeeScheduleRepository.save(employeeSchedule);
 
-            return employeeSchedule;
+        return employeeSchedule;
     }
 
     // Repo used to find duplicates
 //    public boolean checkForDuplicates(String employeeIdAPI, String bServiceIdAPI, String dateAPI, String startTimeAPI, String endTimeAPI) {
     public long checkForDuplicates(String employeeIdAPI, String bServiceIdAPI, String dateAPI, String startTimeAPI, String endTimeAPI) {
 //        boolean found = false;
+        EmployeeSchedule employeeSchedule;
         long duplicatedScheduleId = -1;
 
         long employeeId = idErrorService.idStringToLong(employeeIdAPI);
@@ -169,7 +170,12 @@ public class EmployeeScheduleService {
         Date startTime = dateErrorService.convertingDateType(startTimeAPI, "time");
         Date endTime = dateErrorService.convertingDateType(endTimeAPI, "time");
 //        List<EmployeeSchedule> employeeScheduleList = employeeScheduleRepository.getDuplicatedSchedules(employeeId, bServiceId, date, startTime, endTime);
-        EmployeeSchedule employeeSchedule = employeeScheduleRepository.getDuplicatedSchedules(employeeId, date, startTime, endTime);
+        try {
+            employeeSchedule = employeeScheduleRepository.getDuplicatedSchedules(employeeId, date, startTime, endTime);
+        } catch(Exception e) {
+            throw new ResponseException(HttpStatus.BAD_REQUEST, "Schedule error");
+        }
+
         if(employeeSchedule != null) {
             duplicatedScheduleId = employeeSchedule.getId();
         }

@@ -135,7 +135,7 @@ public class EmployeeScheduleController {
         return response;
     }
 
-    @GetMapping("/getBServices/employee/{bServiceIdAPI}")
+    @GetMapping("/getBServices/employee/service/{bServiceIdAPI}")
     public ResponseEntity<?> viewEmployeesByBServiceId(@Valid @PathVariable String bServiceIdAPI) {
         List<EmployeeByBServiceIdForm> employeeList = employeeScheduleService.getEmployeesByBServiceId(bServiceIdAPI);
         return new ResponseEntity<List<EmployeeByBServiceIdForm>>(employeeList, HttpStatus.OK);
@@ -148,14 +148,15 @@ public class EmployeeScheduleController {
         return new ResponseEntity<List<EmployeeScheduleServicesAndDateForm>>(employeeScheduleServicesAndDateFormList, HttpStatus.OK);
     }
 
-//    @GetMapping("/test/{employeeIdAPI}/{dateAPI}/{startTimeAPI}/{endTimeAPI}")
-//    public ResponseEntity<?> getDuplicatedSchedule(@Valid @PathVariable String employeeIdAPI,
-//                                                   @PathVariable String dateAPI,
-//                                                   @PathVariable String startTimeAPI,
-//                                                   @PathVariable String endTimeAPI) {
-//        String result = String.valueOf(employeeScheduleService.checkForDuplicates(employeeIdAPI, dateAPI, startTimeAPI, endTimeAPI));
-//        return new ResponseEntity<String>(result, HttpStatus.OK);
-//    }
+    @GetMapping("/test/{employeeIdAPI}/{bServiceIdAPI}/{dateAPI}/{startTimeAPI}/{endTimeAPI}")
+    public ResponseEntity<?> getDuplicatedSchedule(@Valid @PathVariable String employeeIdAPI,
+                                                   @PathVariable String bServiceIdAPI,
+                                                   @PathVariable String dateAPI,
+                                                   @PathVariable String startTimeAPI,
+                                                   @PathVariable String endTimeAPI) {
+        String result = String.valueOf(employeeScheduleService.checkForDuplicates(employeeIdAPI, bServiceIdAPI, dateAPI, startTimeAPI, endTimeAPI));
+        return new ResponseEntity<String>(result, HttpStatus.OK);
+    }
 
     /*** Future code ***/
 
