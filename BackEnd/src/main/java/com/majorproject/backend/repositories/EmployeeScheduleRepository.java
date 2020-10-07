@@ -53,12 +53,22 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
             "ORDER BY es.date", nativeQuery = true)
     List<EmployeeSchedule> getEmployeeScheduleByEmployeeIdDate(long employeeId, Date date, Date week);
 
+//    @Query(value = "SELECT es.* " +
+//            "FROM Employee_Schedule es, BService bs " +
+//            "WHERE es.bservice_id = bs.bservice_id AND " +
+//            "bs.bservice_id = ?1 " +
+//            "ORDER BY es.date", nativeQuery = true)
+//    List<EmployeeSchedule> getEmployeeScheduleByBServiceId(long bServiceId);
+
+//    @Query(value = "SELECT es.* " +
+//        "FROM Employee_Schedule es, BService bs " +
+//        "WHERE es.bservice_id = bs.bservice_id AND " +
+//        "bs.bservice_id = ?1 " +
+//        "ORDER BY es.date", nativeQuery = true)
     @Query(value = "SELECT es.* " +
-            "FROM Employee_Schedule es, BService bs " +
-            "WHERE es.bservice_id = bs.bservice_id AND " +
-            "bs.bservice_id = ?1 " +
-            "ORDER BY es.date", nativeQuery = true)
-    List<EmployeeSchedule> getEmployeeScheduleByBServiceId(long bServiceId);
+            "FROM Employee_Schedule es " +
+            "WHERE es.bservice_id = ?1", nativeQuery = true)
+    List<EmployeeSchedule> getEmployeeByBServiceId(long bServiceId);
 
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es, BService bs " +
@@ -68,6 +78,18 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
             "es.start_time >= ?3 " +
             "ORDER BY es.date", nativeQuery = true)
     List<EmployeeSchedule> getEmployeeScheduleByBServiceIdAndNow(long bServiceId, Date date, Date currTime);
+
+    @Query(value = "SELECT es.* " +
+            "FROM Employee_Schedule es " +
+            "WHERE es.employee_id = ?1 AND " +
+//            "es.bservice_id = ?2 AND " +
+            "es.date = ?2 AND NOT " +
+            "(" +
+                "(?3 < es.start_time AND ?4 < es.start_time) OR " +
+                "(?3 > es.end_time AND ?4 > es.end_time)" +
+            ")", nativeQuery = true)
+//    List<EmployeeSchedule> getDuplicatedSchedules(long employeeId, long bServiceId, Date date, Date startTime, Date endTime);
+    EmployeeSchedule getDuplicatedSchedules(long employeeId, Date date, Date startTime, Date endTime);
 
     /**
      * This query returns a list of employee schedules that are based on the employee's id,

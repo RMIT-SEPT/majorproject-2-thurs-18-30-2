@@ -2,6 +2,7 @@ package com.majorproject.backend.web;
 
 import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.models.EmployeeSchedule;
+import com.majorproject.backend.responseForms.EmployeeByBServiceIdForm;
 import com.majorproject.backend.responseForms.EmployeeScheduleAvailabilityForm;
 import com.majorproject.backend.responseForms.EmployeeScheduleServicesAndDateForm;
 import com.majorproject.backend.services.EmployeeScheduleService;
@@ -36,8 +37,8 @@ public class EmployeeScheduleController {
         if(errorMap != null) {
             response = errorMap;
         } else {
-            EmployeeSchedule employeeScheduleNew = employeeScheduleService.saveEmployeeSchedule(request);
-//            EmployeeSchedule employeeScheduleNew = employeeScheduleService.saveOrUpdateEmployeeSchedule(employeeSchedule);
+//            EmployeeSchedule employeeScheduleNew = employeeScheduleService.saveEmployeeSchedule(request);
+            EmployeeSchedule employeeScheduleNew = employeeScheduleService.saveOrEditEmployeeSchedule(request, "save", null);
             response = new ResponseEntity<EmployeeSchedule>(employeeScheduleNew, HttpStatus.CREATED);
         }
 
@@ -118,13 +119,6 @@ public class EmployeeScheduleController {
         return new ResponseEntity<ListWithTimeboundService>(listWithTimeboundService, HttpStatus.OK);
     }
 
-    @GetMapping("/getBServices/{bServiceIdAPI}/{dateAPI}/{timeAPI}")
-    public ResponseEntity<?> viewBServicesFromToday(@Valid @PathVariable String bServiceIdAPI,
-                                                    @PathVariable String dateAPI, @PathVariable String timeAPI) {
-        List<EmployeeScheduleServicesAndDateForm> employeeScheduleServicesAndDateFormList = employeeScheduleService.getSchedulesByBServiceIdAndNow(bServiceIdAPI, dateAPI, timeAPI);
-        return new ResponseEntity<List<EmployeeScheduleServicesAndDateForm>>(employeeScheduleServicesAndDateFormList, HttpStatus.OK);
-    }
-
     @PutMapping("/editSchedule/{scheduleIdAPI}")
     public ResponseEntity<?> editSchedule(@Valid @PathVariable String scheduleIdAPI, @RequestBody Map<String, String> request, BindingResult result) {
         ResponseEntity<?> response;
@@ -133,12 +127,35 @@ public class EmployeeScheduleController {
         if(errorMap != null) {
             response = errorMap;
         } else {
-            EmployeeSchedule employeeScheduleEdit = employeeScheduleService.editSchedule(scheduleIdAPI, request);
+//            EmployeeSchedule employeeScheduleEdit = employeeScheduleService.editSchedule(scheduleIdAPI, request);
+            EmployeeSchedule employeeScheduleEdit = employeeScheduleService.saveOrEditEmployeeSchedule(request, "edit", scheduleIdAPI);
             response = new ResponseEntity<EmployeeSchedule>(employeeScheduleEdit, HttpStatus.OK);
         }
 
         return response;
     }
+
+    @GetMapping("/getBServices/employee/{bServiceIdAPI}")
+    public ResponseEntity<?> viewEmployeesByBServiceId(@Valid @PathVariable String bServiceIdAPI) {
+        List<EmployeeByBServiceIdForm> employeeList = employeeScheduleService.getEmployeesByBServiceId(bServiceIdAPI);
+        return new ResponseEntity<List<EmployeeByBServiceIdForm>>(employeeList, HttpStatus.OK);
+    }
+
+    @GetMapping("/getBServices/{bServiceIdAPI}/{dateAPI}/{timeAPI}")
+    public ResponseEntity<?> viewBServicesFromToday(@Valid @PathVariable String bServiceIdAPI,
+                                                    @PathVariable String dateAPI, @PathVariable String timeAPI) {
+        List<EmployeeScheduleServicesAndDateForm> employeeScheduleServicesAndDateFormList = employeeScheduleService.getSchedulesByBServiceIdAndNow(bServiceIdAPI, dateAPI, timeAPI);
+        return new ResponseEntity<List<EmployeeScheduleServicesAndDateForm>>(employeeScheduleServicesAndDateFormList, HttpStatus.OK);
+    }
+
+//    @GetMapping("/test/{employeeIdAPI}/{dateAPI}/{startTimeAPI}/{endTimeAPI}")
+//    public ResponseEntity<?> getDuplicatedSchedule(@Valid @PathVariable String employeeIdAPI,
+//                                                   @PathVariable String dateAPI,
+//                                                   @PathVariable String startTimeAPI,
+//                                                   @PathVariable String endTimeAPI) {
+//        String result = String.valueOf(employeeScheduleService.checkForDuplicates(employeeIdAPI, dateAPI, startTimeAPI, endTimeAPI));
+//        return new ResponseEntity<String>(result, HttpStatus.OK);
+//    }
 
     /*** Future code ***/
 
