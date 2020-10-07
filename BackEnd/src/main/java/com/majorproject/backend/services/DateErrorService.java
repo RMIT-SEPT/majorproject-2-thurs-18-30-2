@@ -15,24 +15,22 @@ public class DateErrorService {
     private SimpleDateFormat formatterTime = new SimpleDateFormat("HH:mm");
 
     // To not have duplicated try-catch and exception code
-    public Date convertingDateType(String variableAPI, String dateType) {
-        Date date;
+
+    /*** Convert from String to Date ***/
+
+    public Date convertToDateType(String variableAPI, String dateType) {
+        Date variable;
         try {
              if(dateType.equals("date")) {
-                 date = dateStringToDate(variableAPI);
+                 variable = dateStringToDate(variableAPI);
              } else { // if(dateType.equals("time"))
-                 date = timeStringToDate(variableAPI);
+                 variable = timeStringToTime(variableAPI);
              }
-//             } else if(dateType.equals("startTime")) {
-//                 date = startTimeStringToDate(variableAPI);
-//             } else { // if(dateType.equals("endTime"))
-//                 date = endTimeStringToDate(variableAPI);
-//             }
         } catch (Exception e) {
             throw new ResponseException(HttpStatus.BAD_REQUEST, "Date Error");
         }
 
-        return date;
+        return variable;
     }
 
     public Date dateStringToDate(String dateAPI) throws ParseException {
@@ -40,18 +38,35 @@ public class DateErrorService {
         return date;
     }
 
-//    public Date startTimeStringToDate(String startTimeAPI) throws ParseException {
-//        Date startTime = formatterTime.parse(startTimeAPI);
-//        return startTime;
-//    }
-//
-//    public Date endTimeStringToDate(String endTimeAPI) throws ParseException {
-//        Date endTime = formatterTime.parse(endTimeAPI);
-//        return endTime;
-//    }
-
-    public Date timeStringToDate(String timeAPI) throws ParseException {
+    public Date timeStringToTime(String timeAPI) throws ParseException {
         Date time = formatterTime.parse(timeAPI);
         return time;
+    }
+
+    /*** Convert from Date to String ***/
+
+    public String convertToStringType(Date variable, String dateType) {
+        String variableInString;
+        try {
+            if(dateType.equals("date")) {
+                variableInString = dateToDateString(variable);
+            } else { // if(dateType.equals("time"))
+                variableInString = timeToTimeString(variable);
+            }
+        } catch(Exception e) {
+            throw new ResponseException(HttpStatus.BAD_REQUEST, "Date Error");
+        }
+
+        return variableInString;
+    }
+
+    public String dateToDateString(Date date) throws ParseException {
+        String dateInString = formatterDate.format(date);
+        return dateInString;
+    }
+
+    public String timeToTimeString(Date time) throws ParseException {
+        String timeInString = formatterTime.format(time);
+        return timeInString;
     }
 }

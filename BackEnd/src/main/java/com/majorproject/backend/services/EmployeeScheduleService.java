@@ -7,6 +7,7 @@ import com.majorproject.backend.models.EmployeeSchedule;
 import com.majorproject.backend.repositories.EmployeeRepository;
 import com.majorproject.backend.repositories.EmployeeScheduleRepository;
 import com.majorproject.backend.repositories.BServiceRepository;
+import com.majorproject.backend.responseForms.EmpSchByEmpIdForm;
 import com.majorproject.backend.responseForms.EmployeeByBServiceIdForm;
 import com.majorproject.backend.responseForms.EmployeeScheduleAvailabilityForm;
 import com.majorproject.backend.responseForms.EmployeeScheduleServicesAndDateForm;
@@ -143,13 +144,13 @@ public class EmployeeScheduleService {
         BService bService = bServiceRepository.getBServiceById(bServiceId);
         employeeSchedule.setBService(bService);
 
-        Date date = dateErrorService.convertingDateType(dateString, "date");
+        Date date = dateErrorService.convertToDateType(dateString, "date");
         employeeSchedule.setDate(date);
 
-        Date startTime = dateErrorService.convertingDateType(startTimeString, "time");
+        Date startTime = dateErrorService.convertToDateType(startTimeString, "time");
         employeeSchedule.setStartTime(startTime);
 
-        Date endTime = dateErrorService.convertingDateType(endTimeString, "time");
+        Date endTime = dateErrorService.convertToDateType(endTimeString, "time");
         employeeSchedule.setEndTime(endTime);
 
         employeeScheduleRepository.save(employeeSchedule);
@@ -166,9 +167,9 @@ public class EmployeeScheduleService {
 
         long employeeId = idErrorService.idStringToLong(employeeIdAPI);
         long bServiceId = idErrorService.idStringToLong(bServiceIdAPI);
-        Date date = dateErrorService.convertingDateType(dateAPI, "date");
-        Date startTime = dateErrorService.convertingDateType(startTimeAPI, "time");
-        Date endTime = dateErrorService.convertingDateType(endTimeAPI, "time");
+        Date date = dateErrorService.convertToDateType(dateAPI, "date");
+        Date startTime = dateErrorService.convertToDateType(startTimeAPI, "time");
+        Date endTime = dateErrorService.convertToDateType(endTimeAPI, "time");
 //        List<EmployeeSchedule> employeeScheduleList = employeeScheduleRepository.getDuplicatedSchedules(employeeId, bServiceId, date, startTime, endTime);
         try {
             employeeSchedule = employeeScheduleRepository.getDuplicatedSchedules(employeeId, date, startTime, endTime);
@@ -286,9 +287,9 @@ public class EmployeeScheduleService {
         List<EmployeeSchedule> employeeScheduleList;
         List<EmployeeScheduleAvailabilityForm> employeeScheduleAvailabilityList = new ArrayList<EmployeeScheduleAvailabilityForm>();
 
-        Date date = dateErrorService.convertingDateType(dateAPI, "date");
-        Date startTime = dateErrorService.convertingDateType(startTimeAPI, "time");
-        Date endTime = dateErrorService.convertingDateType(endTimeAPI, "time");
+        Date date = dateErrorService.convertToDateType(dateAPI, "date");
+        Date startTime = dateErrorService.convertToDateType(startTimeAPI, "time");
+        Date endTime = dateErrorService.convertToDateType(endTimeAPI, "time");
 
         employeeScheduleList = employeeScheduleRepository.findSchedulesByDateAndTime(date, startTime, endTime);
         listEmptyErrorService.checkListEmpty(employeeScheduleList, "Employee Schedule");
@@ -300,9 +301,9 @@ public class EmployeeScheduleService {
     }
 
     // Check for employee schedules, by employeeId
-    public ListWithTimeboundService getSchedulesByEmployeeId(String employeeIdAPI, String repoCallType) {
+    public List<EmpSchByEmpIdForm> getSchedulesByEmployeeId(String employeeIdAPI, String repoCallType) {
         List<EmployeeSchedule> employeeScheduleList = new ArrayList<EmployeeSchedule>();
-        List<EmployeeScheduleAvailabilityForm> employeeScheduleAvailabilityList = new ArrayList<EmployeeScheduleAvailabilityForm>();
+        List<EmpSchByEmpIdForm> customScheduleList = new ArrayList<EmpSchByEmpIdForm>();
 
         long employeeId = idErrorService.idStringToLong(employeeIdAPI);
 
@@ -315,9 +316,11 @@ public class EmployeeScheduleService {
 
         listEmptyErrorService.checkListEmpty(employeeScheduleList, "Employee Schedule");
 
-        convertToAvailabilityList(employeeScheduleList, employeeScheduleAvailabilityList);
-        ListWithTimeboundService listWithTimeboundService = new ListWithTimeboundService(employeeScheduleAvailabilityList);
-        return listWithTimeboundService;
+        for(int i = 0; i < employeeScheduleList.size(); ++i) {
+            customScheduleList.add(new EmpSchByEmpIdForm(employeeScheduleList.get(i)));
+        }
+
+        return customScheduleList;
 
 //        return employeeScheduleAvailabilityList;
     }
@@ -328,8 +331,8 @@ public class EmployeeScheduleService {
         List<EmployeeScheduleAvailabilityForm> employeeScheduleAvailabilityList = new ArrayList<EmployeeScheduleAvailabilityForm>();
 
         long employeeId = idErrorService.idStringToLong(employeeIdAPI);
-        Date date = dateErrorService.convertingDateType(dateAPI, "date");
-        Date week = dateErrorService.convertingDateType(weekAPI, "date");
+        Date date = dateErrorService.convertToDateType(dateAPI, "date");
+        Date week = dateErrorService.convertToDateType(weekAPI, "date");
 
         employeeScheduleList = employeeScheduleRepository.getEmployeeScheduleByEmployeeIdDate(employeeId, date, week);
         listEmptyErrorService.checkListEmpty(employeeScheduleList, "Employee Schedule");
@@ -414,8 +417,8 @@ public class EmployeeScheduleService {
         List<EmployeeScheduleServicesAndDateForm> employeeScheduleServicesAndDateFormList = new ArrayList<EmployeeScheduleServicesAndDateForm>();
 
         long bServiceId = idErrorService.idStringToLong(bServiceIdAPI);
-        Date date = dateErrorService.convertingDateType(dateAPI, "date");
-        Date currTime = dateErrorService.convertingDateType(currTimeAPI, "time");
+        Date date = dateErrorService.convertToDateType(dateAPI, "date");
+        Date currTime = dateErrorService.convertToDateType(currTimeAPI, "time");
 
         employeeScheduleList = employeeScheduleRepository.getEmployeeScheduleByBServiceIdAndNow(bServiceId, date, currTime);
         listEmptyErrorService.checkListEmpty(employeeScheduleList, "Employee Schedule");

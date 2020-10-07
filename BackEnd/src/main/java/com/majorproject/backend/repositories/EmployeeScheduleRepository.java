@@ -91,6 +91,13 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
 //    List<EmployeeSchedule> getDuplicatedSchedules(long employeeId, long bServiceId, Date date, Date startTime, Date endTime);
     EmployeeSchedule getDuplicatedSchedules(long employeeId, Date date, Date startTime, Date endTime);
 
+    @Query(value = "SELECT es.* " +
+            "FROM Employee_Schedule es, BService bs " +
+            "WHERE es.bservice_id = bs.bservice_id AND " +
+            "bs.bservice_id = ?1 " +
+            "ORDER BY es.date", nativeQuery = true)
+    List<EmployeeSchedule> getEmployeeScheduleByBServiceId(long bServiceId);
+
     /**
      * This query returns a list of employee schedules that are based on the employee's id,
      * today's date and next week's date

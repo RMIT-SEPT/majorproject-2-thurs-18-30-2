@@ -9,12 +9,14 @@ public class EmployeeByBServiceIdForm {
     private long employeeId;
     private String employeeFName;
     private String employeeLName;
+    private String employeeUsername;
 
     public EmployeeByBServiceIdForm(EmployeeSchedule employeeSchedule) {
         Employee employee = employeeSchedule.getEmployee();
         this.employeeId = employee.getId();
         this.employeeFName = employee.getfName();
         this.employeeLName = employee.getlName();
+        this.employeeUsername = employee.getUsername();
     }
 
     public long getEmployeeId() {
@@ -39,5 +41,13 @@ public class EmployeeByBServiceIdForm {
 
     public void setEmployeeLName(String employeeLName) {
         this.employeeLName = employeeLName;
+    }
+
+    public String getEmployeeUsername() {
+        return employeeUsername;
+    }
+
+    public void setEmployeeUsername(String employeeUsername) {
+        this.employeeUsername = employeeUsername;
     }
 }

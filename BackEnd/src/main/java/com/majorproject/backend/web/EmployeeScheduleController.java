@@ -2,6 +2,7 @@ package com.majorproject.backend.web;
 
 import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.models.EmployeeSchedule;
+import com.majorproject.backend.responseForms.EmpSchByEmpIdForm;
 import com.majorproject.backend.responseForms.EmployeeByBServiceIdForm;
 import com.majorproject.backend.responseForms.EmployeeScheduleAvailabilityForm;
 import com.majorproject.backend.responseForms.EmployeeScheduleServicesAndDateForm;
@@ -76,20 +77,20 @@ public class EmployeeScheduleController {
     // (Method done)
     @GetMapping("/getSchedules/employee/{employeeIdAPI}")
     public ResponseEntity<?> viewSchedulesByEmployeeId(@Valid @PathVariable String employeeIdAPI) {
-//        List<EmployeeScheduleAvailabilityForm> employeeScheduleAvailabilityList = employeeScheduleService.getSchedulesByEmployeeId(employeeIdAPI, "all");
-//        return new ResponseEntity<List<EmployeeScheduleAvailabilityForm>>(employeeScheduleAvailabilityList, HttpStatus.OK);
-        ListWithTimeboundService listWithTimeboundService = employeeScheduleService.getSchedulesByEmployeeId(employeeIdAPI, "all");
-        return new ResponseEntity<ListWithTimeboundService>(listWithTimeboundService, HttpStatus.OK);
+        List<EmpSchByEmpIdForm> customScheduleList = employeeScheduleService.getSchedulesByEmployeeId(employeeIdAPI, "all");
+        return new ResponseEntity<List<EmpSchByEmpIdForm>>(customScheduleList, HttpStatus.OK);
+//        ListWithTimeboundService listWithTimeboundService = employeeScheduleService.getSchedulesByEmployeeId(employeeIdAPI, "all");
+//        return new ResponseEntity<ListWithTimeboundService>(listWithTimeboundService, HttpStatus.OK);
     }
 
     // New method for /viewEmployeeAvailability, except it shows only available schedules (availability = true) based on employee Id
     // (Method done)
     @GetMapping("/getSchedules/employee/available/{employeeIdAPI}")
     public ResponseEntity<?> viewSchedulesByEmployeeIdByAvailable(@Valid @PathVariable String employeeIdAPI) {
-//        List<EmployeeScheduleAvailabilityForm> employeeScheduleAvailabilityList = employeeScheduleService.getSchedulesByEmployeeId(employeeIdAPI, "byAvailable");
-//        return new ResponseEntity<List<EmployeeScheduleAvailabilityForm>>(employeeScheduleAvailabilityList, HttpStatus.OK);
-        ListWithTimeboundService listWithTimeboundService = employeeScheduleService.getSchedulesByEmployeeId(employeeIdAPI, "byAvailable");
-        return new ResponseEntity<ListWithTimeboundService>(listWithTimeboundService, HttpStatus.OK);
+        List<EmpSchByEmpIdForm> customScheduleList = employeeScheduleService.getSchedulesByEmployeeId(employeeIdAPI, "byAvailable");
+        return new ResponseEntity<List<EmpSchByEmpIdForm>>(customScheduleList, HttpStatus.OK);
+//        ListWithTimeboundService listWithTimeboundService = employeeScheduleService.getSchedulesByEmployeeId(employeeIdAPI, "byAvailable");
+//        return new ResponseEntity<ListWithTimeboundService>(listWithTimeboundService, HttpStatus.OK);
     }
 
 //    // This method is to find all employee schedules from today to next week based on employee {id}
