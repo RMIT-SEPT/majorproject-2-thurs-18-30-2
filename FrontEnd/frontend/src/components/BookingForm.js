@@ -112,18 +112,6 @@ class BookingForm extends React.Component {
     this.makeBookings = this.makeBookings.bind(this);
 
 
-    /* var st = new Date(2020, 9, 21, 08, 00);
-    var en = new Date(2020, 9, 21, 10, 00);
-
-    this.setState({
-      data : {
-        title : 'element.bServiceName',
-        startDate : st,
-        endDate : en,
-        id : 0,
-        employeeScheduleId : 1
-    }
-    }) */
   }
 
   async componentDidMount() {
@@ -233,7 +221,7 @@ class BookingForm extends React.Component {
                 errorMsg : error.response.data.message
             });
         });
-        console.log(this.state.data)
+        this.setState({ state: this.state });
   }
 
   changeAddedAppointment(addedAppointment) {
@@ -316,8 +304,8 @@ class BookingForm extends React.Component {
                 <React.Fragment>
                   <Paper>
                       <Scheduler
-                      data={data}
-                      height={700}
+                        data={this.state.data}
+                        height={700}
                       >
                       <ViewState
                           currentDate={currentDate}
@@ -334,9 +322,7 @@ class BookingForm extends React.Component {
                           editingAppointment={editingAppointment}
                           onEditingAppointmentChange={this.changeEditingAppointment}
                       />
-                      <MonthView
-                      intervalCount='10'
-                      />
+                      <WeekView />
                       <AllDayPanel />
                       <EditRecurrenceMenu />
                       <ConfirmationDialog />

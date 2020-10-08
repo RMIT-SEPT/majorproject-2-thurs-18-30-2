@@ -83,7 +83,7 @@ public class StartingUpService {
             employeeSchedule1.setDate(formatterDate.parse("20-09-2020"));
             employeeSchedule1.setStartTime(formatterTime.parse("20:00"));
             employeeSchedule1.setEndTime(formatterTime.parse("21:00"));
-            employeeSchedule1.setAvailability(false); // Will be booked
+            employeeSchedule1.setAvailability(true); // Will be booked
             employeeScheduleRepository.save(employeeSchedule1);
 
             EmployeeSchedule employeeSchedule2 = new EmployeeSchedule();
@@ -93,7 +93,7 @@ public class StartingUpService {
             employeeSchedule2.setDate(formatterDate.parse("21-09-2020"));
             employeeSchedule2.setStartTime(formatterTime.parse("07:00"));
             employeeSchedule2.setEndTime(formatterTime.parse("09:00"));
-            employeeSchedule2.setAvailability(false); // Will be booked
+            employeeSchedule2.setAvailability(true); // Will be booked
             employeeScheduleRepository.save(employeeSchedule2);
 
             EmployeeSchedule employeeSchedule3 = new EmployeeSchedule();
@@ -105,6 +105,15 @@ public class StartingUpService {
             employeeSchedule3.setEndTime(formatterTime.parse("10:00"));
             employeeSchedule3.setAvailability(true); // Not booked
             employeeScheduleRepository.save(employeeSchedule3);
+
+            EmployeeSchedule employeeSchedule4 = new EmployeeSchedule();
+            employeeSchedule4.setEmployee(employee2);
+            employeeSchedule4.setBService(dineAndDash);
+            employeeSchedule4.setDate(formatterDate.parse("21-09-2020"));
+            employeeSchedule4.setStartTime(formatterTime.parse("08:00"));
+            employeeSchedule4.setEndTime(formatterTime.parse("10:00"));
+            employeeSchedule4.setAvailability(true); // Not booked
+            employeeScheduleRepository.save(employeeSchedule4);
 
             // Add 2 bookings
             Booking booking1 = new Booking(employeeSchedule1, customer1);
