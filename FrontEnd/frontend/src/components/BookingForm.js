@@ -14,6 +14,7 @@ import {
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { Form, Button } from 'react-bootstrap';
 import * as _ from 'lodash';
+import {appointments} from './appointments.js';
 import api from '../app/api';
 import '../css/BookingForm.css';
 
@@ -84,9 +85,9 @@ class BookingForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data : [],
-      userID : -1,
-      currentDate : '2020-09-20',
+      data : appointments,
+      userID : 1,
+      currentDate : '2020-10-20',
       addedAppointment : {},
       appointmentChanges : {},
       editingAppointment : undefined,
@@ -103,7 +104,6 @@ class BookingForm extends React.Component {
     this.commitChanges = this.commitChanges.bind(this);
     this.changeAddedAppointment = this.changeAddedAppointment.bind(this);
     this.changeAppointmentChanges = this.changeAppointmentChanges.bind(this);
-    this.changeEditingAppointment = this.changeEditingAppointment.bind(this);
     this.handleChangeService = this.handleChangeService.bind(this);
     this.handleChangeEmployee = this.handleChangeEmployee.bind(this);
     this.appointmentClickHandler = this.appointmentClickHandler.bind(this);
@@ -111,7 +111,7 @@ class BookingForm extends React.Component {
     this.appointmentComponent = this.appointmentComponent.bind(this);
     this.makeBookings = this.makeBookings.bind(this);
 
-
+    this.state.currentDate = new Date();
   }
 
   async componentDidMount() {
@@ -129,10 +129,11 @@ class BookingForm extends React.Component {
                 });
             });
 
-    }
-  async makeBookings() {
-    this.state.bookingBuffer.forEach(async element => 
-      await api.post('booking/create', element)
+  }
+
+  makeBookings() {
+    this.state.bookingBuffer.forEach(element => 
+      api.post('booking/create', element)
             .then((response) => {
                 this.setState({
                     services : response.data
@@ -150,6 +151,7 @@ class BookingForm extends React.Component {
   appointmentComponent(props) {
     var [style, setStyle] = useState(this.state.style)
     var [selected, setSelected] = useState(false)
+    console.log(props);
     return <Appointments.Appointment {...props} style={ style } onClick={e => {
       if(selected) {
         setSelected(false)
@@ -158,18 +160,21 @@ class BookingForm extends React.Component {
         setSelected(true)
         setStyle({backgroundColor: '#FFC107', borderColor: '#FF0000', borderRadius: '8px'})
       }
-      
       this.appointmentClickHandlerThrottled(e)}} onDoubleClick={e => this.appointmentClickHandlerThrottled(e)}/>;
   };
 
   appointmentClickHandler(appt) {
     if(appt) {
       if(this.state.bookingBuffer.indexOf(appt.data.id) === -1) {
-          this.state.bookingBuffer.push(
+        var tempBuffer = [];
+          tempBuffer.push(
             {
               employeeSchedule : { id : appt.data.id },
               customer : { id : this.state.userID }
             });
+        this.setState({
+          bookingBuffer : tempBuffer
+        })
         }
         else {
           var index = this.state.bookingBuffer.indexOf(appt.data.id);
@@ -199,29 +204,32 @@ class BookingForm extends React.Component {
   }
 
   handleChangeEmployee(event) {
-    this.setState({
-        employeeID : event.target.value
-    });
+    event.persist()
     api.get('employeeSchedule/getSchedules/employee/available/' + event.target.value)
         .then((response) => {
-            var count = 0;
-            response.data.forEach(element =>
-              this.state.data.push(
+            var tempData = [];
+            response.data.forEach((element, index) =>
+              tempData.push(
                 {
                   title : element.bServiceName,
-                  startDate : new Date(element.startDate[0], element.startDate[1], element.startDate[2], element.startDate[3], element.startDate[4]),
-                  endDate : new Date(element.endDate[0], element.endDate[1], element.endDate[2], element.endDate[3], element.endDate[4]),
-                  id : count,
+                  startDate : new Date(element.startDate[0], element.startDate[1]-1, element.startDate[2], element.startDate[3], element.startDate[4]),
+                  endDate : new Date(element.endDate[0], element.endDate[1]-1, element.endDate[2], element.endDate[3], element.endDate[4]),
+                  id : index,
                   employeeScheduleId : element.employeeScheduleId
-                })
+                }
+              )
             );
+            this.setState({
+              data : tempData,
+              employeeID : event.target.value
+            })
+            
         }).catch((error) => {
             this.setState({ 
                 valid : false,
                 errorMsg : error.response.data.message
             });
         });
-        this.setState({ state: this.state });
   }
 
   changeAddedAppointment(addedAppointment) {
@@ -232,9 +240,6 @@ class BookingForm extends React.Component {
     this.setState({ appointmentChanges });
   }
 
-  changeEditingAppointment(editingAppointment) {
-    this.setState({ editingAppointment });
-  }
 
   commitChanges({ added, changed, deleted }) {
     this.setState((state) => {
@@ -255,9 +260,7 @@ class BookingForm extends React.Component {
   }
 
   render() {
-    const {
-      currentDate, data, addedAppointment, appointmentChanges, editingAppointment,
-    } = this.state;
+    
 
     return (
         <React.Fragment>
@@ -300,29 +303,28 @@ class BookingForm extends React.Component {
                 </Form.Group>   
             }
             <br></br>
-            {this.state.employeeID !== '-1' &&
+            {/* {this.state.employeeID !== '-1' && */}
                 <React.Fragment>
                   <Paper>
+                    {console.log(this.state.data)}
                       <Scheduler
                         data={this.state.data}
                         height={700}
                       >
                       <ViewState
-                          currentDate={currentDate}
+                          currentDate={this.state.currentDate}
                       />
                       <EditingState
                           onCommitChanges={this.commitChanges}
 
-                          addedAppointment={addedAppointment}
+                          addedAppointment={this.state.addedAppointment}
                           onAddedAppointmentChange={this.changeAddedAppointment}
 
-                          appointmentChanges={appointmentChanges}
+                          appointmentChanges={this.state.appointmentChanges}
                           onAppointmentChangesChange={this.changeAppointmentChanges}
 
-                          editingAppointment={editingAppointment}
-                          onEditingAppointmentChange={this.changeEditingAppointment}
                       />
-                      <WeekView />
+                      <MonthView />
                       <AllDayPanel />
                       <EditRecurrenceMenu />
                       <ConfirmationDialog />
@@ -343,7 +345,7 @@ class BookingForm extends React.Component {
                   </Paper>
                   <Button id="submitForm" variant="primary" onClick={this.makeBookings}>Make Bookings</Button>
                 </React.Fragment>
-            }
+            {/* } */}
             
         </React.Fragment>
     );
