@@ -31,18 +31,40 @@ public class BookingService {
      * @return The booking
      */
     public Booking saveOrUpdateBooking(Booking booking) {
-        try {
+//        try {
+            /**
+             * Check if employee schedule is available
+             * available = true then can book
+             * available = false cannot book
+             */
+
+            long employeeScheduleId = booking.getEmployeeSchedule().getId();
+
+            EmployeeSchedule employeeSchedule = employeeScheduleRepository.getEmployeeScheduleById(employeeScheduleId);
+
+            if(!employeeSchedule.getAvailability()) {
+                throw new ResponseException(HttpStatus.NOT_ACCEPTABLE, "Schedule has already been booked");
+            } else {
+//                Customer customer = customerRepository.findById(booking.getCustomer().getId()).get();
+//                booking.setCustomer(customer);
+
+                // Update availability = false
+                employeeScheduleRepository.updateEmployeeScheduleAfterBooked(employeeScheduleId);
+//                booking.setEmployeeSchedule(employeeSchedule);
+            }
+
 //            Customer customer = customerRepository.findById(booking.getCustomer().getId()).get();
 //            booking.setCustomer(customer);
-
+//
 //            EmployeeSchedule employeeSchedule = employeeScheduleRepository.findById(booking.getEmployeeSchedule().getId()).get();
 //            booking.setEmployeeSchedule(employeeSchedule);
 //            employeeSchedule.setAvailability(false);
-            booking.getEmployeeSchedule().setAvailability(false);
+//            booking.getEmployeeSchedule().setAvailability(false);
 
-        } catch (Exception e) {
-            throw new ResponseException(HttpStatus.NOT_ACCEPTABLE, "Customer, employee or service does not exist");
-        }
+//        } catch (Exception e) {
+//            throw new ResponseException(HttpStatus.NOT_ACCEPTABLE, "Customer, employee or service does not exist");
+//            throw new ResponseException(HttpStatus.NOT_ACCEPTABLE, "Booking error");
+//        }
 
         return bookingRepository.save(booking);
     }

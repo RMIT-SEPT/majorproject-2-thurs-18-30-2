@@ -2,9 +2,12 @@ package com.majorproject.backend.repositories;
 
 import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.models.EmployeeSchedule;
+import org.hibernate.annotations.SQLUpdate;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -28,6 +31,7 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
      */
     @Query(value = "SELECT es.* FROM Employee_Schedule es WHERE es.employee_schedule_id = ?1", nativeQuery = true)
     EmployeeSchedule getEmployeeScheduleById(long scheduleId);
+
 
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es, Employee e " +
@@ -97,6 +101,13 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
             "bs.bservice_id = ?1 " +
             "ORDER BY es.date", nativeQuery = true)
     List<EmployeeSchedule> getEmployeeScheduleByBServiceId(long bServiceId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE Employee_Schedule es " +
+            "SET es.availability = false " +
+            "WHERE es.employee_schedule_id = ?1", nativeQuery = true)
+    void updateEmployeeScheduleAfterBooked(long employeeScheduleId);
 
     /**
      * This query returns a list of employee schedules that are based on the employee's id,
