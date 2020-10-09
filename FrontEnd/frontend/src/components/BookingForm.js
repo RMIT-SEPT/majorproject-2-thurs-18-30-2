@@ -14,7 +14,8 @@ import {
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { Form, Button } from 'react-bootstrap';
 import * as _ from 'lodash';
-import {appointments} from './appointments.js';
+import { openModal } from '../app/reducers/modalSlice';
+import { connect } from 'react-redux';
 import api from '../app/api';
 import '../css/BookingForm.css';
 
@@ -77,7 +78,6 @@ const ong = (props) => {
     );
   };
 
-  
 
 
 
@@ -85,8 +85,7 @@ class BookingForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data : appointments,
-      userID : 1,
+      data : [],
       currentDate : '2020-10-20',
       addedAppointment : {},
       appointmentChanges : {},
@@ -98,7 +97,8 @@ class BookingForm extends React.Component {
       bookingBuffer : [],
       style : {backgroundColor: '#FFC107', borderRadius: '8px'},
       services : [],
-      employees : []
+      employees : [],
+      modal : { title : "Booking Successfull", body : "Thanks for choosing us, you have successfully made a booking" }
     };
 
     this.commitChanges = this.commitChanges.bind(this);
@@ -115,9 +115,6 @@ class BookingForm extends React.Component {
   }
 
   async componentDidMount() {
-    this.setState({
-        userID : 0
-    });
     await api.get('bService/getAllBServices')
             .then((response) => {
                 this.setState({
@@ -132,12 +129,11 @@ class BookingForm extends React.Component {
   }
 
   makeBookings() {
-    this.state.bookingBuffer.forEach(element => 
+    var tempBuffer = this.state.bookingBuffer;
+    tempBuffer.forEach(element => 
       api.post('booking/create', element)
             .then((response) => {
-                this.setState({
-                    services : response.data
-                });
+                console.log(response.data);
             }).catch((error) => {
                 this.setState({
                     valid : false,
@@ -145,13 +141,12 @@ class BookingForm extends React.Component {
                 });
             })
             );
-    
+    this.props.openModal(this.state.modal);
   }
 
   appointmentComponent(props) {
     var [style, setStyle] = useState(this.state.style)
     var [selected, setSelected] = useState(false)
-    console.log(props);
     return <Appointments.Appointment {...props} style={ style } onClick={e => {
       if(selected) {
         setSelected(false)
@@ -165,19 +160,20 @@ class BookingForm extends React.Component {
 
   appointmentClickHandler(appt) {
     if(appt) {
-      if(this.state.bookingBuffer.indexOf(appt.data.id) === -1) {
+      if(this.state.bookingBuffer.findIndex(i => i.employeeSchedule.id === appt.data.employeeScheduleId) === -1) {
         var tempBuffer = [];
-          tempBuffer.push(
-            {
-              employeeSchedule : { id : appt.data.id },
-              customer : { id : this.state.userID }
-            });
+        tempBuffer.push({
+            employeeSchedule : { id : appt.data.employeeScheduleId },
+            customer : { id : this.props.user.userDetails.id }
+        });
+        
         this.setState({
           bookingBuffer : tempBuffer
         })
         }
         else {
-          var index = this.state.bookingBuffer.indexOf(appt.data.id);
+          var index = this.state.bookingBuffer.findIndex(i => i.employeeSchedule.id === appt.data.employeeScheduleId);
+
           this.state.bookingBuffer.splice(index, 1);
         }
     }
@@ -187,6 +183,7 @@ class BookingForm extends React.Component {
     this.setState({
         serviceID : event.target.value
     });
+    event.persist();
     if(event.target.value !== -1) {
       api.get('employeeSchedule/getBServices/employee/service/' + event.target.value)
               .then((response) => {
@@ -200,36 +197,43 @@ class BookingForm extends React.Component {
                   });
               });
     }
+    else {
+      this.setState({
+        employeeID : -1
+      })
+    }
     
   }
 
   handleChangeEmployee(event) {
-    event.persist()
-    api.get('employeeSchedule/getSchedules/employee/available/' + event.target.value)
-        .then((response) => {
-            var tempData = [];
-            response.data.forEach((element, index) =>
-              tempData.push(
-                {
-                  title : element.bServiceName,
-                  startDate : new Date(element.startDate[0], element.startDate[1]-1, element.startDate[2], element.startDate[3], element.startDate[4]),
-                  endDate : new Date(element.endDate[0], element.endDate[1]-1, element.endDate[2], element.endDate[3], element.endDate[4]),
-                  id : index,
-                  employeeScheduleId : element.employeeScheduleId
-                }
-              )
-            );
-            this.setState({
-              data : tempData,
-              employeeID : event.target.value
-            })
-            
-        }).catch((error) => {
-            this.setState({ 
-                valid : false,
-                errorMsg : error.response.data.message
-            });
-        });
+    event.persist();
+    if(event.target.value !== -1) {
+      api.get('employeeSchedule/getSchedules/employee/available/' + event.target.value)
+          .then((response) => {
+              var tempData = [];
+              response.data.forEach((element, index) =>
+                tempData.push(
+                  {
+                    title : element.bServiceName,
+                    startDate : new Date(element.startDate[0], element.startDate[1]-1, element.startDate[2], element.startDate[3], element.startDate[4]),
+                    endDate : new Date(element.endDate[0], element.endDate[1]-1, element.endDate[2], element.endDate[3], element.endDate[4]),
+                    id : index,
+                    employeeScheduleId : element.employeeScheduleId
+                  }
+                )
+              );
+              this.setState({
+                data : tempData,
+                employeeID : event.target.value
+              })
+              
+          }).catch((error) => {
+              this.setState({ 
+                  valid : false,
+                  errorMsg : error.response.data.message
+              });
+          });
+    }
   }
 
   changeAddedAppointment(addedAppointment) {
@@ -261,94 +265,112 @@ class BookingForm extends React.Component {
 
   render() {
     
-
-    return (
-        <React.Fragment>
-            <br></br>
-            <Form.Group controlId="ServiceSelection">
-                <Form.Label>Select the service you would like to make a booking for</Form.Label>
-                {/* Insert api call here and map to see all services that are available (maybe hardcode) | <br> are for testing purposes only*/}
-                
-                <Form.Control as="select" onChange={this.handleChangeService}>
-                    <option key="-1" value="-1">-services-</option>
-                    {
-                      this.state.services.map(
-                      function(data) {
-                        if(data) {
-                          return(<option key={data.id} value={data.id}>{data.name}</option>);
+    if(this.props.user.userDetails) {
+      return (
+          <React.Fragment>
+              <br></br>
+              <Form.Group controlId="ServiceSelection">
+                  <Form.Label>Select the service you would like to make a booking for</Form.Label>
+                  {/* Insert api call here and map to see all services that are available (maybe hardcode) | <br> are for testing purposes only*/}
+                  
+                  <Form.Control as="select" onChange={this.handleChangeService}>
+                      <option key="-1" value="-1">-services-</option>
+                      {
+                        this.state.services.map(
+                        function(data) {
+                          if(data) {
+                            return(<option key={data.id} value={data.id}>{data.name}</option>);
+                          }
                         }
+                      )
                       }
-                    )
-                    }
-                </Form.Control>
-            </Form.Group>
-            <br></br>
+                  </Form.Control>
+              </Form.Group>
+              <br></br>
 
-            {this.state.serviceID !== '-1' &&
-                <Form.Group controlId="EmployeeSelection">
-                    <Form.Label>Select the employee you would like to make a booking for</Form.Label>
-                    {/* Insert api call here and map to see all employees that are available */}
-                    <Form.Control as="select" onChange={this.handleChangeEmployee}>
-                        <option key="-1" value="-1">-employees-</option>
-                        {
-                          this.state.employees.map(
-                            function(data) {
-                              if(data) {
-                                return(<option key={data.employeeId} value={data.employeeId}>{data.employeeFName}</option>);
+              {this.state.serviceID !== '-1' &&
+                  <Form.Group controlId="EmployeeSelection">
+                      <Form.Label>Select the employee you would like to make a booking for</Form.Label>
+                      {/* Insert api call here and map to see all employees that are available */}
+                      <Form.Control as="select" onChange={this.handleChangeEmployee}>
+                          <option key="-1" value="-1">-employees-</option>
+                          {
+                            this.state.employees.map(
+                              function(data) {
+                                if(data) {
+                                  return(<option key={data.employeeId} value={data.employeeId}>{data.employeeFName}</option>);
+                                }
                               }
-                            }
-                          )
-                        }
-                    </Form.Control>
-                </Form.Group>   
-            }
-            <br></br>
-            {/* {this.state.employeeID !== '-1' && */}
-                <React.Fragment>
-                  <Paper>
-                    {console.log(this.state.data)}
-                      <Scheduler
-                        data={this.state.data}
-                        height={700}
-                      >
-                      <ViewState
-                          currentDate={this.state.currentDate}
-                      />
-                      <EditingState
-                          onCommitChanges={this.commitChanges}
+                            )
+                          }
+                      </Form.Control>
+                  </Form.Group>   
+              }
+              <br></br>
+              {this.state.employeeID !== '-1' &&
+                  <React.Fragment>
+                    <Paper>
+                        <Scheduler
+                          data={this.state.data}
+                          height={700}
+                        >
+                        <ViewState
+                            currentDate={this.state.currentDate}
+                        />
+                        <EditingState
+                            onCommitChanges={this.commitChanges}
 
-                          addedAppointment={this.state.addedAppointment}
-                          onAddedAppointmentChange={this.changeAddedAppointment}
+                            addedAppointment={this.state.addedAppointment}
+                            onAddedAppointmentChange={this.changeAddedAppointment}
 
-                          appointmentChanges={this.state.appointmentChanges}
-                          onAppointmentChangesChange={this.changeAppointmentChanges}
+                            appointmentChanges={this.state.appointmentChanges}
+                            onAppointmentChangesChange={this.changeAppointmentChanges}
 
-                      />
-                      <MonthView />
-                      <AllDayPanel />
-                      <EditRecurrenceMenu />
-                      <ConfirmationDialog />
-                      <Appointments 
-                        appointmentComponent={this.appointmentComponent}
-                      />
-                      <AppointmentTooltip
-                          showOpenButton
-                          showDeleteButton
-                      />
-                      <AppointmentForm 
-                          basicLayoutComponent={BasicLayout}
-                          textEditorComponent={TextEditor}
-                          selectComponent={ong}
-                          messages={messages}
-                      />
-                      </Scheduler>
-                  </Paper>
-                  <Button id="submitForm" variant="primary" onClick={this.makeBookings}>Make Bookings</Button>
-                </React.Fragment>
-            {/* } */}
-            
-        </React.Fragment>
-    );
+                        />
+                        <MonthView />
+                        <AllDayPanel />
+                        <EditRecurrenceMenu />
+                        <ConfirmationDialog />
+                        <Appointments 
+                          appointmentComponent={this.appointmentComponent}
+                        />
+                        <AppointmentTooltip
+                            showOpenButton
+                            showDeleteButton
+                        />
+                        <AppointmentForm 
+                            basicLayoutComponent={BasicLayout}
+                            textEditorComponent={TextEditor}
+                            selectComponent={ong}
+                            messages={messages}
+                        />
+                        </Scheduler>
+                    </Paper>
+                    <Button id="submitForm" variant="primary" onClick={this.makeBookings}>Make Bookings</Button>
+                  </React.Fragment>
+              }
+              
+          </React.Fragment>
+      );
+      }
+      else {
+        return(<h1>Not Logged In</h1>)
+      }
   }
 }
-export default BookingForm;
+
+const mapStateToProps = state => ({
+  modal : state.modal,
+  user : state.user
+});
+
+const mapDispatchToProps = () => {
+  return { 
+      openModal
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps()
+)(BookingForm);
