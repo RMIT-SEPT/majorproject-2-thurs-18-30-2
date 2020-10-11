@@ -76,7 +76,7 @@ export default class SideBarMenu {
             {
                 name : 'services',
                 label : 'Services',
-                path : '/services',
+                path : '/booking-form',
                 icon :  BusinessRounded
             },
             {

@@ -12,7 +12,7 @@ import {
   AllDayPanel,
   ConfirmationDialog,
 } from '@devexpress/dx-react-scheduler-material-ui';
-import { Form, Button } from 'react-bootstrap';
+import { Card, Form, Button } from 'react-bootstrap';
 import * as _ from 'lodash';
 import { openModal } from '../app/reducers/modalSlice';
 import { connect } from 'react-redux';
@@ -112,6 +112,7 @@ class BookingForm extends React.Component {
     this.makeBookings = this.makeBookings.bind(this);
 
     this.state.currentDate = new Date();
+    console.log("FWEIOUFBUAEIWOFBER");
   }
 
   async componentDidMount() {
@@ -228,9 +229,11 @@ class BookingForm extends React.Component {
               })
               
           }).catch((error) => {
+            console.log("fefe");
               this.setState({ 
-                  valid : false,
-                  errorMsg : error.response.data.message
+                  errorMsg : error.response.data.message,
+                  data : [],
+                  employeeID : event.target.value
               });
           });
     }
@@ -267,12 +270,10 @@ class BookingForm extends React.Component {
     
     if(this.props.user.userDetails) {
       return (
-          <React.Fragment>
+          <Card>
               <br></br>
               <Form.Group controlId="ServiceSelection">
                   <Form.Label>Select the service you would like to make a booking for</Form.Label>
-                  {/* Insert api call here and map to see all services that are available (maybe hardcode) | <br> are for testing purposes only*/}
-                  
                   <Form.Control as="select" onChange={this.handleChangeService}>
                       <option key="-1" value="-1">-services-</option>
                       {
@@ -350,7 +351,7 @@ class BookingForm extends React.Component {
                   </React.Fragment>
               }
               
-          </React.Fragment>
+          </Card>
       );
       }
       else {
