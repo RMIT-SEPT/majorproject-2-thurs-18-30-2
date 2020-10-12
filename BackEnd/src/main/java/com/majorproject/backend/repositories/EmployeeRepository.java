@@ -50,6 +50,6 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
      * @param employeeId The id of the employee
      * @return An employee if the employee exists, otherwise null
      */
-    @Query(value = "SELECT e.* FROM Employee e WHERE e.employee_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT e.* FROM Employee e WHERE e.id = ?1", nativeQuery = true)
     Employee findByEmployeeId(long employeeId);
 }

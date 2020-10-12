@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private ListEmptyErrorService listEmptyErrorService = new ListEmptyErrorService();
     private ObjectEmptyErrorService objectEmptyErrorService = new ObjectEmptyErrorService();
@@ -34,6 +37,7 @@ public class EmployeeService {
 
         if(customerRepository.findByUsername(username) == null) {
             try {
+                employee.setPassword(bCryptPasswordEncoder.encode(employee.getPassword()));
                 employeeNew = employeeRepository.save(employee);
             } catch(Exception e) {
                 throw new ResponseException(HttpStatus.BAD_REQUEST, "Username already in use");

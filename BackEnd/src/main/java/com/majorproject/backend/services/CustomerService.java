@@ -6,6 +6,7 @@ import com.majorproject.backend.models.Customer;
 import com.majorproject.backend.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,6 +15,8 @@ public class CustomerService {
     private CustomerRepository customerRepository;
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private IdErrorService idErrorService = new IdErrorService();
 
@@ -28,6 +31,7 @@ public class CustomerService {
 
         if(employeeRepository.findByUsername(username) == null) {
             try {
+                customer.setPassword(bCryptPasswordEncoder.encode(customer.getPassword()));
                 customerNew = customerRepository.save(customer);
             } catch(Exception e) {
                 throw new ResponseException(HttpStatus.BAD_REQUEST, "Username already in use");

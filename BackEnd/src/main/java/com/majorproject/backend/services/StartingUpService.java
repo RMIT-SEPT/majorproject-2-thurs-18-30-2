@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -27,6 +28,8 @@ public class StartingUpService {
     private EmployeeScheduleRepository employeeScheduleRepository;
     @Autowired
     private BookingRepository bookingRepository;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // String to Date format
     private SimpleDateFormat formatterDate = new SimpleDateFormat("dd-MM-yyyy");
@@ -44,6 +47,7 @@ public class StartingUpService {
         Employee businessOwner = new Employee("Homeyyy", "Ash", "hAsh@mail.com",
                 "hAshAdmin", "hA123", "10 Software Avenue",
                 "0123456789", "admin");
+        businessOwner.setPassword(bCryptPasswordEncoder.encode(businessOwner.getPassword()));
         employeeRepository.save(businessOwner);
 
         // Add 10 customers

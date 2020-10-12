@@ -1,6 +1,8 @@
 package com.majorproject.backend.services;
 
 import com.majorproject.backend.exceptions.ResponseException;
+import com.majorproject.backend.models.Customer;
+import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.responseForms.LoginForm;
 import com.majorproject.backend.models.User;
 import com.majorproject.backend.repositories.CustomerRepository;
@@ -70,4 +72,18 @@ public class UserService {
 
         return exists;
     }
+
+    public String getUserType(Long id) {
+        String type;
+        Customer customer = customerRepository.findByCustomerId(id);
+        if(customer == null) {
+            Employee employee = employeeRepository.findByEmployeeId(id);
+            if(employee == null) throw new ResponseException(HttpStatus.NOT_FOUND, "User Id does not exist");
+            type = employee.getEmpType();
+        } else {
+            type = "customer";
+        }
+        return type;
+    }
+
 }
