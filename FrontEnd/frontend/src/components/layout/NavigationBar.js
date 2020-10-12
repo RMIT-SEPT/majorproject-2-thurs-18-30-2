@@ -24,7 +24,7 @@ class NavigationBar extends React.Component {
                 </Nav>
                 
                 <NavDropdown 
-                    title={this.props.user.loggedIn ?
+                    title={this.props.user.userDetails ?
                         <span className="fa-stack fa-lg">
                             <Image src={profilePic} className="nav-profile-pic fa-stack-1x" roundedCircle fluid />
                         </span>
@@ -36,7 +36,7 @@ class NavigationBar extends React.Component {
                     id="nav-dropdown" 
                     className="mr-sm-2"
                 >
-                    {this.props.user.loggedIn 
+                    {this.props.user.userDetails 
                         ?
                         <React.Fragment>
                             <NavDropdown.Item href="#profile">

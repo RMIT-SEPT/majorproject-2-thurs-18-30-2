@@ -38,7 +38,7 @@ export default class SideBarMenu {
                 icon : GroupRounded
             },
             {
-                name : 'employees', 
+                name : 'add-employees', 
                 label : 'Add Employee',
                 path : '/add-employee',
                 icon : PersonAddRounded
