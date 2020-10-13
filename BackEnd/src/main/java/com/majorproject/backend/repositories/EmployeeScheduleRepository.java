@@ -44,7 +44,7 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
             "FROM Employee_Schedule es, Employee e " +
             "WHERE es.employee_id = e.employee_id AND " +
             "es.availability = true AND " +
-            "e.employee_id = ?1 " +
+            "e.employee_id = ?1 " + 
             "ORDER BY es.date", nativeQuery = true)
     List<EmployeeSchedule> getEmployeeScheduleByEmployeeIdAvailability(long employeeId);
 
@@ -75,6 +75,12 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
     List<EmployeeSchedule> getEmployeeByBServiceId(long bServiceId);
 
     @Query(value = "SELECT es.* " +
+            "FROM Employee_Schedule es " +
+            "WHERE es.bservice_id = ?1 AND " +
+            "es.availability = true", nativeQuery = true)
+    List<EmployeeSchedule> getEmployeeByBServiceIdOnlyAvailable(long bServiceId);
+
+    @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es, BService bs " +
             "WHERE es.bservice_id = bs.bservice_id AND " +
             "bs.bservice_id = ?1 AND " +
@@ -82,6 +88,18 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
             "es.start_time >= ?3 " +
             "ORDER BY es.date", nativeQuery = true)
     List<EmployeeSchedule> getEmployeeScheduleByBServiceIdAndNow(long bServiceId, Date date, Date currTime);
+
+    @Query(value = "SELECT es.* " +
+            "FROM Employee_Schedule es, BService bs " +
+            "WHERE es.bservice_id = bs.bservice_id AND " +
+            "bs.bservice_id = ?1 AND " +
+            "es.availability = true AND " +
+            "(" +
+                "es.date > ?2 OR " +
+                "es.date = ?2 AND es.start_time >= ?3 " +
+            ") " +
+            "ORDER BY es.date", nativeQuery = true)
+    List<EmployeeSchedule> getEmployeeScheduleByBServiceIdAndNowOnlyAvailable(long bServiceId, Date date, Date currTime);
 
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es " +
@@ -108,6 +126,26 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
             "SET es.availability = false " +
             "WHERE es.employee_schedule_id = ?1", nativeQuery = true)
     void updateEmployeeScheduleAfterBooked(long employeeScheduleId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE Employee_Schedule es " +
+            "SET es.availability = true " +
+            "WHERE es.employee_schedule_id = ?1", nativeQuery = true)
+    void updateEmployeeScheduleAfterBookingDeleted(long employeeScheduleId);
+
+    @Query(value = "SELECT es.* " +
+            "FROM Employee_Schedule es " +
+            "WHERE es.employee_id = ?1 AND " +
+            "es.bservice_id = ?2 AND " +
+            "es.availability = true AND " +
+            "(" +
+            "es.date > ?3 OR " +
+            "es.date = ?3 AND es.start_time >= ?4 " +
+            ") " +
+            "ORDER BY es.date", nativeQuery = true)
+    List<EmployeeSchedule> getEmployeeScheduleByEmployeeIdAndBServiceIdAndNow(long employeeId, long bServiceId,
+                                                                              Date currDate, Date currTime);
 
     /**
      * This query returns a list of employee schedules that are based on the employee's id,

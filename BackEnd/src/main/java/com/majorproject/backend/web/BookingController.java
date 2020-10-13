@@ -61,6 +61,26 @@ public class BookingController {
         return response;
     }
 
+    @GetMapping("/deleteBooking/{bookingIdAPI}")
+    public ResponseEntity<?> deleteBooking(@Valid @PathVariable String bookingIdAPI) {
+        String success = bookingService.deleteBooking(bookingIdAPI);
+        return new ResponseEntity<String>(success, HttpStatus.OK);
+    }
+
+//    @GetMapping("/deleteBooking/{bookingIdAPI}/{currDateAPI}/{currTimeAPI}")
+//    public ResponseEntity<?> deleteBooking(@Valid @PathVariable String bookingIdAPI, @PathVariable String currDateAPI,
+//                                           @PathVariable String currTimeAPI) {
+//        String success = bookingService.deleteBooking(bookingIdAPI, currDateAPI, currTimeAPI);
+//        return new ResponseEntity<String>(success, HttpStatus.OK);
+//    }
+
+//    @GetMapping("/test/{bookingDateAPI}/{bookingTimeAPI}/{currDateAPI}/{currTimeAPI}")
+//    public ResponseEntity<?> testDateMinus(@Valid @PathVariable String bookingDateAPI, @PathVariable String bookingTimeAPI,
+//                                           @PathVariable String currDateAPI, @PathVariable String currTimeAPI) {
+//        String result = bookingService.testDateMinus(bookingDateAPI, bookingTimeAPI, currDateAPI, currTimeAPI);
+//        return new ResponseEntity<String>(result, HttpStatus.OK);
+//    }
+
 //    /**
 //     * Gets the bookings based on the user's username
 //     * @param usernameAPI The user's username

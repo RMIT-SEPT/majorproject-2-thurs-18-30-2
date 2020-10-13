@@ -11,9 +11,11 @@ import com.majorproject.backend.responseForms.EmpSchByEmpIdForm;
 import com.majorproject.backend.responseForms.EmployeeByBServiceIdForm;
 import com.majorproject.backend.responseForms.EmployeeScheduleAvailabilityForm;
 import com.majorproject.backend.responseForms.EmployeeScheduleServicesAndDateForm;
+import com.majorproject.backend.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.*;
 
@@ -282,8 +284,8 @@ public class EmployeeScheduleService {
 //                                                                         String startTimeAPI,
 //                                                                         String endTimeAPI) {
     public ListWithTimeboundService getSchedulesWithinTime(String dateAPI,
-                                                                         String startTimeAPI,
-                                                                         String endTimeAPI) {
+                                                           String startTimeAPI,
+                                                           String endTimeAPI) {
         List<EmployeeSchedule> employeeScheduleList;
         List<EmployeeScheduleAvailabilityForm> employeeScheduleAvailabilityList = new ArrayList<EmployeeScheduleAvailabilityForm>();
 
@@ -362,7 +364,8 @@ public class EmployeeScheduleService {
 
         long bServiceId = idErrorService.idStringToLong(bServiceIdAPI);
 
-        employeeScheduleList = employeeScheduleRepository.getEmployeeByBServiceId(bServiceId);
+//        employeeScheduleList = employeeScheduleRepository.getEmployeeByBServiceId(bServiceId);
+        employeeScheduleList = employeeScheduleRepository.getEmployeeByBServiceIdOnlyAvailable(bServiceId);
         listEmptyErrorService.checkListEmpty(employeeScheduleList, "Employee");
 
         List<Long> storeEmployeeId = new ArrayList<Long>();
@@ -412,22 +415,42 @@ public class EmployeeScheduleService {
         return listNew;
     }
 
-    public List<EmployeeScheduleServicesAndDateForm> getSchedulesByBServiceIdAndNow(String bServiceIdAPI, String dateAPI, String currTimeAPI) {
+    public List<EmployeeByBServiceIdForm> getSchedulesByBServiceIdAndNow(String bServiceIdAPI, String currDateAPI, String currTimeAPI) {
         List<EmployeeSchedule> employeeScheduleList = new ArrayList<EmployeeSchedule>();
-        List<EmployeeScheduleServicesAndDateForm> employeeScheduleServicesAndDateFormList = new ArrayList<EmployeeScheduleServicesAndDateForm>();
+        List<EmployeeByBServiceIdForm> employeeList = new ArrayList<EmployeeByBServiceIdForm>();
 
         long bServiceId = idErrorService.idStringToLong(bServiceIdAPI);
-        Date date = dateErrorService.convertToDateType(dateAPI, "date");
+        Date currDate = dateErrorService.convertToDateType(currDateAPI, "date");
         Date currTime = dateErrorService.convertToDateType(currTimeAPI, "time");
 
-        employeeScheduleList = employeeScheduleRepository.getEmployeeScheduleByBServiceIdAndNow(bServiceId, date, currTime);
-        listEmptyErrorService.checkListEmpty(employeeScheduleList, "Employee Schedule");
+//        employeeScheduleList = employeeScheduleRepository.getEmployeeScheduleByBServiceIdAndNow(bServiceId, date, currTime);
+        employeeScheduleList = employeeScheduleRepository.getEmployeeScheduleByBServiceIdAndNowOnlyAvailable(bServiceId, currDate, currTime);
+        listEmptyErrorService.checkListEmpty(employeeScheduleList, "Employee");
 
         for(int i = 0; i < employeeScheduleList.size(); ++i) {
-            employeeScheduleServicesAndDateFormList.add(new EmployeeScheduleServicesAndDateForm(employeeScheduleList.get(i)));
+            employeeList.add(new EmployeeByBServiceIdForm(employeeScheduleList.get(i)));
         }
 
-        return employeeScheduleServicesAndDateFormList;
+        return employeeList;
+    }
+
+    public ListWithTimeboundService getSchedulesByEmployeeAndBService(String employeeIdAPI, String bServiceIdAPI,
+                                                                      String currDateAPI, String currTimeAPI) {
+        List<EmployeeSchedule> employeeScheduleList = new ArrayList<EmployeeSchedule>();
+        List<EmployeeScheduleAvailabilityForm> employeeScheduleAvailabilityList = new ArrayList<EmployeeScheduleAvailabilityForm>();
+
+        long employeeId = idErrorService.idStringToLong(employeeIdAPI);
+        long bServiceId = idErrorService.idStringToLong(bServiceIdAPI);
+        Date currDate = dateErrorService.convertToDateType(currDateAPI, "date");
+        Date currTime = dateErrorService.convertToDateType(currTimeAPI, "time");
+
+        employeeScheduleList = employeeScheduleRepository.getEmployeeScheduleByEmployeeIdAndBServiceIdAndNow(employeeId, bServiceId,
+                                                                                                        currDate, currTime);
+        listEmptyErrorService.checkListEmpty(employeeScheduleList, "Employee Schedule");
+
+        convertToAvailabilityList(employeeScheduleList, employeeScheduleAvailabilityList);
+        ListWithTimeboundService listWithTimeboundService = new ListWithTimeboundService(employeeScheduleAvailabilityList);
+        return listWithTimeboundService;
     }
 
 //    /**

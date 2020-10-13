@@ -1,13 +1,11 @@
 package com.majorproject.backend.web;
 
-import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.models.EmployeeSchedule;
 import com.majorproject.backend.responseForms.EmpSchByEmpIdForm;
 import com.majorproject.backend.responseForms.EmployeeByBServiceIdForm;
-import com.majorproject.backend.responseForms.EmployeeScheduleAvailabilityForm;
 import com.majorproject.backend.responseForms.EmployeeScheduleServicesAndDateForm;
 import com.majorproject.backend.services.EmployeeScheduleService;
-import com.majorproject.backend.services.ListWithTimeboundService;
+import com.majorproject.backend.util.ListWithTimeboundService;
 import com.majorproject.backend.services.MapValidationErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -136,17 +134,28 @@ public class EmployeeScheduleController {
         return response;
     }
 
+    // Cancel usage, tell front end
     @GetMapping("/getBServices/employee/service/{bServiceIdAPI}")
     public ResponseEntity<?> viewEmployeesByBServiceId(@Valid @PathVariable String bServiceIdAPI) {
         List<EmployeeByBServiceIdForm> employeeList = employeeScheduleService.getEmployeesByBServiceId(bServiceIdAPI);
         return new ResponseEntity<List<EmployeeByBServiceIdForm>>(employeeList, HttpStatus.OK);
     }
 
-    @GetMapping("/getBServices/{bServiceIdAPI}/{dateAPI}/{timeAPI}")
-    public ResponseEntity<?> viewBServicesFromToday(@Valid @PathVariable String bServiceIdAPI,
-                                                    @PathVariable String dateAPI, @PathVariable String timeAPI) {
-        List<EmployeeScheduleServicesAndDateForm> employeeScheduleServicesAndDateFormList = employeeScheduleService.getSchedulesByBServiceIdAndNow(bServiceIdAPI, dateAPI, timeAPI);
-        return new ResponseEntity<List<EmployeeScheduleServicesAndDateForm>>(employeeScheduleServicesAndDateFormList, HttpStatus.OK);
+    @GetMapping("/getEmployees/bService/{bServiceIdAPI}/{currDateAPI}/{currTimeAPI}")
+    public ResponseEntity<?> viewEmployeesByBServiceIdFromNow(@Valid @PathVariable String bServiceIdAPI,
+                                                    @PathVariable String currDateAPI, @PathVariable String currTimeAPI) {
+        List<EmployeeByBServiceIdForm> employeeList = employeeScheduleService.getSchedulesByBServiceIdAndNow(bServiceIdAPI, currDateAPI, currTimeAPI);
+        return new ResponseEntity<List<EmployeeByBServiceIdForm>>(employeeList, HttpStatus.OK);
+    }
+
+    @GetMapping("/getSchedules/employee/bService/{employeeIdAPI}/{bServiceIdAPI}/{currDateAPI}/{currTimeAPI}")
+    public ResponseEntity<?> viewSchedulesByEmployeeAndBService(@Valid @PathVariable String employeeIdAPI,
+                                                                @PathVariable String bServiceIdAPI,
+                                                                @PathVariable String currDateAPI,
+                                                                @PathVariable String currTimeAPI) {
+        ListWithTimeboundService listWithTimeboundService = employeeScheduleService.getSchedulesByEmployeeAndBService(employeeIdAPI, bServiceIdAPI,
+                                                                                                                        currDateAPI, currTimeAPI);
+        return new ResponseEntity<ListWithTimeboundService>(listWithTimeboundService, HttpStatus.OK);
     }
 
     @GetMapping("/test/{employeeIdAPI}/{bServiceIdAPI}/{dateAPI}/{startTimeAPI}/{endTimeAPI}")
