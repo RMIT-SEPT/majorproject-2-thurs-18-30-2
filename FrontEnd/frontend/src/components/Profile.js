@@ -39,7 +39,7 @@ function Profile({ router }) {
     }, [mainUser.userDetails, router.computedMatch.params.eId]);
 
     var html;
-    if(user) {
+    if(user && mainUser.userDetails) {
         html = (
 
             <Card className="bg-dark text-white" style={{marginTop : '20px'}}>
