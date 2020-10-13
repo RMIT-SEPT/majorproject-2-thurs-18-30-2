@@ -27,7 +27,7 @@ export const slice = createSlice({
         },
         setDecoded : (state, token) => {
             var tok = token.payload;
-            if(tok !== 'null') {
+            if(tok !== null) {
                 setJWTToken(tok);
                 const decoded = jwt_decode(tok);
                 state.userDecoded = { ...decoded };

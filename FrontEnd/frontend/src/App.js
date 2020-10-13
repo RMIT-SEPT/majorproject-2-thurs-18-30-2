@@ -19,7 +19,10 @@ class App extends React.Component {
     async componentDidMount() {
         if(!this.props.user.userDecoded) {       
             var token = localStorage.getItem('jwtToken');  
-            if(token !== 'null') {  
+            if(token === 'null') {
+                token = null
+            }
+            if(token !== null) {  
                 this.props.setDecoded(token);
                 var decoded = jwt_decode(token);
                 try {
