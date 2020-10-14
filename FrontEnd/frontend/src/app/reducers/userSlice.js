@@ -6,11 +6,12 @@ export const slice = createSlice({
     name: 'user',
     initialState: {
       userDecoded: null,
-      userDetais: null
+      userDetails: null
     },
     reducers: {
         logIn : (state, loginInfo) => {
             var response = loginInfo.payload;
+            state.userDetails = response.user;
             localStorage.setItem('jwtToken', response.token);
             setJWTToken(response.token);
             const decoded = jwt_decode(response.token);

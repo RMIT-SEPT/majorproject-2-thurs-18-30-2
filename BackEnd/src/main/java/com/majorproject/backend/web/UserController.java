@@ -1,5 +1,6 @@
 package com.majorproject.backend.web;
 
+import com.majorproject.backend.exceptions.ResponseException;
 import com.majorproject.backend.responseForms.JWTLoginSuccessResponse;
 import com.majorproject.backend.responseForms.LoginForm;
 import com.majorproject.backend.models.User;
@@ -54,16 +55,20 @@ public class UserController {
      */
     @PostMapping("/login")
     public ResponseEntity<?> loginVerification(@RequestBody LoginForm loginForm) {
+        User user = userService.getUserByUserName(loginForm.getUsername());
+        String jwt = "";
         Authentication authentication = null;
-        authentication= authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginForm.getUsername(),
-                        loginForm.getPassword()
-                )
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = TOKEN_PREFIX +  tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt));
+
+            authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginForm.getUsername(),
+                            loginForm.getPassword()
+                    )
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
+
+        return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt, user));
     }
 
     @Autowired

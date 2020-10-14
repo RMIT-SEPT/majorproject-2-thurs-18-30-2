@@ -9,6 +9,7 @@ import com.majorproject.backend.repositories.CustomerRepository;
 import com.majorproject.backend.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +18,7 @@ public class UserService {
     private EmployeeRepository employeeRepository;
     @Autowired
     private CustomerRepository customerRepository;
+
 
     /**
      * Checks if the login credentials are correct
@@ -27,7 +29,6 @@ public class UserService {
         User user = null;
         String username = loginForm.getUsername();
         String password = loginForm.getPassword();
-
         // Check if user is employee or customer or none
         user = employeeRepository.findByUsernameAndPassword(username, password);
         if(user == null) user = customerRepository.findByUsernameAndPassword(username, password);
@@ -86,4 +87,11 @@ public class UserService {
         return type;
     }
 
+
+    public User getUserByUserName(String username) {
+        User user = null;
+        user = customerRepository.findByUsername(username);
+        if(user == null) user = employeeRepository.findByUsername(username);
+        return user;
+    }
 }

@@ -3,9 +3,9 @@ import Home from '../components/Home';
 import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";
 // import ProfileC from '../components/unusedComponents/Profile';
-// import BookingsPage from '../components/BookingPage';
+import BookingPage from '../components/BookingPage';
 import BookingCard from '../components/BookingCard';
-import ServiceCard from '../components/ServiceCard'
+// import ServiceCard from '../components/ServiceCard'
 import EmployeeCard from '../components/EmployeeCard';
 import CardsListPage from '../components/CardsListPage';
 import Profile from '../components/Profile';
@@ -73,17 +73,32 @@ const router = [
         style : "centered",
         form : "editProfile"
     },
-    {
-        path : "/services",
-        component : CardsListPage,
-        listApi : "bService/getAllServices",
-        card : ServiceCard
-    },
+    // {
+    //     path : "/services",
+    //     component : CardsListPage,
+    //     listApi : "bService/getAllServices",
+    //     card : ServiceCard
+    // },
     {
         path : "/bookings",
-        component : CardsListPage,
-        listApi : "booking/getAllBookings",
-        card : BookingCard
+        component : BookingPage,
+        routes : [
+            
+            {
+                path : "/bookings/present",
+                label : "Current Bookings",
+                component : CardsListPage,
+                listApi : null,
+                card : BookingCard
+            },
+            {
+                path : "/bookings/past",
+                label : "Past Bookings",
+                component : CardsListPage,
+                listApi : null,
+                card : BookingCard
+            }
+        ]
     },
     {
         path : "/employees",

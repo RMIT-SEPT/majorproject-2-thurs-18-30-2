@@ -39,7 +39,7 @@ function PasswordInputWithConf (props) {
             }
             
         }, 700, { leading : false, trailing: true });
-        console.log(valid)
+        
         debounceFn();
     }
 

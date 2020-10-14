@@ -53,22 +53,27 @@ function Profile({ router }) {
                     <Col md="9">
                         <Card.Body>
                             <Row>
-                                <Col xs="10">
+                                <Col>
                                     <Card.Title style={{fontSize: '30px'}}>{user.username}</Card.Title>
                                 </Col>
                                 {(mainUser.userDetails.empType === 'admin' || !mainUser.userDetails.empType) &&
-                                    <Col>
+                                    <Col xs="2">
                                         <Link to={editUrl}>
                                             <Button variant="info">Edit</Button>
                                         </Link>
                                     </Col>
                                 }
+                            </Row>
+                            <Row>
                                 {mainUser.userDetails.empType &&
-                                    <Col>
-                                        <Link to={scheduleUrl}>
-                                            <Button variant="info">Edit</Button>
-                                        </Link>
-                                    </Col>
+                                    <React.Fragment>
+                                        <Col></Col>
+                                        <Col xs="2">
+                                            <Link to={scheduleUrl}>
+                                                <Button variant="dark">Schedule</Button>
+                                            </Link>
+                                        </Col>
+                                    </React.Fragment>
                                 }
                             </Row>
                             <br />  

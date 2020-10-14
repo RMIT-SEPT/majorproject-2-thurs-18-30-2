@@ -31,15 +31,12 @@ function BookingCard (props) {
 
         return eSub;
     }
-
-    
-    console.log(props)
     
     return (
         
         <Card className="card">
             
-            <Card.Img src={cafe} alt="Card image" thumbnail/>
+            <Card.Img src={cafe} alt="Card image"/>
 
             <Card.Body>
                 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Alert } from 'react-bootstrap';
 import api from '../app/api';
 
 class CardsListPage extends React.Component {
@@ -37,9 +37,9 @@ class CardsListPage extends React.Component {
                 
                 rowList.push(
                     <Row key={j}>
-                        {tmpList.map((itemCol) => {
+                        {tmpList.map((itemCol, index) => {
                             return ( 
-                                <Col md="4" key={itemCol.id}>
+                                <Col md="4" key={index}>
 
                                     <this.props.router.card item={itemCol}/>
                                 </Col>
@@ -54,12 +54,16 @@ class CardsListPage extends React.Component {
         
         html = (
             <React.Fragment>
-                    {this.state.items &&    
+                    {this.state.items.length !==0 ?    
                         rowList.map((row) => {
                             return row;
                         })
+                        :
+                        <Alert variant="secondary" style={{ marginTop : '15px' }}>
+                            Sorry no items could be found.
+                        </Alert>
                     }
-                   
+                    
             </React.Fragment>
         )
         return html;

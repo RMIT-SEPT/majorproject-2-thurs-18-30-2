@@ -76,8 +76,11 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
-    public List<BookingMainForm> getAllBookings() {
-        List<Booking> bookingList = bookingRepository.getAllBookings();
+    public List<BookingMainForm> getAllBookings(String state) {
+
+        List<Booking> bookingList;
+        if(state.equals("past")) bookingList = bookingRepository.getAllBookingsBefore(new Date());
+        else bookingList = bookingRepository.getAllBookingsAfter(new Date());
         List<BookingMainForm> bookingMainFormList = new ArrayList<BookingMainForm>();
 
         listEmptyErrorService.checkListEmpty(bookingList, "Booking");
@@ -89,16 +92,18 @@ public class BookingService {
         return bookingMainFormList;
     }
 
-    public List<BookingMainForm> getBookingsForUserById(String userTypeAPI, String idAPI) {
+    public List<BookingMainForm> getBookingsForUserById(String userTypeAPI, String idAPI, String state) {
         List<Booking> bookingList = new ArrayList<Booking>();
         List<BookingMainForm> bookingMainFormList = new ArrayList<BookingMainForm>();
 
         Long userId = idErrorService.idStringToLong(idAPI);
 
         if (userTypeAPI.equals("customer")) { // if user is a customer
-            bookingList = bookingRepository.getAllCustomerBookings(userId);
+            if(state.equals("past")) bookingList = bookingRepository.getAllCustomerBookingsBefore(userId, new Date());
+            else bookingList = bookingRepository.getAllCustomerBookingsAfter(userId, new Date());
         } else { // if user is an employee
-            bookingList = bookingRepository.getAllEmployeeBookings(userId);
+            if(state.equals("past")) bookingList = bookingRepository.getAllEmployeeBookingsBefore(userId, new Date());
+            else bookingList = bookingRepository.getAllEmployeeBookingsAfter(userId, new Date());
         }
 
         listEmptyErrorService.checkListEmpty(bookingList, "Booking");

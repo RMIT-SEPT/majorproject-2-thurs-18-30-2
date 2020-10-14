@@ -19,9 +19,8 @@ public class JwtTokenProvider {
     public String generateToken(Authentication authentication){
         User user = (User) authentication.getPrincipal();
         Date now = new Date(System.currentTimeMillis());
-        System.out.println(now.toString());
         Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
-        System.out.println(expiryDate.toString());
+
         String userId = Long.toString(user.getId());
 
         Map<String,Object> claims = new HashMap<>();
