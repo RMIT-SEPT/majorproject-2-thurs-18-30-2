@@ -146,7 +146,7 @@ public class EmployeeScheduleController {
     }
 
     // Cancel usage, tell front end
-    @GetMapping("/getBServices/employee/service/{bServiceIdAPI}")
+    @GetMapping("/getBServices/employee/bService/{bServiceIdAPI}")
     public ResponseEntity<?> viewEmployeesByBServiceId(@Valid @PathVariable String bServiceIdAPI) {
         List<EmployeeByBServiceIdForm> employeeList = employeeScheduleService.getEmployeesByBServiceId(bServiceIdAPI);
         return new ResponseEntity<List<EmployeeByBServiceIdForm>>(employeeList, HttpStatus.OK);
