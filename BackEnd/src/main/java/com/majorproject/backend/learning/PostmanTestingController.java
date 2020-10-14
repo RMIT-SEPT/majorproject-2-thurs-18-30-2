@@ -99,10 +99,13 @@ public class PostmanTestingController {
     public ResponseEntity<?> getCurrentDateTime() {
         Date currDate = dateNowUtil.getCurrentDate();
         Date currTime = dateNowUtil.getCurrentTime();
+        Date week = dateNowUtil.getCurrentWeek();
 
         String dateInString = dateErrorService.convertToStringType(currDate, "date");
         String timeInString = dateErrorService.convertToStringType(currTime, "time");
-        String timeNow = "date: " + dateInString + "\ntime: " + timeInString;
+        String weekInString = dateErrorService.convertToStringType(week, "date");
+
+        String timeNow = "date: " + dateInString + "\ntime: " + timeInString + "\nweek: " + weekInString;
 
         return new ResponseEntity<String>(timeNow, HttpStatus.OK);
     }

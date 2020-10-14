@@ -12,13 +12,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class DateNowUtil {
-    private LocalDateTime now = LocalDateTime.now();
 
     public Date getCurrentDate() {
         Date currDate = null;
         String datePattern = "yyyy-MM-dd";
 
-
+        LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(datePattern);
         SimpleDateFormat formatterDate = new SimpleDateFormat(datePattern);
 
@@ -32,10 +31,28 @@ public class DateNowUtil {
         return currDate;
     }
 
+    public Date getCurrentWeek() {
+        Date nextWeekDate = null;
+        String datePattern = "yyyy-MM-dd";
+
+        LocalDateTime currentWeekFromDate = LocalDateTime.now().plusWeeks(1);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(datePattern);
+        SimpleDateFormat formatterDate = new SimpleDateFormat(datePattern);
+
+        try {
+            nextWeekDate = formatterDate.parse(currentWeekFromDate.format(dtf));
+        } catch(ParseException e) {
+            throw new ResponseException(HttpStatus.BAD_REQUEST, "Date Error");
+        }
+
+        return nextWeekDate;
+    }
+
     public Date getCurrentTime() {
         Date currTime = null;
         String timePattern = "HH:mm";
 
+        LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(timePattern);
         SimpleDateFormat formatterTime = new SimpleDateFormat(timePattern);
 
