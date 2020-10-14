@@ -35,23 +35,23 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
 
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es, Employee e " +
-            "WHERE es.employee_id = e.employee_id AND " +
-            "e.employee_id = ?1 " +
+            "WHERE es.employee_id = e.id AND " +
+            "e.id = ?1 " +
             "ORDER BY es.date", nativeQuery = true)
     List<EmployeeSchedule> getEmployeeScheduleByEmployeeId(long employeeId);
 
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es, Employee e " +
-            "WHERE es.employee_id = e.employee_id AND " +
+            "WHERE es.employee_id = e.id AND " +
             "es.availability = true AND " +
-            "e.employee_id = ?1 " + 
+            "e.id = ?1 " +
             "ORDER BY es.date", nativeQuery = true)
     List<EmployeeSchedule> getEmployeeScheduleByEmployeeIdAvailability(long employeeId);
 
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es, Employee e " +
-            "WHERE es.employee_id = e.employee_id AND " +
-            "e.employee_id = ?1 AND " +
+            "WHERE es.employee_id = e.id AND " +
+            "e.id = ?1 AND " +
             "es.date >= ?2 AND " +
             "es.date <= ?3 " +
             "ORDER BY es.date", nativeQuery = true)
@@ -157,9 +157,9 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
      */
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es, Employee e " +
-            "WHERE es.employee_id = e.employee_id AND " +
+            "WHERE es.employee_id = e.id AND " +
             "es.availability = true AND " +
-            "e.employee_id = ?1 AND " +
+            "e.id = ?1 AND " +
             "es.date >= ?2 AND " +
             "es.date <= ?3 " +
             "ORDER BY es.date", nativeQuery = true)
@@ -176,7 +176,7 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
      */
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es, Employee e, BService bs " +
-            "WHERE es.employee_id = e.employee_id AND " +
+            "WHERE es.employee_id = e.id AND " +
             "es.bservice_id = bs.bservice_id AND " +
             "es.availability = true AND " +
             "bs.bservice_id = ?1 AND " +
@@ -197,11 +197,11 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
      */
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es, Employee e, BService bs " +
-            "WHERE es.employee_id = e.employee_id AND " +
+            "WHERE es.employee_id = e.id AND " +
             "es.bservice_id = bs.bservice_id AND " +
             "es.availability = true AND " +
             "bs.bservice_id = ?1 AND " +
-            "e.employee_id = ?2 AND " +
+            "e.id = ?2 AND " +
             "es.date = ?3 AND " +
             "es.start_time >= ?4 AND " +
             "es.end_time <= ?5", nativeQuery = true)
@@ -209,7 +209,7 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
 
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es, Employee e, BService bs " +
-            "WHERE es.employee_id = e.employee_id AND " +
+            "WHERE es.employee_id = e.id AND " +
             "es.bservice_id = bs.bservice_id AND " +
             "es.date = ?1 AND " +
             "es.start_time >= ?2 AND " +

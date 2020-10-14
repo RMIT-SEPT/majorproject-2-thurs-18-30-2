@@ -129,7 +129,7 @@ public class EmployeeScheduleController {
 //        return new ResponseEntity<ListWithTimeboundService>(listWithTimeboundService, HttpStatus.OK);
 //    }
 
-    @PutMapping("/editSchedule/{scheduleIdAPI}")
+    @PostMapping("/editSchedule/{scheduleIdAPI}")
     public ResponseEntity<?> editSchedule(@Valid @PathVariable String scheduleIdAPI, @RequestBody Map<String, String> request, BindingResult result) {
         ResponseEntity<?> response;
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);

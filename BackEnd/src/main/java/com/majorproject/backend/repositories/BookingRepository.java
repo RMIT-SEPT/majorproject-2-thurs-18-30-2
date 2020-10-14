@@ -36,8 +36,8 @@ public interface BookingRepository extends CrudRepository<Booking, Long> {
      */
     @Query(value = "SELECT b.* FROM Booking b, Employee_Schedule es, Employee e " +
             "WHERE b.employee_schedule_id = es.employee_schedule_id AND " +
-            "es.employee_id = e.employee_id AND " +
-            "e.employee_id = ?1 ORDER BY b.created_at", nativeQuery = true)
+            "es.employee_id = e.id AND " +
+            "e.id = ?1 ORDER BY b.created_at", nativeQuery = true)
     List<Booking> getAllEmployeeBookings(long employeeId);
 
     /**

@@ -75,7 +75,7 @@ public class EmployeeController {
         return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
     }
 
-    @PutMapping("/editEmployee/{idAPI}")
+    @PostMapping("/editEmployee/{idAPI}")
     public ResponseEntity<?> editEmployee(@Valid @PathVariable String idAPI, @RequestBody Employee employee, BindingResult result) {
         ResponseEntity<?> response;
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
