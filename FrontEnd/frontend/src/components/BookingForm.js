@@ -127,16 +127,16 @@ class BookingForm extends React.Component {
     this.setState({
         serviceID : event.target.value
     });
+    
     event.persist();
     if(event.target.value !== -1) {
-      api.get('employeeSchedule/getBServices/employee/service/' + event.target.value)
+      api.get('employeeSchedule/getEmployees/bService/' + event.target.value)
               .then((response) => {
                   this.setState({
                       employees : response.data
                   });
               }).catch((error) => {
                   this.setState({ 
-                      valid : false,
                       errorMsg : error.response.data.message
                   });
               });
@@ -152,7 +152,7 @@ class BookingForm extends React.Component {
   handleChangeEmployee(event) {
     event.persist();
     if(event.target.value !== -1) {
-      api.get('/api/employeeSchedule/getSchedules/employee/bService/' + event.target.value + '/' + this.state.serviceID)
+      api.get('employeeSchedule/getSchedules/employee/bService/' + event.target.value + '/' + this.state.serviceID)
           .then((response) => {
               var tempData = [];
               response.data.forEach((element, index) =>

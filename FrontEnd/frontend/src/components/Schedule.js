@@ -12,8 +12,8 @@ import {
   ConfirmationDialog,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { appointments } from './appointments';
-
-
+import { Card, Form, Button } from 'react-bootstrap';
+import api from '../app/api';
 
 
 const messages = {
@@ -77,13 +77,13 @@ class Schedule extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data : appointments,
+      data : [],
       currentDate : '2020-09-27',
       addedAppointment : {},
       appointmentChanges : {},
       editingAppointment : undefined,
       service : '0',
-      employee : '0',
+      employeeID : '12',
       startTime : 8,
       endTime : 18
     };
@@ -94,6 +94,28 @@ class Schedule extends React.Component {
     this.changeEditingAppointment = this.changeEditingAppointment.bind(this);
     this.handleChangeService = this.handleChangeService.bind(this);
     this.handleChangeEmployee = this.handleChangeEmployee.bind(this);
+    this.saveSchedule = this.saveSchedule.bind(this);
+  }
+
+  saveSchedule() {
+    console.log("stuffs");
+  }
+
+  async componentDidMount() {
+    //getSchedules/employee/{employeeIdAPI}
+    console.log("test");
+    await api.get('employeeSchedule/getSchedules/employee/' + this.state.employeeID)
+              .then((response) => {
+                  this.setState({
+                      data : response.data
+                  });
+                  console.log(response.data);
+              }).catch((error) => {
+                  this.setState({ 
+                      valid : false,
+                      errorMsg : error.response.data.message
+                  });
+              });
   }
 
   handleChangeService(event) {
@@ -138,7 +160,6 @@ class Schedule extends React.Component {
       return { data };
     });
   }
-  // make booking needs customer id, time slot id
 
   render() {
     const {
@@ -186,6 +207,7 @@ class Schedule extends React.Component {
                 />
                 </Scheduler>
             </Paper>
+            <Button id="submitForm" variant="primary" onClick={this.saveSchedule}>Make Bookings</Button>
         </React.Fragment>
     );
   }
