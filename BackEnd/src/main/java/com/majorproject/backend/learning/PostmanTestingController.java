@@ -1,6 +1,7 @@
-package com.majorproject.backend.web;
+package com.majorproject.backend.learning;
 
-import com.majorproject.backend.services.DateErrorService;
+import com.majorproject.backend.util.DateErrorService;
+import com.majorproject.backend.util.DateNowUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,6 +19,7 @@ import java.util.*;
 public class PostmanTestingController {
 
     private DateErrorService dateErrorService = new DateErrorService();
+    private DateNowUtil dateNowUtil = new DateNowUtil();
 
     @GetMapping("/test/default/getDate")
     public ResponseEntity<?> getDefaultDate() {
@@ -91,5 +93,20 @@ public class PostmanTestingController {
         listString.addAll(Collections.singleton(endDateList));
 
         return new ResponseEntity<List<List<String>>>(listString, HttpStatus.OK);
+    }
+
+    @GetMapping("/test2/getDateTimeNow")
+    public ResponseEntity<?> getCurrentDateTime() {
+        Date currDate = dateNowUtil.getCurrentDate();
+        Date currTime = dateNowUtil.getCurrentTime();
+        Date week = dateNowUtil.getCurrentWeek();
+
+        String dateInString = dateErrorService.convertToStringType(currDate, "date");
+        String timeInString = dateErrorService.convertToStringType(currTime, "time");
+        String weekInString = dateErrorService.convertToStringType(week, "date");
+
+        String timeNow = "date: " + dateInString + "\ntime: " + timeInString + "\nweek: " + weekInString;
+
+        return new ResponseEntity<String>(timeNow, HttpStatus.OK);
     }
 }

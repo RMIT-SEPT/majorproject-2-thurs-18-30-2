@@ -1,4 +1,4 @@
-package com.majorproject.backend.services;
+package com.majorproject.backend.util;
 
 import com.majorproject.backend.exceptions.ResponseException;
 import com.majorproject.backend.models.*;
@@ -32,7 +32,7 @@ public class StartingUpService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // String to Date format
-    private SimpleDateFormat formatterDate = new SimpleDateFormat("dd-MM-yyyy");
+    private SimpleDateFormat formatterDate = new SimpleDateFormat("yyyy-MM-dd");
 
     // String to Time format
     private SimpleDateFormat formatterTime = new SimpleDateFormat("HH:mm");

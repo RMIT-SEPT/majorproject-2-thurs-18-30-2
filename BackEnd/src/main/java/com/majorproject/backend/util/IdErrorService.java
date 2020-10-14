@@ -1,4 +1,4 @@
-package com.majorproject.backend.services;
+package com.majorproject.backend.util;
 
 import com.majorproject.backend.exceptions.ResponseException;
 import org.springframework.http.HttpStatus;

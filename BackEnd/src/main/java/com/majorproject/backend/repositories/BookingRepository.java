@@ -45,6 +45,9 @@ public interface BookingRepository extends CrudRepository<Booking, Long> {
      * @param customerId The customer's id
      * @return A list based on ^
      */
-    @Query(value = "SELECT * FROM Booking b WHERE b.customer_id = ?1 ORDER BY b.created_at", nativeQuery = true)
+    @Query(value = "SELECT b.* FROM Booking b WHERE b.customer_id = ?1 ORDER BY b.created_at", nativeQuery = true)
     List<Booking> getAllCustomerBookings(long customerId);
+
+    @Query(value = "SELECt b.* FROM Booking b WHERE b.id = ?1", nativeQuery = true)
+    Booking getBookingById(long bookingId);
 }

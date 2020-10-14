@@ -1,10 +1,11 @@
-package com.majorproject.backend.services;
+package com.majorproject.backend.util;
 
 import com.majorproject.backend.exceptions.ResponseException;
 import org.springframework.http.HttpStatus;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class DateErrorService {
@@ -21,11 +22,11 @@ public class DateErrorService {
     public Date convertToDateType(String variableAPI, String dateType) {
         Date variable;
         try {
-             if(dateType.equals("date")) {
-                 variable = dateStringToDate(variableAPI);
-             } else { // if(dateType.equals("time"))
-                 variable = timeStringToTime(variableAPI);
-             }
+            if (dateType.equals("date")) {
+                variable = dateStringToDate(variableAPI);
+            } else { // if(dateType.equals("time"))
+                variable = timeStringToTime(variableAPI);
+            }
         } catch (Exception e) {
             throw new ResponseException(HttpStatus.BAD_REQUEST, "Date Error");
         }
@@ -48,12 +49,12 @@ public class DateErrorService {
     public String convertToStringType(Date variable, String dateType) {
         String variableInString;
         try {
-            if(dateType.equals("date")) {
+            if (dateType.equals("date")) {
                 variableInString = dateToDateString(variable);
             } else { // if(dateType.equals("time"))
                 variableInString = timeToTimeString(variable);
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new ResponseException(HttpStatus.BAD_REQUEST, "Date Error");
         }
 
