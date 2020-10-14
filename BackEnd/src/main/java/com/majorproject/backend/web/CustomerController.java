@@ -42,7 +42,7 @@ public class CustomerController {
         return response;
     }
 
-    @PutMapping("/editCustomer/{idAPI}")
+    @PostMapping("/editCustomer/{idAPI}")
     public ResponseEntity<?> editCustomer(@Valid @PathVariable String idAPI, @RequestBody Customer customer, BindingResult result) {
         ResponseEntity<?> response;
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);

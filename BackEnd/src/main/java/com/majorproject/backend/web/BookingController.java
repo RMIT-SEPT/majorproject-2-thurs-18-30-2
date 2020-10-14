@@ -11,7 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.xml.ws.Response;
+
 import java.util.List;
 import java.util.Map;
 
@@ -45,17 +45,17 @@ public class BookingController {
         return response;
     }
 
-    @GetMapping("getAllBookings")
-    public ResponseEntity<?> getAllBookings() {
-        List<BookingMainForm> bookingMainFormList = bookingService.getAllBookings();
+    @GetMapping("getAllBookings/{state}")
+    public ResponseEntity<?> getAllBookings(@Valid @PathVariable String state) {
+        List<BookingMainForm> bookingMainFormList = bookingService.getAllBookings(state);
         ResponseEntity<?> response = new ResponseEntity<List<BookingMainForm>>(bookingMainFormList, HttpStatus.OK);
 
         return response;
     }
 
-    @GetMapping("getBookings/{userTypeAPI}/{idAPI}")
-    public ResponseEntity<?> getUserBookings(@Valid @PathVariable String userTypeAPI, @PathVariable String idAPI) {
-        List<BookingMainForm> bookingMainFormList = bookingService.getBookingsForUserById(userTypeAPI, idAPI);
+    @GetMapping("getBookings/{userTypeAPI}/{idAPI}/{state}")
+    public ResponseEntity<?> getUserBookings(@Valid @PathVariable String userTypeAPI, @PathVariable String idAPI, @PathVariable String state) {
+        List<BookingMainForm> bookingMainFormList = bookingService.getBookingsForUserById(userTypeAPI, idAPI, state);
         ResponseEntity<?> response = new ResponseEntity<List<BookingMainForm>>(bookingMainFormList, HttpStatus.OK);
 
         return response;

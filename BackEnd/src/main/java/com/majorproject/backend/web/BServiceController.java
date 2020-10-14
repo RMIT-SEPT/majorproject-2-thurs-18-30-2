@@ -18,7 +18,7 @@ import java.util.List;
 public class BServiceController {
 
     @Autowired
-    BServiceService bServiceService;
+    private BServiceService bServiceService;
 
     @Autowired
     private MapValidationErrorService mapValidationErrorService;

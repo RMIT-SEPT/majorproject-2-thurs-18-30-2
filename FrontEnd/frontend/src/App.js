@@ -15,7 +15,6 @@ import { setUser, setDecoded } from './app/reducers/userSlice';
 import SideBarMenu from './side-bar-menus/side-bar-menus';
 
 class App extends React.Component {
-
     async componentDidMount() {
         if(!this.props.user.userDecoded) {       
             var token = localStorage.getItem('jwtToken');  
@@ -34,6 +33,7 @@ class App extends React.Component {
             }
         } 
     }
+
 
     render () {
         var items = []

@@ -57,16 +57,16 @@ public class CustomerService {
         Long customerId = idErrorService.idStringToLong(idAPI);
         Customer customerEdit = customerRepository.findByCustomerId(customerId);
 
-        // Seting customer details
+        // Setting customer details
         customerEdit.setfName(customer.getfName());
         customerEdit.setlName(customer.getlName());
         customerEdit.setEmail(customer.getEmail());
         customerEdit.setAddress(customer.getAddress());
         customerEdit.setUsername(customer.getUsername());
-        customerEdit.setPassword(customer.getPassword());
+        if(customer.getPassword().length() != 0) customerEdit.setPassword(bCryptPasswordEncoder.encode(customer.getPassword()));
         customerEdit.setpNumber(customer.getpNumber());
 
-        saveOrUpdateCustomer(customerEdit);
+        customerRepository.save(customerEdit);
 
         return customerEdit;
     }

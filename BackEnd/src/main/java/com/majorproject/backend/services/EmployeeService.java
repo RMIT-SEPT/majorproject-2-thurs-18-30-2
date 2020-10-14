@@ -39,6 +39,7 @@ public class EmployeeService {
         if(customerRepository.findByUsername(username) == null) {
             try {
                 employee.setPassword(bCryptPasswordEncoder.encode(employee.getPassword()));
+                employee.setEmpType("employee");
                 employeeNew = employeeRepository.save(employee);
             } catch(Exception e) {
                 throw new ResponseException(HttpStatus.BAD_REQUEST, "Username already in use");
@@ -88,16 +89,17 @@ public class EmployeeService {
         Long employeeId = idErrorService.idStringToLong(idAPI);
         Employee employeeEdit = employeeRepository.findByEmployeeId(employeeId);
 
-        // Seting employee details
+        // Setting employee details
         employeeEdit.setfName(employee.getfName());
         employeeEdit.setlName(employee.getlName());
         employeeEdit.setEmail(employee.getEmail());
         employeeEdit.setAddress(employee.getAddress());
         employeeEdit.setUsername(employee.getUsername());
-        employeeEdit.setPassword(employee.getPassword());
+        if(employee.getPassword().length() != 0) {
+            employeeEdit.setPassword(bCryptPasswordEncoder.encode(employee.getPassword()));
+        }
         employeeEdit.setpNumber(employee.getpNumber());
-
-        saveOrUpdateEmployee(employeeEdit);
+        employeeRepository.save(employeeEdit);
 
         return employeeEdit;
     }

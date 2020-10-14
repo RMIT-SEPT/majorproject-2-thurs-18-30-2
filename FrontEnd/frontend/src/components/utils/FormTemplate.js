@@ -61,7 +61,7 @@ class FormTemplate extends React.Component {
                     const response = await api.get('/employee/getEmployeeById/' + id);
                     
                     valuesToFill = {...response.data};
-                    this.form.apiCall += '/' + response.data.username;
+                    this.form.apiCall += '/' + response.data.id;
                     this.form.redirect += '/' + id;
 
                 } catch(error) {
@@ -70,9 +70,9 @@ class FormTemplate extends React.Component {
             } else {
                 valuesToFill = {...this.props.user.userDetails};
 
-                this.form.apiCall += '/' + this.props.user.userDetails.username;
+                this.form.apiCall += '/' + this.props.user.userDetails.id;
             }
-            
+            valuesToFill.password = '';
             if(valuesToFill) {
                 var tmpValues = {...this.state.inputValues};
                 var tmpValidity = {...this.state.inputValidity};

@@ -53,10 +53,12 @@ public class StartingUpService {
         // Add 10 customers
         Customer customer1 = new Customer("CusTee", "hehe", "cth@mail.com", "cth",
                 "cth123","cth address", "0386376921");
+        customer1.setPassword(bCryptPasswordEncoder.encode(customer1.getPassword()));
         customerRepository.save(customer1);
 
         Customer customer2 = new Customer("CusWow", "reee", "cwr@mail.com", "cwr",
                 "cwr123","cwr address", "0472573568");
+        customer2.setPassword(bCryptPasswordEncoder.encode(customer2.getPassword()));
         customerRepository.save(customer2);
 
         Customer customer3 = new Customer("Anty", "Ant", "antt@mail.com", "ant",
