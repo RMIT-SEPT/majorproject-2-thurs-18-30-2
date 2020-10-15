@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.majorproject.backend.models.BService;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -24,4 +25,15 @@ public interface BServiceRepository extends CrudRepository<BService, Long> {
 
     @Query(value = "SELECT bs.* FROM BService bs", nativeQuery = true)
     List<BService> getAllBServices();
+
+    @Query(value = "SELECT bs.* " +
+            "FROM BService bs, Employee_Schedule es " +
+            "WHERE bs.bservice_id = es.bservice_id AND " +
+            "es.availability = true AND " +
+            "(" +
+                "es.date > ?1 OR " +
+                "(es.date = ?1 AND es.start_time >= ?2)" +
+            ") " +
+            "ORDER BY bs.bservice_id", nativeQuery = true)
+    List<BService> getAllBServicesThatHaveSchedules(Date currDate, Date currTime);
 }
