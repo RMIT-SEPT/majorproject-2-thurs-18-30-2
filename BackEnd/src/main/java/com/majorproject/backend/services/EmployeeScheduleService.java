@@ -330,7 +330,9 @@ public class EmployeeScheduleService {
         if(repoCallType.equals("all")) {
             employeeScheduleList = employeeScheduleRepository.getEmployeeScheduleByEmployeeId(employeeId);
         } else if(repoCallType.equals("byAvailable")) {
-            employeeScheduleList = employeeScheduleRepository.getEmployeeScheduleByEmployeeIdAvailability(employeeId);
+            Date currDate = dateNowUtil.getCurrentDate();
+            Date currTime = dateNowUtil.getCurrentTime();
+            employeeScheduleList = employeeScheduleRepository.getEmployeeScheduleByEmployeeIdAvailability(employeeId, currDate, currTime);
         }
 
         listEmptyErrorService.checkListEmpty(employeeScheduleList, "Employee Schedule");
