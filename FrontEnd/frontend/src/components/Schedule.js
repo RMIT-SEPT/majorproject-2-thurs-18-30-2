@@ -39,7 +39,7 @@ const ong = (props) => {
     const onCustomFieldChange = (nextValue) => {
       onFieldChange({ customField: nextValue });
     };
-  
+    
     return (
       <AppointmentForm.BasicLayout
         appointmentData={appointmentData}
@@ -86,7 +86,8 @@ class Schedule extends React.Component {
       service : '0',
       employeeID : '12',
       startTime : 8,
-      endTime : 18
+      endTime : 18,
+      baseLayout : null
     };
 
     this.commitChanges = this.commitChanges.bind(this);
@@ -94,6 +95,45 @@ class Schedule extends React.Component {
     this.changeAppointmentChanges = this.changeAppointmentChanges.bind(this);
     this.changeEditingAppointment = this.changeEditingAppointment.bind(this);
     this.saveSchedule = this.saveSchedule.bind(this);
+
+    this.state.currentDate = new Date();
+    this.state.baseLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
+      const onCustomFieldChange = (nextValue) => {
+        onFieldChange({ customField: nextValue });
+      };
+      
+      return (
+        <AppointmentForm.BasicLayout
+          appointmentData={appointmentData}
+          onFieldChange={onFieldChange}
+          {...restProps}
+        >
+          <AppointmentForm.Label
+            text="Service"
+            type="title"
+          />
+          <AppointmentForm.Select
+            value={appointmentData.customField}
+            availableOptions={[
+              {
+                  id : 0,
+                  text : "Full Body Massage"
+              },
+              {
+                  id : 1,
+                  text : "Super Happy Fun Time"
+              },
+              {
+                  id : 2,
+                  text : "Designer Designing Designs"
+              }
+          ]}
+            onValueChange={onCustomFieldChange}
+            placeholder="Custom field"
+          />
+        </AppointmentForm.BasicLayout>
+      );
+    };
   }
 
   saveSchedule() {
@@ -125,17 +165,57 @@ class Schedule extends React.Component {
                     }
                   )
                 );
-              console.log(tempData);
 
                 this.setState({
                   data : tempData
                 });
               }).catch((error) => {
-                  this.setState({ 
-                      valid : false,
+                  this.setState({
                       errorMsg : error.response.data.message
                   });
               });
+
+      var tempData = [];
+      var service = [];
+      await api.get('bService/getAllBServices')
+      .then((response) => {
+          tempData = response.data;
+      }).catch((error) => {
+          this.setState({
+              errorMsg : error.response.data.message
+          });
+      });
+      console.log(tempData);
+      tempData.forEach((element, index) => 
+        service[index] = {id : element.id, text : element.name}
+        )
+      var tempLay = ({ onFieldChange, appointmentData, ...restProps }) => {
+        const onCustomFieldChange = (nextValue) => {
+          onFieldChange({ customField: nextValue });
+        };
+        
+        return (
+          <AppointmentForm.BasicLayout
+            appointmentData={appointmentData}
+            onFieldChange={onFieldChange}
+            {...restProps}
+          >
+            <AppointmentForm.Label
+              text="Service"
+              type="title"
+            />
+            <AppointmentForm.Select
+              value={appointmentData.customField}
+              availableOptions={service}
+              onValueChange={onCustomFieldChange}
+              placeholder="Custom field"
+            />
+          </AppointmentForm.BasicLayout>
+        );
+      };
+      this.setState({
+        baseLayout : tempLay
+      })
   }
 
   changeAddedAppointment(addedAppointment) {
@@ -207,7 +287,7 @@ class Schedule extends React.Component {
                     showDeleteButton
                 />
                 <AppointmentForm 
-                    basicLayoutComponent={BasicLayout}
+                    basicLayoutComponent={this.state.baseLayout}
                     textEditorComponent={TextEditor}
                     selectComponent={ong}
                     messages={messages}
