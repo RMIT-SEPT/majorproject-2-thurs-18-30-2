@@ -105,7 +105,6 @@ public class BookingService {
             if(state.equals("past")) bookingList = bookingRepository.getAllEmployeeBookingsBefore(userId, new Date());
             else bookingList = bookingRepository.getAllEmployeeBookingsAfter(userId, new Date());
         }
-
         listEmptyErrorService.checkListEmpty(bookingList, "Booking");
 
         for(int i = 0; i < bookingList.size(); ++i) {

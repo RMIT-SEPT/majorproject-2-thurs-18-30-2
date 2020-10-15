@@ -73,14 +73,14 @@ public interface BookingRepository extends CrudRepository<Booking, Long> {
     Booking getBookingById(long bookingId);
 
     @Query(value = "SELECT * FROM Booking b, Employee_Schedule es " +
-            "WHERE b.employee_schedule_id = es.employee_schedule_id AND" +
-            "b.customer_id = ?1 AND es.date > ?2" +
+            "WHERE b.employee_schedule_id = es.employee_schedule_id AND " +
+            "b.customer_id = ?1 AND es.date > ?2 " +
             "ORDER BY b.created_at", nativeQuery = true)
     List<Booking> getAllCustomerBookingsAfter(long customerId, Date afterThisDate);
 
     @Query(value = "SELECT * FROM Booking b, Employee_Schedule es " +
-            "WHERE b.employee_schedule_id = es.employee_schedule_id AND" +
-            "b.customer_id = ?1 AND es.date < ?2" +
+            "WHERE b.employee_schedule_id = es.employee_schedule_id AND " +
+            "b.customer_id = ?1 AND es.date < ?2 " +
             "ORDER BY b.created_at", nativeQuery = true)
     List<Booking> getAllCustomerBookingsBefore(long customerId, Date beforeThisDate);
 }

@@ -10,16 +10,34 @@ import { openModal } from '../app/reducers/modalSlice';
 
 function BookingCard (props) {
     var mainUser = useSelector(state => state.user);
-    var [refresh, setRefresh] = useState(false);
-    async function cancelBooking() {
-        await api.delete('/booking/deleteBooking/' + props.item.bookingId);
-        var modal = {
-            title : "Successfull delete",
-            body : "Booking deleted successfully"
+    console.log(props.item)
+    async function cancelBooking() { 
+        var startTimeStamp = Date.parse(props.item.scheduleDate + 'T' + props.item.scheduleStartTime);
+        var startDate = new Date(startTimeStamp);
+        var currDate = new Date();
+        var modal = {};
+        var diffHours = Math.abs(startDate - currDate) / 36e5;
+        if(diffHours < 48) {
+            modal = {
+                title : 'Cancelation Unsuccessfull',
+                body : ' Sorry, bookings can not be canceled within 48 hours of the booked date and time.'
+            }
+        } else if(startDate < currDate) {
+            modal = {
+                title : 'Cancelation Unsuccessfull',
+                body : ' Sorry, past bookings can not be canceled.'
+            }
+        } else {
+            await api.delete('/booking/deleteBooking/' + props.item.bookingId);
+            modal = {
+                title : "Successfull delete",
+                body : "Booking deleted successfully"
+            }
+            props.deleteHandler(props.index);
         }
-        props.openModal(modal);
-        setRefresh(true);
+        await props.openModal(modal);
     }
+    
     function eSubTitle() {
         let eSub = (<Card.Subtitle >
                         To be serviced by {props.item.employeeFName} {props.item.employeeLName}
@@ -39,56 +57,54 @@ function BookingCard (props) {
 
         return eSub;
     }
-    if(refresh) {
-        return <Redirect to="/bookings/present"></Redirect>
-    } else {
-        return (
-            
-            <Card className="card">
-                
-                <Card.Img src={cafe} alt="Card image"/>
-
-                <Card.Body>
-                    
-                    <OverlayTrigger
-                        overlay={
-                            <Popover content>
-                                {props.item.bServiceDescription}
-                            </Popover>
-                        }
-                    >
-                        <Card.Title >{props.item.bServiceName}</Card.Title>
-                    </OverlayTrigger>
-                    
-                    <OverlayTrigger
-                        overlay={
-                            <Popover content>
-                                Employee email <strong>{props.item.employeeEmail}</strong>
-                            </Popover>
-                        }
-                    >
-                        {eSubTitle}
-                    </OverlayTrigger>
-                    
-                    <Card.Text>
-                        Booked by {props.item.customerFName} {props.item.customerLName}
-                        <br />
-                        Booked for {props.item.scheduleDate} 
-                        <br />
-                        Between {props.item.scheduleStartTime} - {props.item.scheduleEndTime}
-                    </Card.Text>
-                    
-                    <Button variant="danger" onClick={cancelBooking} style={{ float : 'right' }}>Cancel Booking</Button>       
-                </Card.Body>
-                <Card.Footer>
-                    Booked at {props.item.bookingCreatedAt}
-                </Card.Footer>
-                
-                
-            </Card>
+    
+    return (
         
-        );
-    }
+        <Card className="card">
+            
+            <Card.Img src={cafe} alt="Card image"/>
+
+            <Card.Body>
+                
+                <OverlayTrigger
+                    overlay={
+                        <Popover content>
+                            {props.item.bServiceDescription}
+                        </Popover>
+                    }
+                >
+                    <Card.Title >{props.item.bServiceName}</Card.Title>
+                </OverlayTrigger>
+                
+                <OverlayTrigger
+                    overlay={
+                        <Popover content>
+                            Employee email <strong>{props.item.employeeEmail}</strong>
+                        </Popover>
+                    }
+                >
+                    {eSubTitle}
+                </OverlayTrigger>
+                
+                <Card.Text>
+                    Booked by {props.item.customerFName} {props.item.customerLName}
+                    <br />
+                    Booked for {props.item.scheduleDate} 
+                    <br />
+                    Between {props.item.scheduleStartTime} - {props.item.scheduleEndTime}
+                </Card.Text>
+                
+                <Button variant="danger" onClick={cancelBooking} style={{ float : 'right' }}>Cancel Booking</Button>       
+            </Card.Body>
+            <Card.Footer>
+                Booked at {props.item.bookingCreatedAt}
+            </Card.Footer>
+            
+            
+        </Card>
+    
+    );
+    
 }
 
 const mapStateToProps = state => ({

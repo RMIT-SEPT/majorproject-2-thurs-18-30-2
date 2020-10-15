@@ -8,6 +8,17 @@ class CardsListPage extends React.Component {
         this.state = {
             items : []
         };
+        this.deleteItem = this.deleteItem.bind(this);
+    }
+
+    async deleteItem(index) {
+        var items = this.state.items;
+        if(index < items.length) {
+            items.splice(index, 1);
+            this.setState({
+                items : items
+            });
+        }
     }
 
     async componentDidMount() {
@@ -41,7 +52,7 @@ class CardsListPage extends React.Component {
                             return ( 
                                 <Col md="4" key={index}>
 
-                                    <this.props.router.card item={itemCol}/>
+                                    <this.props.router.card index={index} deleteHandler={this.deleteItem} item={itemCol}/>
                                 </Col>
                             );
                         })}
