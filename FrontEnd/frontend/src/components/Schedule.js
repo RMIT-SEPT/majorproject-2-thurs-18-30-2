@@ -79,7 +79,7 @@ class Schedule extends React.Component {
     super(props);
     this.state = {
       data : [],
-      currentDate : '1926-04-10',
+      currentDate : '2020-10-10',
       addedAppointment : {},
       appointmentChanges : {},
       editingAppointment : undefined,

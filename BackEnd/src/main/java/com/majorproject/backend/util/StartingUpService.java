@@ -158,7 +158,7 @@ public class StartingUpService {
             EmployeeSchedule employeeSchedule1 = new EmployeeSchedule();
             employeeSchedule1.setEmployee(employee1);
             employeeSchedule1.setBService(fullBodyMassage);
-            employeeSchedule1.setDate(formatterDate.parse("2020-10-10"));
+            employeeSchedule1.setDate(formatterDate.parse("2020-10-20"));
             employeeSchedule1.setStartTime(formatterTime.parse("20:00"));
             employeeSchedule1.setEndTime(formatterTime.parse("21:00"));
             employeeSchedule1.setAvailability(false); // Booked in booking below
@@ -167,7 +167,7 @@ public class StartingUpService {
             EmployeeSchedule employeeSchedule2 = new EmployeeSchedule();
             employeeSchedule2.setEmployee(employee1);
             employeeSchedule2.setBService(dineAndDash);
-            employeeSchedule2.setDate(formatterDate.parse("2020-10-11"));
+            employeeSchedule2.setDate(formatterDate.parse("2020-10-21"));
             employeeSchedule2.setStartTime(formatterTime.parse("07:00"));
             employeeSchedule2.setEndTime(formatterTime.parse("09:00"));
             employeeSchedule1.setAvailability(false); // Booked in booking below
@@ -176,7 +176,7 @@ public class StartingUpService {
             EmployeeSchedule employeeSchedule3 = new EmployeeSchedule();
             employeeSchedule3.setEmployee(employee2);
             employeeSchedule3.setBService(dineAndDash);
-            employeeSchedule3.setDate(formatterDate.parse("2020-10-11"));
+            employeeSchedule3.setDate(formatterDate.parse("2020-10-21"));
             employeeSchedule3.setStartTime(formatterTime.parse("08:00"));
             employeeSchedule3.setEndTime(formatterTime.parse("10:00"));
             employeeSchedule3.setAvailability(true);
@@ -185,7 +185,7 @@ public class StartingUpService {
             EmployeeSchedule employeeSchedule4 = new EmployeeSchedule();
             employeeSchedule4.setEmployee(employee6);
             employeeSchedule4.setBService(cooking);
-            employeeSchedule4.setDate(formatterDate.parse("2020-10-12"));
+            employeeSchedule4.setDate(formatterDate.parse("2020-10-22"));
             employeeSchedule4.setStartTime(formatterTime.parse("17:00"));
             employeeSchedule4.setEndTime(formatterTime.parse("18:00"));
             employeeSchedule1.setAvailability(false); // Booked in booking below
@@ -194,7 +194,7 @@ public class StartingUpService {
             EmployeeSchedule employeeSchedule5 = new EmployeeSchedule();
             employeeSchedule5.setEmployee(employee4);
             employeeSchedule5.setBService(learningCoding);
-            employeeSchedule5.setDate(formatterDate.parse("2020-10-12"));
+            employeeSchedule5.setDate(formatterDate.parse("2020-10-22"));
             employeeSchedule5.setStartTime(formatterTime.parse("18:00"));
             employeeSchedule5.setEndTime(formatterTime.parse("19:00"));
             employeeSchedule5.setAvailability(true);
@@ -203,7 +203,7 @@ public class StartingUpService {
             EmployeeSchedule employeeSchedule6 = new EmployeeSchedule();
             employeeSchedule6.setEmployee(employee7);
             employeeSchedule6.setBService(learningCoding);
-            employeeSchedule6.setDate(formatterDate.parse("2020-10-11"));
+            employeeSchedule6.setDate(formatterDate.parse("2020-10-21"));
             employeeSchedule6.setStartTime(formatterTime.parse("06:00"));
             employeeSchedule6.setEndTime(formatterTime.parse("07:00"));
             employeeSchedule1.setAvailability(false); // Booked in booking below
@@ -212,7 +212,7 @@ public class StartingUpService {
             EmployeeSchedule employeeSchedule7 = new EmployeeSchedule();
             employeeSchedule7.setEmployee(employee7);
             employeeSchedule7.setBService(fixingServices);
-            employeeSchedule7.setDate(formatterDate.parse("2020-10-10"));
+            employeeSchedule7.setDate(formatterDate.parse("2020-10-20"));
             employeeSchedule7.setStartTime(formatterTime.parse("05:00"));
             employeeSchedule7.setEndTime(formatterTime.parse("09:00"));
             employeeSchedule1.setAvailability(false); // Booked in booking below
@@ -221,7 +221,7 @@ public class StartingUpService {
             EmployeeSchedule employeeSchedule8 = new EmployeeSchedule();
             employeeSchedule8.setEmployee(employee10);
             employeeSchedule8.setBService(cooking);
-            employeeSchedule8.setDate(formatterDate.parse("2020-10-12"));
+            employeeSchedule8.setDate(formatterDate.parse("2020-10-22"));
             employeeSchedule8.setStartTime(formatterTime.parse("18:00"));
             employeeSchedule8.setEndTime(formatterTime.parse("22:00"));
             employeeSchedule8.setAvailability(true);
@@ -230,7 +230,7 @@ public class StartingUpService {
             EmployeeSchedule employeeSchedule9 = new EmployeeSchedule();
             employeeSchedule9.setEmployee(employee2);
             employeeSchedule9.setBService(cooking);
-            employeeSchedule9.setDate(formatterDate.parse("2020-10-12"));
+            employeeSchedule9.setDate(formatterDate.parse("2020-10-22"));
             employeeSchedule9.setStartTime(formatterTime.parse("09:00"));
             employeeSchedule9.setEndTime(formatterTime.parse("11:00"));
             employeeSchedule1.setAvailability(false); // Booked in booking below
@@ -239,7 +239,7 @@ public class StartingUpService {
             EmployeeSchedule employeeSchedule10 = new EmployeeSchedule();
             employeeSchedule10.setEmployee(employee7);
             employeeSchedule10.setBService(fixingServices);
-            employeeSchedule10.setDate(formatterDate.parse("2020-10-12"));
+            employeeSchedule10.setDate(formatterDate.parse("2020-10-22"));
             employeeSchedule10.setStartTime(formatterTime.parse("16:00"));
             employeeSchedule10.setEndTime(formatterTime.parse("18:00"));
             employeeSchedule1.setAvailability(false); // Booked in booking below
