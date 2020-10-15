@@ -7,6 +7,7 @@ import {
   AppointmentForm,
   AppointmentTooltip,
   WeekView,
+  MonthView,
   EditRecurrenceMenu,
   AllDayPanel,
   ConfirmationDialog,
@@ -92,43 +93,47 @@ class Schedule extends React.Component {
     this.changeAddedAppointment = this.changeAddedAppointment.bind(this);
     this.changeAppointmentChanges = this.changeAppointmentChanges.bind(this);
     this.changeEditingAppointment = this.changeEditingAppointment.bind(this);
-    this.handleChangeService = this.handleChangeService.bind(this);
-    this.handleChangeEmployee = this.handleChangeEmployee.bind(this);
     this.saveSchedule = this.saveSchedule.bind(this);
   }
 
   saveSchedule() {
-    console.log("stuffs");
+    var tempBuffer = this.state.data;
+    tempBuffer.forEach(element => 
+      api.post('employeeSchedule/editSchedule/' + element.employeeScheduleId, element)
+            .then((response) => {
+                console.log(response.data);
+            }).catch((error) => {
+                this.setState({
+                    errorMsg : error.response.data.message
+                });
+            })
+          );
   }
 
   async componentDidMount() {
-    //getSchedules/employee/{employeeIdAPI}
-    console.log("test");
     await api.get('employeeSchedule/getSchedules/employee/' + this.state.employeeID)
               .then((response) => {
-                  this.setState({
-                      data : response.data
-                  });
-                  console.log(response.data);
+                var tempData = [];
+                response.data.forEach((element, index) =>
+                  tempData.push(
+                    {
+                      title : element.bServiceName,
+                      startDate : new Date(element.startDate[0], element.startDate[1]-1, element.startDate[2], element.startDate[3], element.startDate[4]),
+                      endDate : new Date(element.endDate[0], element.endDate[1]-1, element.endDate[2], element.endDate[3], element.endDate[4]),
+                      id : index,
+                      employeeScheduleId : element.employeeScheduleId
+                    }
+                  )
+                );
+                this.setState({
+                  data : tempData
+                });
               }).catch((error) => {
                   this.setState({ 
                       valid : false,
                       errorMsg : error.response.data.message
                   });
               });
-  }
-
-  handleChangeService(event) {
-    this.setState({
-        service : event.target.value
-    });
-  }
-
-  handleChangeEmployee(event) {
-    this.setState({
-        employee : event.target.value
-    });
-    console.log("test");
   }
 
   changeAddedAppointment(addedAppointment) {
@@ -162,32 +167,32 @@ class Schedule extends React.Component {
   }
 
   render() {
-    const {
+    /* const {
       currentDate, data, addedAppointment, appointmentChanges, editingAppointment,
-    } = this.state;
+    } = this.state; */
     return (
         <React.Fragment>
             <Paper>
                 <Scheduler
-                data={data}
+                data={this.state.data}
                 height={750}
                 >
                 <ViewState
-                    currentDate={currentDate}
+                    currentDate={this.state.currentDate}
                 />
                 <EditingState
                     onCommitChanges={this.commitChanges}
 
-                    addedAppointment={addedAppointment}
+                    addedAppointment={this.state.addedAppointment}
                     onAddedAppointmentChange={this.changeAddedAppointment}
 
-                    appointmentChanges={appointmentChanges}
+                    appointmentChanges={this.state.appointmentChanges}
                     onAppointmentChangesChange={this.changeAppointmentChanges}
 
-                    editingAppointment={editingAppointment}
+                    editingAppointment={this.state.editingAppointment}
                     onEditingAppointmentChange={this.changeEditingAppointment}
                 />
-                <WeekView
+                <MonthView
                     startDayHour={this.state.startTime}
                     endDayHour={this.state.endTime}
                 />

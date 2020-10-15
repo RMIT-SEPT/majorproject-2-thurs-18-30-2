@@ -132,14 +132,13 @@ class BookingForm extends React.Component {
     if(event.target.value !== -1) {
       api.get('employeeSchedule/getEmployees/bService/' + event.target.value)
               .then((response) => {
-                  this.setState({
-                      employees : response.data
-                  });
+                console.log(response.data)
               }).catch((error) => {
                   this.setState({ 
                       errorMsg : error.response.data.message
                   });
               });
+              
     }
     else {
       this.setState({
