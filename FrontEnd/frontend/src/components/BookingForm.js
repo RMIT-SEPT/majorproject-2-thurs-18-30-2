@@ -194,6 +194,7 @@ class BookingForm extends React.Component {
                         this.state.services.map(
                         function(data) {
                           if(data) {
+                            console.log(data);
                             return(<option key={data.id} value={data.id}>{data.name}</option>);
                           }
                         }
@@ -213,6 +214,7 @@ class BookingForm extends React.Component {
                             this.state.employees.map(
                               function(data) {
                                 if(data) {
+                                  console.log(data);
                                   return(<option key={data.employeeId} value={data.employeeId}>{data.employeeFName}</option>);
                                 }
                               }

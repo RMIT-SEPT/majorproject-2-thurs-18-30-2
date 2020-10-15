@@ -79,7 +79,7 @@ class Schedule extends React.Component {
     super(props);
     this.state = {
       data : [],
-      currentDate : '2020-09-27',
+      currentDate : '1926-04-10',
       addedAppointment : {},
       appointmentChanges : {},
       editingAppointment : undefined,
@@ -125,6 +125,8 @@ class Schedule extends React.Component {
                     }
                   )
                 );
+              console.log(tempData);
+
                 this.setState({
                   data : tempData
                 });
@@ -212,7 +214,7 @@ class Schedule extends React.Component {
                 />
                 </Scheduler>
             </Paper>
-            <Button id="submitForm" variant="primary" onClick={this.saveSchedule}>Make Bookings</Button>
+            <Button id="submitForm" variant="primary" onClick={this.saveSchedule}>Save Changes</Button>
         </React.Fragment>
     );
   }
