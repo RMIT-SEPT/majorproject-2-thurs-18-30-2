@@ -3,6 +3,7 @@ package com.majorproject.backend.services;
 import com.majorproject.backend.models.BService;
 import com.majorproject.backend.repositories.BServiceRepository;
 import com.majorproject.backend.util.DateNowUtil;
+import com.majorproject.backend.util.ListEmptyErrorService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
@@ -14,6 +15,7 @@ public class BServiceService {
     @Autowired
     private BServiceRepository bServiceRepository;
 
+    private ListEmptyErrorService listEmptyErrorService = new ListEmptyErrorService();
     private DateNowUtil dateNowUtil = new DateNowUtil();
 
     /**
@@ -30,6 +32,8 @@ public class BServiceService {
 
     public List<BService> getAllBServices() {
         List<BService> bServiceList = bServiceRepository.getAllBServices();
+        listEmptyErrorService.checkListEmpty(bServiceList, "BServices");
+
         return bServiceList;
     }
 
@@ -38,6 +42,7 @@ public class BServiceService {
         Date currTime = dateNowUtil.getCurrentTime();
 
         List<BService> bServiceList = bServiceRepository.getAllBServicesThatHaveSchedules(currDate, currTime);
+        listEmptyErrorService.checkListEmpty(bServiceList, "BServices");
 
         return bServiceList;
     }
