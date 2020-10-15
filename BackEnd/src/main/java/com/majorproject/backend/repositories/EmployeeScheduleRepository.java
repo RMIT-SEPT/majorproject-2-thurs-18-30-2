@@ -46,8 +46,8 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
             "es.availability = true AND " +
             "e.id = ?1 AND " +
             "(" +
-            "es.date > ?2 OR " +
-            "es.date = ?2 AND es.start_time >= ?3 " +
+                "es.date > ?2 OR " +
+                "es.date = ?2 AND es.start_time >= ?3 " +
             ") " +
             "ORDER BY es.date", nativeQuery = true)
     List<EmployeeSchedule> getEmployeeScheduleByEmployeeIdAvailability(long employeeId, Date currDate, Date currTime);
@@ -144,8 +144,8 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
             "es.bservice_id = ?2 AND " +
             "es.availability = true AND " +
             "(" +
-            "es.date > ?3 OR " +
-            "es.date = ?3 AND es.start_time >= ?4 " +
+                "es.date > ?3 OR " +
+                "es.date = ?3 AND es.start_time >= ?4 " +
             ") " +
             "ORDER BY es.date", nativeQuery = true)
     List<EmployeeSchedule> getEmployeeScheduleByEmployeeIdAndBServiceIdAndNow(long employeeId, long bServiceId,

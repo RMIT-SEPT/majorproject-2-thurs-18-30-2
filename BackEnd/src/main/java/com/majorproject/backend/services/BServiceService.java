@@ -2,8 +2,10 @@ package com.majorproject.backend.services;
 
 import com.majorproject.backend.models.BService;
 import com.majorproject.backend.repositories.BServiceRepository;
+import com.majorproject.backend.util.DateNowUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -11,6 +13,8 @@ import java.util.List;
 public class BServiceService {
     @Autowired
     private BServiceRepository bServiceRepository;
+
+    private DateNowUtil dateNowUtil = new DateNowUtil();
 
     /**
      * Creates the bService
@@ -25,6 +29,16 @@ public class BServiceService {
     }
 
     public List<BService> getAllBServices() {
-        return bServiceRepository.getAllBServices();
+        List<BService> bServiceList = bServiceRepository.getAllBServices();
+        return bServiceList;
+    }
+
+    public List<BService> getAllBServicesThatHaveSchedules() {
+        Date currDate = dateNowUtil.getCurrentDate();
+        Date currTime = dateNowUtil.getCurrentTime();
+
+        List<BService> bServiceList = bServiceRepository.getAllBServicesThatHaveSchedules(currDate, currTime);
+
+        return bServiceList;
     }
 }
