@@ -4,6 +4,8 @@ import { ContactSupportRounded,
     LibraryBooksRounded,
     GroupRounded,
     PersonAddRounded,
+    BusinessRounded,
+    CalendarToday,
     InsertInvitationRounded } from '@material-ui/icons';
 
 // This class is similar to form-templates.js as it provides a structure for the 
@@ -84,6 +86,12 @@ export default class SideBarMenu {
                 label : 'Bookings',
                 path : '/bookings',
                 icon :  LibraryBooksRounded
+            },
+            {
+                name : 'schedule',
+                label : 'Schedule',
+                path : '/schedule',
+                icon :  CalendarToday
             }
         ];
     }
