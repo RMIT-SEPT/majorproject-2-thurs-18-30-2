@@ -61,7 +61,7 @@ public class BookingController {
         return response;
     }
 
-    @GetMapping("/deleteBooking/{bookingIdAPI}")
+    @DeleteMapping("/deleteBooking/{bookingIdAPI}")
     public ResponseEntity<?> deleteBooking(@Valid @PathVariable String bookingIdAPI) {
         String success = bookingService.deleteBooking(bookingIdAPI);
         return new ResponseEntity<String>(success, HttpStatus.OK);
