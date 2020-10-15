@@ -98,7 +98,7 @@ class BookingForm extends React.Component {
       style : {backgroundColor: '#FFC107', borderRadius: '8px'},
       services : [],
       employees : [],
-      modal : { title : "Booking Successfull", body : "Thanks for choosing us, you have successfully made a booking" }
+      modal : { title : "Booking Successful", body : "Thanks for choosing us, you have successfully made a booking" }
     };
 
     this.commitChanges = this.commitChanges.bind(this);
@@ -134,7 +134,9 @@ class BookingForm extends React.Component {
     tempBuffer.forEach(element => 
       api.post('booking/create', element)
             .then((response) => {
-                console.log(response.data);
+                this.setState({
+                  bookingBuffer : []
+                })
             }).catch((error) => {
                 this.setState({
                     valid : false,
@@ -186,16 +188,13 @@ class BookingForm extends React.Component {
     });
     event.persist();
     if(event.target.value !== -1) {
-      api.get('employeeSchedule/getBServices/employee/service/' + event.target.value)
+      api.get('employeeSchedule/getEmployees/bService/' + event.target.value)
               .then((response) => {
                   this.setState({
                       employees : response.data
                   });
               }).catch((error) => {
-                  this.setState({ 
-                      valid : false,
-                      errorMsg : error.response.data.message
-                  });
+                  alert("No Employees Available For This Service");
               });
     }
     else {
@@ -229,7 +228,6 @@ class BookingForm extends React.Component {
               })
               
           }).catch((error) => {
-            console.log("fefe");
               this.setState({ 
                   errorMsg : error.response.data.message,
                   data : [],

@@ -7,13 +7,14 @@ import {
   AppointmentForm,
   AppointmentTooltip,
   WeekView,
+  MonthView,
   EditRecurrenceMenu,
   AllDayPanel,
   ConfirmationDialog,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { appointments } from './appointments';
-
-
+import { Card, Form, Button } from 'react-bootstrap';
+import api from '../app/api';
 
 
 const messages = {
@@ -77,13 +78,13 @@ class Schedule extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data : appointments,
-      currentDate : '2020-09-27',
+      data : [],
+      currentDate : '2020-10-10',
       addedAppointment : {},
       appointmentChanges : {},
       editingAppointment : undefined,
       service : '0',
-      employee : '0',
+      employeeID : '12',
       startTime : 8,
       endTime : 18
     };
@@ -92,21 +93,49 @@ class Schedule extends React.Component {
     this.changeAddedAppointment = this.changeAddedAppointment.bind(this);
     this.changeAppointmentChanges = this.changeAppointmentChanges.bind(this);
     this.changeEditingAppointment = this.changeEditingAppointment.bind(this);
-    this.handleChangeService = this.handleChangeService.bind(this);
-    this.handleChangeEmployee = this.handleChangeEmployee.bind(this);
+    this.saveSchedule = this.saveSchedule.bind(this);
   }
 
-  handleChangeService(event) {
-    this.setState({
-        service : event.target.value
-    });
+  saveSchedule() {
+    var tempBuffer = this.state.data;
+    tempBuffer.forEach(element => 
+      api.post('employeeSchedule/editSchedule/' + element.employeeScheduleId, element)
+            .then((response) => {
+                console.log(response.data);
+            }).catch((error) => {
+                this.setState({
+                    errorMsg : error.response.data.message
+                });
+            })
+          );
   }
 
-  handleChangeEmployee(event) {
-    this.setState({
-        employee : event.target.value
-    });
-    console.log("test");
+  async componentDidMount() {
+    await api.get('employeeSchedule/getSchedules/employee/' + this.state.employeeID)
+              .then((response) => {
+                var tempData = [];
+                response.data.forEach((element, index) =>
+                  tempData.push(
+                    {
+                      title : element.bServiceName,
+                      startDate : new Date(element.startDate[0], element.startDate[1]-1, element.startDate[2], element.startDate[3], element.startDate[4]),
+                      endDate : new Date(element.endDate[0], element.endDate[1]-1, element.endDate[2], element.endDate[3], element.endDate[4]),
+                      id : index,
+                      employeeScheduleId : element.employeeScheduleId
+                    }
+                  )
+                );
+              console.log(tempData);
+
+                this.setState({
+                  data : tempData
+                });
+              }).catch((error) => {
+                  this.setState({ 
+                      valid : false,
+                      errorMsg : error.response.data.message
+                  });
+              });
   }
 
   changeAddedAppointment(addedAppointment) {
@@ -138,35 +167,34 @@ class Schedule extends React.Component {
       return { data };
     });
   }
-  // make booking needs customer id, time slot id
 
   render() {
-    const {
+    /* const {
       currentDate, data, addedAppointment, appointmentChanges, editingAppointment,
-    } = this.state;
+    } = this.state; */
     return (
         <React.Fragment>
             <Paper>
                 <Scheduler
-                data={data}
+                data={this.state.data}
                 height={750}
                 >
                 <ViewState
-                    currentDate={currentDate}
+                    currentDate={this.state.currentDate}
                 />
                 <EditingState
                     onCommitChanges={this.commitChanges}
 
-                    addedAppointment={addedAppointment}
+                    addedAppointment={this.state.addedAppointment}
                     onAddedAppointmentChange={this.changeAddedAppointment}
 
-                    appointmentChanges={appointmentChanges}
+                    appointmentChanges={this.state.appointmentChanges}
                     onAppointmentChangesChange={this.changeAppointmentChanges}
 
-                    editingAppointment={editingAppointment}
+                    editingAppointment={this.state.editingAppointment}
                     onEditingAppointmentChange={this.changeEditingAppointment}
                 />
-                <WeekView
+                <MonthView
                     startDayHour={this.state.startTime}
                     endDayHour={this.state.endTime}
                 />
@@ -186,6 +214,7 @@ class Schedule extends React.Component {
                 />
                 </Scheduler>
             </Paper>
+            <Button id="submitForm" variant="primary" onClick={this.saveSchedule}>Save Changes</Button>
         </React.Fragment>
     );
   }
