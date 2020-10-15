@@ -49,4 +49,10 @@ public class BServiceController {
         List<BService> bServiceList = bServiceService.getAllBServices();
         return new ResponseEntity<List<BService>>(bServiceList, HttpStatus.OK);
     }
+
+    @GetMapping("/getAllBServices/haveSchedules")
+    public ResponseEntity<?> getAllBServicesThatHaveSchedules() {
+        List<BService> bServiceList = bServiceService.getAllBServicesThatHaveSchedules();
+        return new ResponseEntity<List<BService>>(bServiceList, HttpStatus.OK);
+    }
 }
