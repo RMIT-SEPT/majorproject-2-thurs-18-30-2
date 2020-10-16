@@ -316,33 +316,11 @@ class BookingForm extends React.Component {
                         <ViewState
                             currentDate={this.state.currentDate}
                         />
-                        <EditingState
-                            onCommitChanges={this.commitChanges}
-
-                            addedAppointment={this.state.addedAppointment}
-                            onAddedAppointmentChange={this.changeAddedAppointment}
-
-                            appointmentChanges={this.state.appointmentChanges}
-                            onAppointmentChangesChange={this.changeAppointmentChanges}
-
-                        />
                         <MonthView />
-                        <AllDayPanel />
-                        <EditRecurrenceMenu />
-                        <ConfirmationDialog />
                         <Appointments 
                           appointmentComponent={this.appointmentComponent}
                         />
-                        <AppointmentTooltip
-                            showOpenButton
-                            showDeleteButton
-                        />
-                        <AppointmentForm 
-                            basicLayoutComponent={BasicLayout}
-                            textEditorComponent={TextEditor}
-                            selectComponent={ong}
-                            messages={messages}
-                        />
+                        <AppointmentTooltip />
                         </Scheduler>
                     </Paper>
                     <Button id="submitForm" variant="primary" onClick={this.makeBookings}>Make Bookings</Button>
