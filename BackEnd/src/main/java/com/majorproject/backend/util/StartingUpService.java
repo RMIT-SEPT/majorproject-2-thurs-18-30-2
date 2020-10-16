@@ -121,6 +121,7 @@ public class StartingUpService {
 
         Employee employee7 = new Employee ("g", "g", "g@mail.com", "g", "g123",
                 "g address", "0494202391", "employee");
+        employee7.setPassword(bCryptPasswordEncoder.encode(employee7.getPassword()));
         employeeRepository.save(employee7);
 
         Employee employee8 = new Employee ("h", "h", "h@mail.com", "h", "h123",

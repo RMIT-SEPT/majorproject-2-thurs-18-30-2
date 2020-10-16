@@ -13,6 +13,7 @@ import {
   ConfirmationDialog,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { appointments } from './appointments';
+import { connect } from 'react-redux';
 import { Card, Form, Button } from 'react-bootstrap';
 import api from '../app/api';
 
@@ -268,51 +269,70 @@ class Schedule extends React.Component {
     /* const {
       currentDate, data, addedAppointment, appointmentChanges, editingAppointment,
     } = this.state; */
-    return (
-        <React.Fragment>
-            <Paper>
-                <Scheduler
-                data={this.state.data}
-                height={750}
-                >
-                <ViewState
-                    currentDate={this.state.currentDate}
-                />
-                <EditingState
-                    onCommitChanges={this.commitChanges}
+    if(this.props.user.userDetails) {
+      return (
+          <React.Fragment>
+              <Paper>
+                  <Scheduler
+                  data={this.state.data}
+                  height={750}
+                  >
+                  <ViewState
+                      currentDate={this.state.currentDate}
+                  />
+                  {this.props.user.userDetails.empType === 'admin' && <EditingState
+                      onCommitChanges={this.commitChanges}
 
-                    addedAppointment={this.state.addedAppointment}
-                    onAddedAppointmentChange={this.changeAddedAppointment}
+                      addedAppointment={this.state.addedAppointment}
+                      onAddedAppointmentChange={this.changeAddedAppointment}
 
-                    appointmentChanges={this.state.appointmentChanges}
-                    onAppointmentChangesChange={this.changeAppointmentChanges}
+                      appointmentChanges={this.state.appointmentChanges}
+                      onAppointmentChangesChange={this.changeAppointmentChanges}
 
-                    editingAppointment={this.state.editingAppointment}
-                    onEditingAppointmentChange={this.changeEditingAppointment}
-                />
-                <MonthView
-                    startDayHour={this.state.startTime}
-                    endDayHour={this.state.endTime}
-                />
-                <AllDayPanel />
-                <EditRecurrenceMenu />
-                <ConfirmationDialog />
-                <Appointments />
-                <AppointmentTooltip
-                    showOpenButton
-                    showDeleteButton
-                />
-                <AppointmentForm 
-                    basicLayoutComponent={this.state.baseLayout}
-                    textEditorComponent={TextEditor}
-                    selectComponent={ong}
-                    messages={messages}
-                />
-                </Scheduler>
-            </Paper>
-            <Button id="submitForm" variant="primary" onClick={this.saveSchedule}>Save Changes</Button>
-        </React.Fragment>
+                      editingAppointment={this.state.editingAppointment}
+                      onEditingAppointmentChange={this.changeEditingAppointment}
+                  />}
+                  <MonthView
+                      startDayHour={this.state.startTime}
+                      endDayHour={this.state.endTime}
+                  />
+                  {this.props.user.userDetails.empType === 'admin' && <EditRecurrenceMenu />}
+                  {this.props.user.userDetails.empType === 'admin' && <ConfirmationDialog />}
+                  <Appointments />
+                  {this.props.user.userDetails.empType === 'admin' && <AppointmentTooltip
+                      showOpenButton
+                      showDeleteButton
+                  />}
+                  {this.props.user.userDetails.empType === 'admin' && <AppointmentForm 
+                      basicLayoutComponent={this.state.baseLayout}
+                      textEditorComponent={TextEditor}
+                      selectComponent={ong}
+                      messages={messages}
+                  />}
+                  </Scheduler>
+              </Paper>
+              <Button id="submitForm" variant="primary" onClick={this.saveSchedule}>Save Changes</Button>
+          </React.Fragment>
+      );
+    }
+  
+  else {
+    return(
+      <React.Fragment>Loading</React.Fragment>
     );
   }
 }
-export default Schedule;
+}
+const mapStateToProps = state => ({
+  user : state.user
+});
+
+const mapDispatchToProps = () => {
+  return { 
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps()
+)(Schedule);

@@ -86,12 +86,6 @@ export default class SideBarMenu {
                 label : 'Bookings',
                 path : '/bookings',
                 icon :  LibraryBooksRounded
-            },
-            {
-                name : 'schedule',
-                label : 'Schedule',
-                path : '/schedule',
-                icon :  CalendarToday
             }
         ];
     }
