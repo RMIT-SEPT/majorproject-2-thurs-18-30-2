@@ -1,5 +1,6 @@
 package com.majorproject.backend.responseForms;
 
+import com.majorproject.backend.models.BService;
 import com.majorproject.backend.models.EmployeeSchedule;
 import com.majorproject.backend.util.DateErrorService;
 
@@ -18,6 +19,7 @@ public class EmpSchByEmpIdForm {
     private List<String> endDate;
 
     // From BService
+    private long bServiceId;
     private String bServiceName;
 
     public EmpSchByEmpIdForm(EmployeeSchedule employeeSchedule) {
@@ -28,7 +30,10 @@ public class EmpSchByEmpIdForm {
 
         this.startDate = runConstructorDate(scheduleDate, scheduleStartTime);
         this.endDate = runConstructorDate(scheduleDate, scheduleEndTime);
-        this.bServiceName = employeeSchedule.getBService().getName();
+
+        BService bService = employeeSchedule.getBService();
+        this.bServiceId = bService.getId();
+        this.bServiceName = bService.getName();
     }
 
     public List<String> runConstructorDate(Date scheduleDate, Date scheduleTime) {
@@ -75,6 +80,14 @@ public class EmpSchByEmpIdForm {
 
     public void setEndDate(List<String> endDate) {
         this.endDate = endDate;
+    }
+
+    public long getbServiceId() {
+        return bServiceId;
+    }
+
+    public void setbServiceId(long bServiceId) {
+        this.bServiceId = bServiceId;
     }
 
     public String getbServiceName() {
