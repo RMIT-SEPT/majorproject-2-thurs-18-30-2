@@ -142,16 +142,18 @@ class Schedule extends React.Component {
     var convBuffer = [];
     tempBuffer.forEach(element => 
       convBuffer.push( {
-        employeeID : this.state.employeeID, 
-        bServiceID : element.serviceId, 
-        date : element.startDate.getMonth(), 
-        startTime : element.startDate.toTimeString(), 
-        endTime : element.endDate.toTimeString(), 
-        availability : true
+        employeeId : parseInt(this.state.employeeID, 10), 
+        bServiceId : 3, 
+        date : element.startDate.getFullYear() + '-' + (element.startDate.getMonth()+1) + '-' +  element.startDate.getDate(), 
+        startTime : element.startDate.toTimeString().split(' ')[0], 
+        endTime : element.endDate.toTimeString().split(' ')[0], 
+        availability : true,
+        employeeScheduleId : element.employeeScheduleId
       })
+      //console.log(element)
     );
     convBuffer.forEach(element => 
-      api.post('employeeSchedule/editSchedule/' + this.state.employeeID, element)
+      api.post('employeeSchedule/editSchedule/' + element.employeeScheduleId, element)
             .then((response) => {
                 console.log(response.data);
             }).catch((error) => {
@@ -159,6 +161,7 @@ class Schedule extends React.Component {
                     errorMsg : error.response.data.message
                 });
             })
+            //console.log(element)
     );
   }
 
