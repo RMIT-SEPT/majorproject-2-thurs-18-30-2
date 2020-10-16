@@ -36,7 +36,7 @@ function EmployeeCard (props) {
                     </Link>
                 </Col>
                 <Col className="card-button">
-                    <Link to={"/employee/" + props.item.id}>
+                    <Link to={"/schedule/" + props.item.id}>
                         <Button variant="dark" style={{ fontSize : '14px'}}>Schedule</Button>
                     </Link>
                 </Col>

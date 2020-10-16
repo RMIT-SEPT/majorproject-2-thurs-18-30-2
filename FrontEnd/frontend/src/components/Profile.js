@@ -24,7 +24,7 @@ function Profile({ router }) {
             
                     setUser({...response.data});
                     setEditUrl('/edit/employee/' + router.computedMatch.params.eId);
-                    setScheduleUrl('/schedule/employee/' + router.computedMatch.params.eId);
+                    setScheduleUrl('/schedule/' + router.computedMatch.params.eId);
 
                 } catch(error) {
                     console.log(error.response);
@@ -34,6 +34,7 @@ function Profile({ router }) {
             getApi();    
         } else {
             setUser({...mainUser.userDetails});
+            setScheduleUrl('/schedule/' + mainUser.userDetails.id);
             // Here if it is employee profile as main user
         }
     }, [mainUser.userDetails, router.computedMatch.params.eId]);

@@ -83,8 +83,8 @@ class Schedule extends React.Component {
       addedAppointment : {},
       appointmentChanges : {},
       editingAppointment : undefined,
-      service : '0',
-      employeeID : '12',
+      service : 0,
+      employeeID : this.props.router.computedMatch.params.eId,
       startTime : 8,
       endTime : 18,
       baseLayout : null
@@ -95,6 +95,7 @@ class Schedule extends React.Component {
     this.changeAppointmentChanges = this.changeAppointmentChanges.bind(this);
     this.changeEditingAppointment = this.changeEditingAppointment.bind(this);
     this.saveSchedule = this.saveSchedule.bind(this);
+    console.log(props);
 
     this.state.currentDate = new Date();
     this.state.baseLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
@@ -138,8 +139,19 @@ class Schedule extends React.Component {
 
   saveSchedule() {
     var tempBuffer = this.state.data;
+    var convBuffer = [];
     tempBuffer.forEach(element => 
-      api.post('employeeSchedule/editSchedule/' + element.employeeScheduleId, element)
+      convBuffer.push( {
+        employeeID : this.state.employeeID, 
+        bServiceID : element.serviceId, 
+        date : element.startDate.getMonth(), 
+        startTime : element.startDate.toTimeString(), 
+        endTime : element.endDate.toTimeString(), 
+        availability : true
+      })
+    );
+    convBuffer.forEach(element => 
+      api.post('employeeSchedule/editSchedule/' + this.state.employeeID, element)
             .then((response) => {
                 console.log(response.data);
             }).catch((error) => {
@@ -147,10 +159,11 @@ class Schedule extends React.Component {
                     errorMsg : error.response.data.message
                 });
             })
-          );
+    );
   }
 
   async componentDidMount() {
+    
     await api.get('employeeSchedule/getSchedules/employee/' + this.state.employeeID)
               .then((response) => {
                 var tempData = [];
@@ -161,7 +174,8 @@ class Schedule extends React.Component {
                       startDate : new Date(element.startDate[0], element.startDate[1]-1, element.startDate[2], element.startDate[3], element.startDate[4]),
                       endDate : new Date(element.endDate[0], element.endDate[1]-1, element.endDate[2], element.endDate[3], element.endDate[4]),
                       id : index,
-                      employeeScheduleId : element.employeeScheduleId
+                      employeeScheduleId : element.employeeScheduleId,
+                      serviceId : element.bServiceId
                     }
                   )
                 );
@@ -185,7 +199,6 @@ class Schedule extends React.Component {
               errorMsg : error.response.data.message
           });
       });
-      console.log(tempData);
       tempData.forEach((element, index) => 
         service[index] = {id : element.id, text : element.name}
         )

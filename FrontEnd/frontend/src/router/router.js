@@ -115,7 +115,7 @@ const router = [
         component : BookingForm
     },
     {
-        path : "/schedule",
+        path : "/schedule/:eId",
         component : Schedule
     }
 ];
