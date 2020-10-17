@@ -10,7 +10,6 @@ import { openModal } from '../app/reducers/modalSlice';
 
 function BookingCard (props) {
     var mainUser = useSelector(state => state.user);
-    console.log(props.item)
     async function cancelBooking() { 
         var startTimeStamp = Date.parse(props.item.scheduleDate + 'T' + props.item.scheduleStartTime);
         var startDate = new Date(startTimeStamp);
@@ -96,7 +95,7 @@ function BookingCard (props) {
                 
                 <Button variant="danger" onClick={cancelBooking} style={{ float : 'right' }}>Cancel Booking</Button>       
             </Card.Body>
-            <Card.Footer>
+            <Card.Footer id="footer">
                 Booked at {props.item.bookingCreatedAt}
             </Card.Footer>
             
