@@ -3,7 +3,7 @@ package com.majorproject.backend.services;
 import com.majorproject.backend.models.BService;
 import com.majorproject.backend.repositories.BServiceRepository;
 import com.majorproject.backend.util.DateNowUtil;
-import com.majorproject.backend.util.ListEmptyErrorService;
+import com.majorproject.backend.util.ListEmptyErrorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
@@ -15,7 +15,7 @@ public class BServiceService {
     @Autowired
     private BServiceRepository bServiceRepository;
 
-    private ListEmptyErrorService listEmptyErrorService = new ListEmptyErrorService();
+    private ListEmptyErrorUtil listEmptyErrorUtil = new ListEmptyErrorUtil();
     private DateNowUtil dateNowUtil = new DateNowUtil();
 
     /**
@@ -30,19 +30,27 @@ public class BServiceService {
         return bServiceNew;
     }
 
+    /**
+     * Gets a list of all BServices
+     * @return A list of all BServices
+     */
     public List<BService> getAllBServices() {
         List<BService> bServiceList = bServiceRepository.getAllBServices();
-        listEmptyErrorService.checkListEmpty(bServiceList, "BServices");
+        listEmptyErrorUtil.checkListEmpty(bServiceList, "BServices");
 
         return bServiceList;
     }
 
+    /**
+     * Gets a list of BServices that have schedules that can be booked
+     * @return A list of BServices that have schedules that can be booked
+     */
     public List<BService> getAllBServicesThatHaveSchedules() {
         Date currDate = dateNowUtil.getCurrentDate();
         Date currTime = dateNowUtil.getCurrentTime();
 
         List<BService> bServiceList = bServiceRepository.getAllBServicesThatHaveSchedules(currDate, currTime);
-        listEmptyErrorService.checkListEmpty(bServiceList, "BServices");
+        listEmptyErrorUtil.checkListEmpty(bServiceList, "BServices");
 
         return bServiceList;
     }

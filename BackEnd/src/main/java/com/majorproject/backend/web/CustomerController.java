@@ -42,6 +42,13 @@ public class CustomerController {
         return response;
     }
 
+    /**
+     * Edits the customer based on the customerId
+     * @param idAPI The customerId
+     * @param customer The edited custoemr details
+     * @param result BindingResult
+     * @return The edited customer, if successful
+     */
     @PostMapping("/editCustomer/{idAPI}")
     public ResponseEntity<?> editCustomer(@Valid @PathVariable String idAPI, @RequestBody Customer customer, BindingResult result) {
         ResponseEntity<?> response;
@@ -56,37 +63,4 @@ public class CustomerController {
 
         return response;
     }
-
-//    /**
-//     * Edits the customer details
-//     * @param usernameAPI The customer's username
-//     * @param customer The customer
-//     * @param result BindingResult
-//     * @return A response entity of the customer with the updated details
-//     */
-//    @PutMapping("/editCustomer/{usernameAPI}")
-//    public ResponseEntity<?> editCustomer(@Valid @PathVariable String usernameAPI, @RequestBody Customer customer, BindingResult result) {
-//        ResponseEntity<?> response;
-//        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
-//
-//        if(errorMap != null) {
-//            response = errorMap;
-//        } else {
-//            Customer customerEdit = customerService.getCustomerByUsername(usernameAPI);
-//
-//            // Seting customer details
-//            customerEdit.setfName(customer.getfName());
-//            customerEdit.setlName(customer.getlName());
-//            customerEdit.setEmail(customer.getEmail());
-//            customerEdit.setAddress(customer.getAddress());
-//            customerEdit.setUsername(customer.getUsername());
-//            customerEdit.setPassword(customer.getPassword());
-//            customerEdit.setpNumber(customer.getpNumber());
-//
-//            customerService.saveOrUpdateCustomer(customerEdit);
-//            response = new ResponseEntity<Customer>(customerEdit, HttpStatus.OK);
-//        }
-//
-//        return response;
-//    }
 }

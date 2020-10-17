@@ -3,7 +3,10 @@ package com.majorproject.backend.util;
 import com.majorproject.backend.exceptions.ResponseException;
 import org.springframework.http.HttpStatus;
 
-public class IdErrorService {
+/**
+ * This class checks if there is any parsing errors in id, for duplication purpose
+ */
+public class IdErrorUtil {
     public long idStringToLong(String idAPI) {
         long returnId = -1;
 

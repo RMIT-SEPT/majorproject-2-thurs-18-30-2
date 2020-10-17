@@ -6,13 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * This is the form(class) when for bookings
- * It takes in a booking and return only the following
- * booking id, booking created at
- * customer id, customer first name, customer last name, customer email
- * employee schedule id, schedule date, schedule start time, schedule end time
- * employee id, employee first name, employee last name, employee email
- * bservice id, bservice name, bservice description
+ * This class is used in BookingService to create a custom list
  */
 public class BookingMainForm {
     // From Booking

@@ -29,6 +29,13 @@ import static com.majorproject.backend.security.SecurityConstants.TOKEN_PREFIX;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private JwtTokenProvider tokenProvider;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    CustomUserDetailsService customUserDetailsService;
+
 
     /**
      * Checks if the username exists.
@@ -40,13 +47,6 @@ public class UserController {
         String exists = userService.checkIfUsernameExists(usernameAPI);
         return new ResponseEntity<String>(exists, HttpStatus.OK);
     }
-
-
-    @Autowired
-    private JwtTokenProvider tokenProvider;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
     /**
      * User logins and checks if the credentials are correct
@@ -65,21 +65,29 @@ public class UserController {
                             loginForm.getPassword()
                     )
             );
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
             jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
 
         return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt, user));
     }
 
-    @Autowired
-    CustomUserDetailsService customUserDetailsService;
-
+    /**
+     * Gets a user based on the user id entered by the user
+     * @param id The user id entered by the user
+     * @return The user object
+     */
     @GetMapping("/getUser/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
         User user = customUserDetailsService.loadUserById(id);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
+    /**
+     * Gets a user type based on the user id entered by the user
+     * @param id The user id entered by the user
+     * @return The user type
+     */
     @GetMapping("/getUserType/{id}")
     public ResponseEntity<?> getUserType(@PathVariable Long id) {
         String type = userService.getUserType(id);

@@ -8,12 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * This is the form(class) that is used to hold the list of employee schedules
- * It takes in an employee schedule and return only the following
- * employee schedule id, schedule date, schedule start time, schedule end time
- * employee id, employee first name, employee last name
- * bservice id, bservice name
- * date, schedule start time, schedule end time
+ * This class is used in EmployeeScheduleService to create a custom list
  */
 public class EmployeeScheduleAvailabilityForm {
 

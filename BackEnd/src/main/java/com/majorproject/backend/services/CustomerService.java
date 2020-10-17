@@ -4,7 +4,7 @@ import com.majorproject.backend.exceptions.ResponseException;
 import com.majorproject.backend.repositories.CustomerRepository;
 import com.majorproject.backend.models.Customer;
 import com.majorproject.backend.repositories.EmployeeRepository;
-import com.majorproject.backend.util.IdErrorService;
+import com.majorproject.backend.util.IdErrorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,7 +19,7 @@ public class CustomerService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private IdErrorService idErrorService = new IdErrorService();
+    private IdErrorUtil idErrorUtil = new IdErrorUtil();
 
     /**
      * Creates a customer and adds it to the database
@@ -54,7 +54,7 @@ public class CustomerService {
     }
 
     public Customer editCustomer(String idAPI, Customer customer) {
-        Long customerId = idErrorService.idStringToLong(idAPI);
+        Long customerId = idErrorUtil.idStringToLong(idAPI);
         Customer customerEdit = customerRepository.findByCustomerId(customerId);
 
         // Setting customer details

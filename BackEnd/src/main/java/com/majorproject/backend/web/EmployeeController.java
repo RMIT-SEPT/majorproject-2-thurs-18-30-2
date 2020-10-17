@@ -75,6 +75,13 @@ public class EmployeeController {
         return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
     }
 
+    /**
+     * Edits the employee based on the employeeId
+     * @param idAPI The employeeId
+     * @param employee The edited employee details
+     * @param result BindingResult
+     * @return The edited employee, if successful
+     */
     @PostMapping("/editEmployee/{idAPI}")
     public ResponseEntity<?> editEmployee(@Valid @PathVariable String idAPI, @RequestBody Employee employee, BindingResult result) {
         ResponseEntity<?> response;
@@ -89,37 +96,4 @@ public class EmployeeController {
 
         return response;
     }
-
-//    /**
-//     * Edits the details of an employee
-//     * @param usernameAPI The employee's username
-//     * @param employee The employee
-//     * @param result BindingResult
-//     * @return A response entity of the employee with the updated details
-//     */
-//    @PostMapping("/editEmployee/{usernameAPI}")
-//    public ResponseEntity<?> editEmployee(@Valid @PathVariable String usernameAPI, @RequestBody Employee employee, BindingResult result) {
-//        ResponseEntity<?> response;
-//        ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
-//
-//        if(errorMap != null) {
-//            response = errorMap;
-//        } else {
-//            Employee employeeEdit = employeeService.getEmployeeByUsername(usernameAPI );
-//
-//            // Seting employee details
-//            employeeEdit.setfName(employee.getfName());
-//            employeeEdit.setlName(employee.getlName());
-//            employeeEdit.setEmail(employee.getEmail());
-//            employeeEdit.setAddress(employee.getAddress());
-//            employeeEdit.setUsername(employee.getUsername());
-//            employeeEdit.setPassword(employee.getPassword());
-//            employeeEdit.setpNumber(employee.getpNumber());
-//
-//            employeeService.saveOrUpdateEmployee(employeeEdit);
-//            response = new ResponseEntity<Employee>(employeeEdit, HttpStatus.OK);
-//        }
-//
-//        return response;
-//    }
 }

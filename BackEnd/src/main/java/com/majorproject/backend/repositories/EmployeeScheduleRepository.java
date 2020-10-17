@@ -32,7 +32,11 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
     @Query(value = "SELECT es.* FROM Employee_Schedule es WHERE es.employee_schedule_id = ?1", nativeQuery = true)
     EmployeeSchedule getEmployeeScheduleById(long scheduleId);
 
-
+    /**
+     * This query returns a list of employee schedule based on the employee id
+     * @param employeeId The employee id
+     * @return A list of employee schedule
+     */
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es, Employee e " +
             "WHERE es.employee_id = e.id AND " +
@@ -40,6 +44,13 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
             "ORDER BY es.date", nativeQuery = true)
     List<EmployeeSchedule> getEmployeeScheduleByEmployeeId(long employeeId);
 
+    /**
+     * This query returns a list of employee schedule based on the employee id, current date and current time and available
+     * @param employeeId The employee id
+     * @param currDate The current date
+     * @param currTime The current time
+     * @return A list of employee schedule
+     */
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es, Employee e " +
             "WHERE es.employee_id = e.id AND " +
@@ -52,6 +63,13 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
             "ORDER BY es.date", nativeQuery = true)
     List<EmployeeSchedule> getEmployeeScheduleByEmployeeIdAvailability(long employeeId, Date currDate, Date currTime);
 
+    /**
+     * This query returns a list of employee schedule based on the employeeId, date now and next week
+     * @param employeeId The employee id
+     * @param date A date now
+     * @param week A date now till next week date
+     * @return A list of employee schedule
+     */
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es, Employee e " +
             "WHERE es.employee_id = e.id AND " +
@@ -61,29 +79,34 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
             "ORDER BY es.date", nativeQuery = true)
     List<EmployeeSchedule> getEmployeeScheduleByEmployeeIdDate(long employeeId, Date date, Date week);
 
-//    @Query(value = "SELECT es.* " +
-//            "FROM Employee_Schedule es, BService bs " +
-//            "WHERE es.bservice_id = bs.bservice_id AND " +
-//            "bs.bservice_id = ?1 " +
-//            "ORDER BY es.date", nativeQuery = true)
-//    List<EmployeeSchedule> getEmployeeScheduleByBServiceId(long bServiceId);
-
-//    @Query(value = "SELECT es.* " +
-//        "FROM Employee_Schedule es, BService bs " +
-//        "WHERE es.bservice_id = bs.bservice_id AND " +
-//        "bs.bservice_id = ?1 " +
-//        "ORDER BY es.date", nativeQuery = true)
+    /**
+     * This query returns a list of employee schedule based on the BService id
+     * @param bServiceId The BService id
+     * @return A list of employee schedule
+     */
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es " +
             "WHERE es.bservice_id = ?1", nativeQuery = true)
     List<EmployeeSchedule> getEmployeeByBServiceId(long bServiceId);
 
+    /**
+     * This query returns a list of employee schedule based on the BService id, and available
+     * @param bServiceId The BService id
+     * @return A list of employee schedule
+     */
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es " +
             "WHERE es.bservice_id = ?1 AND " +
             "es.availability = true", nativeQuery = true)
     List<EmployeeSchedule> getEmployeeByBServiceIdOnlyAvailable(long bServiceId);
 
+    /**
+     * This query returns a list of employee schedule based on the BService id, date and current time
+     * @param bServiceId The BService id
+     * @param date The date
+     * @param currTime The current time
+     * @return A list of employee schedule
+     */
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es, BService bs " +
             "WHERE es.bservice_id = bs.bservice_id AND " +
@@ -93,6 +116,13 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
             "ORDER BY es.date", nativeQuery = true)
     List<EmployeeSchedule> getEmployeeScheduleByBServiceIdAndNow(long bServiceId, Date date, Date currTime);
 
+    /**
+     * This query returns a list of employee schedule based on the BService id, date, current time and available
+     * @param bServiceId The BService id
+     * @param date The date
+     * @param currTime The current time
+     * @return A list of employee schedule
+     */
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es, BService bs " +
             "WHERE es.bservice_id = bs.bservice_id AND " +
@@ -105,25 +135,29 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
             "ORDER BY es.date", nativeQuery = true)
     List<EmployeeSchedule> getEmployeeScheduleByBServiceIdAndNowOnlyAvailable(long bServiceId, Date date, Date currTime);
 
+    /**
+     * This query returns a list of employee schedule based on the employee id, date, start and end time
+     * @param employeeId The employee id
+     * @param date The date
+     * @param startTime The start time
+     * @param endTime The end time
+     * @return A list of employee schedule
+     */
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es " +
             "WHERE es.employee_id = ?1 AND " +
-//            "es.bservice_id = ?2 AND " +
             "es.date = ?2 AND NOT " +
             "(" +
                 "(?3 < es.start_time AND ?4 < es.start_time) OR " +
                 "(?3 > es.end_time AND ?4 > es.end_time)" +
             ")", nativeQuery = true)
-//    List<EmployeeSchedule> getDuplicatedSchedules(long employeeId, long bServiceId, Date date, Date startTime, Date endTime);
     EmployeeSchedule getDuplicatedSchedules(long employeeId, Date date, Date startTime, Date endTime);
 
-    @Query(value = "SELECT es.* " +
-            "FROM Employee_Schedule es, BService bs " +
-            "WHERE es.bservice_id = bs.bservice_id AND " +
-            "bs.bservice_id = ?1 " +
-            "ORDER BY es.date", nativeQuery = true)
-    List<EmployeeSchedule> getEmployeeScheduleByBServiceId(long bServiceId);
-
+    /**
+     * This query updates employee schedule based on the employee schedule id
+     * Used after a booking is made
+     * @param employeeScheduleId The employee schedule id
+     */
     @Transactional
     @Modifying
     @Query(value = "UPDATE Employee_Schedule es " +
@@ -131,6 +165,11 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
             "WHERE es.employee_schedule_id = ?1", nativeQuery = true)
     void updateEmployeeScheduleAfterBooked(long employeeScheduleId);
 
+    /**
+     * This query updates employee schedule based on the employee schedule id
+     * Used after a booking is deleted
+     * @param employeeScheduleId The employee schedule id
+     */
     @Transactional
     @Modifying
     @Query(value = "UPDATE Employee_Schedule es " +
@@ -138,6 +177,14 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
             "WHERE es.employee_schedule_id = ?1", nativeQuery = true)
     void updateEmployeeScheduleAfterBookingDeleted(long employeeScheduleId);
 
+    /**
+     * This query returns a list of employee schedule based on the employee id, BService id, current date and time
+     * @param employeeId The employee id
+     * @param bServiceId The BService id
+     * @param currDate The current date
+     * @param currTime The current time
+     * @return A list of employee schedule
+     */
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es " +
             "WHERE es.employee_id = ?1 AND " +
@@ -211,6 +258,13 @@ public interface EmployeeScheduleRepository extends CrudRepository<EmployeeSched
             "es.end_time <= ?5", nativeQuery = true)
     List<EmployeeSchedule> findSchedulesWithinParameters(long bServiceId, long employeeId, Date date, Date startTime, Date endTime);
 
+    /**
+     * This query returns a list of employee schedule based on the date, start and end time
+     * @param date The date
+     * @param startTime The start time
+     * @param endTime The end time
+     * @return A list of employee schedule
+     */
     @Query(value = "SELECT es.* " +
             "FROM Employee_Schedule es, Employee e, BService bs " +
             "WHERE es.employee_id = e.id AND " +

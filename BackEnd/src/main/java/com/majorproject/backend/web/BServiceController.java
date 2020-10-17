@@ -44,12 +44,21 @@ public class BServiceController {
         return response;
     }
 
+    /**
+     * Gets all BServices in the database
+     * @return All BServices, in a list
+     */
     @GetMapping("/getAllBServices")
     public ResponseEntity<?> getAllBServices() {
         List<BService> bServiceList = bServiceService.getAllBServices();
         return new ResponseEntity<List<BService>>(bServiceList, HttpStatus.OK);
     }
 
+    /**
+     * Gets all BServices in the database only if there is a schedule that can be booked from that BService
+     * Check availability and date
+     * @return BServices that only can be booked, in a list
+     */
     @GetMapping("/getAllBServices/haveSchedules")
     public ResponseEntity<?> getAllBServicesThatHaveSchedules() {
         List<BService> bServiceList = bServiceService.getAllBServicesThatHaveSchedules();

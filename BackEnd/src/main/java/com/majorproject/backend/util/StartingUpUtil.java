@@ -17,7 +17,7 @@ import java.util.Date;
  * This class populates the database when the application starts running
  */
 @Service
-public class StartingUpService {
+public class StartingUpUtil {
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired

@@ -9,6 +9,9 @@ import org.springframework.validation.FieldError;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class checks if the mapping has issues
+ */
 @Service
 public class MapValidationErrorService {
 

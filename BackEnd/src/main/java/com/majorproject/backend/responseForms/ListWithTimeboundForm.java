@@ -1,16 +1,19 @@
-package com.majorproject.backend.util;
+package com.majorproject.backend.responseForms;
 
 import com.majorproject.backend.responseForms.EmployeeScheduleAvailabilityForm;
 
 import java.util.Date;
 import java.util.List;
 
-public class ListWithTimeboundService {
+/**
+ * This class is used by EmployeeScheduleService to create a custom object (but it is technically still a list)
+ */
+public class ListWithTimeboundForm {
     private List<EmployeeScheduleAvailabilityForm> list;
     private Date start;
     private Date end;
 
-    public ListWithTimeboundService(List<EmployeeScheduleAvailabilityForm> list) {
+    public ListWithTimeboundForm(List<EmployeeScheduleAvailabilityForm> list) {
         this.list = list;
 
         this.start = list.get(0).getScheduleStartTime();

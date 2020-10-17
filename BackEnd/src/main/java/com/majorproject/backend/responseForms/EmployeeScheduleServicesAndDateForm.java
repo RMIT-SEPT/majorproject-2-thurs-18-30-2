@@ -5,6 +5,9 @@ import com.majorproject.backend.models.EmployeeSchedule;
 
 import java.util.Date;
 
+/**
+ * This class is used in EmployeeScheduleService to create a custom list
+ */
 public class EmployeeScheduleServicesAndDateForm {
 
     // From Employee Schedule

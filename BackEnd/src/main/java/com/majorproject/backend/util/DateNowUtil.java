@@ -11,8 +11,10 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+/**
+ * This class takes in the current date and splits it into relevant dates for backend date processing
+ */
 public class DateNowUtil {
-
     public Date getCurrentDate() {
         Date currDate = null;
         String datePattern = "yyyy-MM-dd";

@@ -4,10 +4,10 @@ import com.majorproject.backend.exceptions.ResponseException;
 import com.majorproject.backend.models.*;
 import com.majorproject.backend.repositories.*;
 import com.majorproject.backend.responseForms.BookingMainForm;
-import com.majorproject.backend.util.DateErrorService;
+import com.majorproject.backend.util.DateErrorUtil;
 import com.majorproject.backend.util.DateNowUtil;
-import com.majorproject.backend.util.IdErrorService;
-import com.majorproject.backend.util.ListEmptyErrorService;
+import com.majorproject.backend.util.IdErrorUtil;
+import com.majorproject.backend.util.ListEmptyErrorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -27,9 +27,9 @@ public class BookingService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    private IdErrorService idErrorService = new IdErrorService();
-    private ListEmptyErrorService listEmptyErrorService = new ListEmptyErrorService();
-    private DateErrorService dateErrorService = new DateErrorService();
+    private IdErrorUtil idErrorUtil = new IdErrorUtil();
+    private ListEmptyErrorUtil listEmptyErrorUtil = new ListEmptyErrorUtil();
+    private DateErrorUtil dateErrorUtil = new DateErrorUtil();
     private DateNowUtil dateNowUtil = new DateNowUtil();
 
     /**
@@ -83,7 +83,7 @@ public class BookingService {
         else bookingList = bookingRepository.getAllBookingsAfter(new Date());
         List<BookingMainForm> bookingMainFormList = new ArrayList<BookingMainForm>();
 
-        listEmptyErrorService.checkListEmpty(bookingList, "Booking");
+        listEmptyErrorUtil.checkListEmpty(bookingList, "Booking");
 
         for(int i = 0; i < bookingList.size(); ++i) {
             bookingMainFormList.add(new BookingMainForm(bookingList.get(i)));
@@ -96,7 +96,7 @@ public class BookingService {
         List<Booking> bookingList = new ArrayList<Booking>();
         List<BookingMainForm> bookingMainFormList = new ArrayList<BookingMainForm>();
 
-        Long userId = idErrorService.idStringToLong(idAPI);
+        Long userId = idErrorUtil.idStringToLong(idAPI);
 
         if (userTypeAPI.equals("customer")) { // if user is a customer
             if(state.equals("past")) bookingList = bookingRepository.getAllCustomerBookingsBefore(userId, new Date());
@@ -105,7 +105,7 @@ public class BookingService {
             if(state.equals("past")) bookingList = bookingRepository.getAllEmployeeBookingsBefore(userId, new Date());
             else bookingList = bookingRepository.getAllEmployeeBookingsAfter(userId, new Date());
         }
-        listEmptyErrorService.checkListEmpty(bookingList, "Booking");
+        listEmptyErrorUtil.checkListEmpty(bookingList, "Booking");
 
         for(int i = 0; i < bookingList.size(); ++i) {
             bookingMainFormList.add(new BookingMainForm(bookingList.get(i)));
@@ -118,7 +118,7 @@ public class BookingService {
         boolean toBeDeleted = false;
         String success = "Booking is successfully deleted";
 
-        long bookingId = idErrorService.idStringToLong(bookingIdAPI);
+        long bookingId = idErrorUtil.idStringToLong(bookingIdAPI);
         Booking booking = bookingRepository.getBookingById(bookingId);
 
         if(booking != null) {

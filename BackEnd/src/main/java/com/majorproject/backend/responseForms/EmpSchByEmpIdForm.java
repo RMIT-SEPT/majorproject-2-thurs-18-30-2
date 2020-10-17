@@ -2,16 +2,19 @@ package com.majorproject.backend.responseForms;
 
 import com.majorproject.backend.models.BService;
 import com.majorproject.backend.models.EmployeeSchedule;
-import com.majorproject.backend.util.DateErrorService;
+import com.majorproject.backend.util.DateErrorUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * This class is used in EmployeeScheduleService to create a custom list
+ */
 public class EmpSchByEmpIdForm {
 
-    private DateErrorService dateErrorService = new DateErrorService();
+    private DateErrorUtil dateErrorUtil = new DateErrorUtil();
 
     // From EmployeeSchedule
     private long employeeScheduleId;
@@ -39,8 +42,8 @@ public class EmpSchByEmpIdForm {
     public List<String> runConstructorDate(Date scheduleDate, Date scheduleTime) {
         List<String> list = new ArrayList<String>();
 
-        String dateInString = dateErrorService.convertToStringType(scheduleDate, "date");
-        String timeInString = dateErrorService.convertToStringType(scheduleTime, "time");
+        String dateInString = dateErrorUtil.convertToStringType(scheduleDate, "date");
+        String timeInString = dateErrorUtil.convertToStringType(scheduleTime, "time");
 
         List<String> dateList = Arrays.asList(dateInString.split("-"));
 
@@ -50,7 +53,6 @@ public class EmpSchByEmpIdForm {
         }
 
         List<String> timeList = Arrays.asList(timeInString.split(":"));
-
 
         list.addAll(dateList);
         list.addAll(timeList);

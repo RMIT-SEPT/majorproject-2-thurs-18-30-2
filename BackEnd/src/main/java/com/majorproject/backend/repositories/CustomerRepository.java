@@ -36,6 +36,11 @@ public interface CustomerRepository extends CrudRepository<Customer, Long> {
     @Query(value = "SELECT * FROM Customer c WHERE c.username = ?1", nativeQuery = true)
     Customer findByUsername(String username);
 
+    /**
+     * This query returns a customer based on the is entered by the user
+     * @param customerId The customer id entered by the user
+     * @return A customer if the customer exists, otherwise null
+     */
     @Query(value = "SELECT * FROM Customer c WHERE c.id = ?1", nativeQuery = true)
     Customer findByCustomerId(long customerId);
 }

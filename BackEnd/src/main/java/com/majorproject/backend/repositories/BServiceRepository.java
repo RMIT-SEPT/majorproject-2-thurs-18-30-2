@@ -23,9 +23,20 @@ public interface BServiceRepository extends CrudRepository<BService, Long> {
     @Query(value = "SELECT bs.* FROM BService bs WHERE bs.bservice_id = ?1", nativeQuery = true)
     BService getBServiceById(long id);
 
+    /**
+     * This query returns all BServices in the database
+     * @return A list of BServices
+     */
     @Query(value = "SELECT bs.* FROM BService bs", nativeQuery = true)
     List<BService> getAllBServices();
 
+    /**
+     * This query returns a list of BServices that have schedules that can be booked
+     * Checks are based on available and current date and time
+     * @param currDate The current date
+     * @param currTime The current time
+     * @return A list of BServices
+     */
     @Query(value = "SELECT bs.* " +
             "FROM BService bs, Employee_Schedule es " +
             "WHERE bs.bservice_id = es.bservice_id AND " +

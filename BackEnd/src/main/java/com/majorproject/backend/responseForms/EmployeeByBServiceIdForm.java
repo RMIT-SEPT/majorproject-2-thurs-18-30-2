@@ -3,6 +3,9 @@ package com.majorproject.backend.responseForms;
 import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.models.EmployeeSchedule;
 
+/**
+ * This class is used in EmployeeScheduleService to create a custom list
+ */
 public class EmployeeByBServiceIdForm {
 
     // From Employee

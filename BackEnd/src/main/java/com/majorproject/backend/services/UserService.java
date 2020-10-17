@@ -38,24 +38,29 @@ public class UserService {
         return user;
     }
 
+//    /**
+//     * Checks if the username exists
+//     * @param username The username of the user
+//     * @return A boolean that states if the username exists
+//     * If it exists, return true
+//     * else return false
+//     */
+//    public boolean userNameExists(String username) {
+//        boolean exists = false;
+//
+//        if(employeeRepository.findByUsername(username) != null ||
+//            customerRepository.findByUsername(username) != null) {
+//            exists = true;
+//        }
+//
+//        return exists;
+//    }
+
     /**
      * Checks if the username exists
-     * @param username The username of the user
-     * @return A boolean that states if the username exists
-     * If it exists, return true
-     * else return false
+     * @param usernameAPI The username
+     * @return A string that states if the username exists
      */
-    public boolean userNameExists(String username) {
-        boolean exists = false;
-
-        if(employeeRepository.findByUsername(username) != null ||
-            customerRepository.findByUsername(username) != null) {
-            exists = true;
-        }
-
-        return exists;
-    }
-
     public String checkIfUsernameExists(String usernameAPI) {
         String exists;
         boolean result = false;
@@ -74,6 +79,11 @@ public class UserService {
         return exists;
     }
 
+    /**
+     * Gets user type based on user id
+     * @param id The user id
+     * @return The user type based on the user id
+     */
     public String getUserType(Long id) {
         String type;
         Customer customer = customerRepository.findByCustomerId(id);
@@ -87,7 +97,11 @@ public class UserService {
         return type;
     }
 
-
+    /**
+     * Gets user based on username
+     * @param username The username
+     * @return The user based on the username
+     */
     public User getUserByUserName(String username) {
         User user = null;
         user = customerRepository.findByUsername(username);

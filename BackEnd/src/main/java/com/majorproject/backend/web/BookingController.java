@@ -45,6 +45,11 @@ public class BookingController {
         return response;
     }
 
+    /**
+     * Gets all bookings, based on if past or current
+     * @param state The state of booking (past or current)
+     * @return A custom list of bookings based on above
+     */
     @GetMapping("getAllBookings/{state}")
     public ResponseEntity<?> getAllBookings(@Valid @PathVariable String state) {
         List<BookingMainForm> bookingMainFormList = bookingService.getAllBookings(state);
@@ -53,6 +58,13 @@ public class BookingController {
         return response;
     }
 
+    /**
+     * Gets a list of bookings for a user, but only past or current based on user's choice
+     * @param userTypeAPI The userType (employee or customer)
+     * @param idAPI The user id
+     * @param state The state of booking (past or current)
+     * @return A custom list of bookings based on above
+     */
     @GetMapping("getBookings/{userTypeAPI}/{idAPI}/{state}")
     public ResponseEntity<?> getUserBookings(@Valid @PathVariable String userTypeAPI, @PathVariable String idAPI, @PathVariable String state) {
         List<BookingMainForm> bookingMainFormList = bookingService.getBookingsForUserById(userTypeAPI, idAPI, state);
@@ -61,36 +73,14 @@ public class BookingController {
         return response;
     }
 
+    /**
+     * Removes a booking based on the bookingId
+     * @param bookingIdAPI The bookingId
+     * @return A String that says the booking is successfully deleted, if successful
+     */
     @DeleteMapping("/deleteBooking/{bookingIdAPI}")
     public ResponseEntity<?> deleteBooking(@Valid @PathVariable String bookingIdAPI) {
         String success = bookingService.deleteBooking(bookingIdAPI);
         return new ResponseEntity<String>(success, HttpStatus.OK);
     }
-
-//    @GetMapping("/deleteBooking/{bookingIdAPI}/{currDateAPI}/{currTimeAPI}")
-//    public ResponseEntity<?> deleteBooking(@Valid @PathVariable String bookingIdAPI, @PathVariable String currDateAPI,
-//                                           @PathVariable String currTimeAPI) {
-//        String success = bookingService.deleteBooking(bookingIdAPI, currDateAPI, currTimeAPI);
-//        return new ResponseEntity<String>(success, HttpStatus.OK);
-//    }
-
-//    @GetMapping("/test/{bookingDateAPI}/{bookingTimeAPI}/{currDateAPI}/{currTimeAPI}")
-//    public ResponseEntity<?> testDateMinus(@Valid @PathVariable String bookingDateAPI, @PathVariable String bookingTimeAPI,
-//                                           @PathVariable String currDateAPI, @PathVariable String currTimeAPI) {
-//        String result = bookingService.testDateMinus(bookingDateAPI, bookingTimeAPI, currDateAPI, currTimeAPI);
-//        return new ResponseEntity<String>(result, HttpStatus.OK);
-//    }
-
-//    /**
-//     * Gets the bookings based on the user's username
-//     * @param usernameAPI The user's username
-//     * @return A response entity of the list of bookings based on the user's username
-//     */
-//    @GetMapping("getBookings/{usernameAPI}")
-//    public ResponseEntity<?> getUserBookings(@Valid @PathVariable String usernameAPI) {
-//        List<Booking> bookingList = bookingService.getBookingsByUser(usernameAPI);
-//        ResponseEntity<?> response = new ResponseEntity<List<Booking>>(bookingList, HttpStatus.OK);
-//
-//        return response;
-//    }
 }

@@ -8,7 +8,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-public class DateErrorService {
+/**
+ * This class converts String to Date or Date to String, based on what is specified
+ */
+public class DateErrorUtil {
     // String to Date format
     private SimpleDateFormat formatterDate = new SimpleDateFormat("yyyy-MM-dd");
 

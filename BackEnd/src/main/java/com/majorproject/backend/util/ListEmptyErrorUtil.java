@@ -5,7 +5,10 @@ import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
-public class ListEmptyErrorService {
+/**
+ * This class checks if the list is empty, for duplication purpose
+ */
+public class ListEmptyErrorUtil {
     public void checkListEmpty(List<?> list, String listDefinition) {
         if(list.isEmpty()) {
             throw new ResponseException(HttpStatus.BAD_REQUEST, listDefinition + " empty");

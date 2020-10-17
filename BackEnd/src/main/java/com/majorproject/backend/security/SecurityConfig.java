@@ -27,13 +27,10 @@ import static com.majorproject.backend.security.SecurityConstants.*;
         prePostEnabled = true
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
     @Autowired
     private JwtAuthenticationEntryPoint unauthorizedHandler;
-
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
-
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
