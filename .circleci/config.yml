@@ -126,4 +126,4 @@ workflows:
       - build_frontend:
           filters:
             branches:
-              only: develop
+              only: master
