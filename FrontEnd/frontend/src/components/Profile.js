@@ -34,13 +34,15 @@ function Profile({ router }) {
             getApi();    
         } else {
             setUser({...mainUser.userDetails});
-            setScheduleUrl('/schedule/' + mainUser.userDetails.id);
+            if(mainUser.userDetails) {
+                setScheduleUrl('/schedule/' + mainUser.userDetails.id);
+            }
             // Here if it is employee profile as main user
         }
     }, [mainUser.userDetails, router.computedMatch.params.eId]);
-
+    
     var html;
-    if(user && mainUser.userDetails != null) {
+    if(user && mainUser.userDetails) {
         html = (
 
             <Card className="bg-dark text-white" style={{marginTop : '20px'}}>
