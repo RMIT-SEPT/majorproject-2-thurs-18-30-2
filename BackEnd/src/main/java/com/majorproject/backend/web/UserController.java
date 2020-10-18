@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +58,8 @@ public class UserController {
     public ResponseEntity<?> loginVerification(@RequestBody LoginForm loginForm) {
         User user = userService.getUserByUserName(loginForm.getUsername());
         String jwt = "";
-        Authentication authentication = null;
+        try {
+            Authentication authentication = null;
 
             authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -68,6 +70,9 @@ public class UserController {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
+        } catch(Exception e) {
+            throw new ResponseException(HttpStatus.UNAUTHORIZED, "Username or password is invalid");
+        }
 
         return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt, user));
     }

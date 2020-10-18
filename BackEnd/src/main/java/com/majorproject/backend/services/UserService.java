@@ -38,24 +38,6 @@ public class UserService {
         return user;
     }
 
-//    /**
-//     * Checks if the username exists
-//     * @param username The username of the user
-//     * @return A boolean that states if the username exists
-//     * If it exists, return true
-//     * else return false
-//     */
-//    public boolean userNameExists(String username) {
-//        boolean exists = false;
-//
-//        if(employeeRepository.findByUsername(username) != null ||
-//            customerRepository.findByUsername(username) != null) {
-//            exists = true;
-//        }
-//
-//        return exists;
-//    }
-
     /**
      * Checks if the username exists
      * @param usernameAPI The username

@@ -18,7 +18,7 @@ function EmployeeCard (props) {
                 </Col>
                 <Col md="8">
                     <Card.Body> 
-                        <Card.Title>{props.item.username}</Card.Title>
+                        <Card.Title id="title">{props.item.username}</Card.Title>
                         <Card.Subtitle>
                             {props.item.fName} {props.item.lName}
                         </Card.Subtitle>

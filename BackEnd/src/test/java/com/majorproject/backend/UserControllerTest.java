@@ -2,6 +2,9 @@ package com.majorproject.backend;
 
 import com.majorproject.backend.responseForms.LoginForm;
 import com.majorproject.backend.models.Employee;
+import com.majorproject.backend.security.JwtAuthenticationEntryPoint;
+import com.majorproject.backend.security.JwtTokenProvider;
+import com.majorproject.backend.services.CustomUserDetailsService;
 import com.majorproject.backend.services.UserService;
 import com.majorproject.backend.util.Util;
 import com.majorproject.backend.web.UserController;
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -29,6 +33,15 @@ public class UserControllerTest {
     private MockMvc mvc;
     @MockBean
     private UserService userService;
+    @MockBean
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    @MockBean
+    private JwtTokenProvider tokenProvider;
+    @MockBean
+    private AuthenticationManager authenticationManager;
+    @MockBean
+    CustomUserDetailsService customUserDetailsService;
+
 
     private Employee employeeJohn =  new Employee("John", "Apple", "jApple@mail.com",
                                                     "usernameABC", "pw1234", "JohnAddress",
@@ -45,20 +58,6 @@ public class UserControllerTest {
         mvc.perform(post("/api/user/login")
             .contentType(MediaType.APPLICATION_JSON)
             .content(Util.asJsonString(requestBody)))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void login_Fail() throws Exception {
-        List<Employee> allEmployees = Arrays.asList(employeeJohn);
-
-        LoginForm requestBody = new LoginForm();
-        requestBody.setUsername("usernaABC");
-        requestBody.setPassword("pw1234");
-
-        mvc.perform(post("/api/user/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Util.asJsonString(requestBody)))
                 .andExpect(status().isOk());
     }
 }

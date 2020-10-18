@@ -26,7 +26,8 @@ describe('<BookingCard /> component Unit Test', () => {
     }
     it('should render <BookingCard /> component', () => {
         const component = mount(<Provider store={store}><BookingCard {...props}/></Provider>);
+        
         const footerText = component.find('#footer').map((node) => node.text());
-        expect(footerText).toHaveLength(2);
+        expect(footerText[0]).toMatch('Booked at 2020-03-20');
     });
 })

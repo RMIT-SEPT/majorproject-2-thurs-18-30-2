@@ -38,7 +38,6 @@ public class BookingService {
      * @return The booking
      */
     public Booking saveOrUpdateBooking(Booking booking) {
-//        try {
             /**
              * Check if employee schedule is available
              * available = true then can book
@@ -52,30 +51,18 @@ public class BookingService {
             if(!employeeSchedule.getAvailability()) {
                 throw new ResponseException(HttpStatus.NOT_ACCEPTABLE, "Schedule has already been booked");
             } else {
-//                Customer customer = customerRepository.findById(booking.getCustomer().getId()).get();
-//                booking.setCustomer(customer);
-
                 // Update availability = false
                 employeeScheduleRepository.updateEmployeeScheduleAfterBooked(employeeScheduleId);
-//                booking.setEmployeeSchedule(employeeSchedule);
             }
-
-//            Customer customer = customerRepository.findById(booking.getCustomer().getId()).get();
-//            booking.setCustomer(customer);
-//
-//            EmployeeSchedule employeeSchedule = employeeScheduleRepository.findById(booking.getEmployeeSchedule().getId()).get();
-//            booking.setEmployeeSchedule(employeeSchedule);
-//            employeeSchedule.setAvailability(false);
-//            booking.getEmployeeSchedule().setAvailability(false);
-
-//        } catch (Exception e) {
-//            throw new ResponseException(HttpStatus.NOT_ACCEPTABLE, "Customer, employee or service does not exist");
-//            throw new ResponseException(HttpStatus.NOT_ACCEPTABLE, "Booking error");
-//        }
 
         return bookingRepository.save(booking);
     }
 
+    /**
+     * Gets a list of bookings based on the state (either past or current)
+     * @param state The state of bookings specified by the user either past or current
+     * @return A custom list of bookings
+     */
     public List<BookingMainForm> getAllBookings(String state) {
 
         List<Booking> bookingList;
@@ -92,6 +79,13 @@ public class BookingService {
         return bookingMainFormList;
     }
 
+    /**
+     * Gets a list of bookings based on the user type, id and state (either past or current)
+     * @param userTypeAPI The user type
+     * @param idAPI The user id
+     * @param state The state of bookings specified by user, either past or current
+     * @return A custom list of bookings based on the above
+     */
     public List<BookingMainForm> getBookingsForUserById(String userTypeAPI, String idAPI, String state) {
         List<Booking> bookingList = new ArrayList<Booking>();
         List<BookingMainForm> bookingMainFormList = new ArrayList<BookingMainForm>();
@@ -114,6 +108,11 @@ public class BookingService {
         return bookingMainFormList;
     }
 
+    /**
+     * Deletes a booking based on the booking id
+     * @param bookingIdAPI The booking id
+     * @return A string that says the booking is deleted, if successful
+     */
     public String deleteBooking(String bookingIdAPI) {
         boolean toBeDeleted = false;
         String success = "Booking is successfully deleted";
@@ -132,9 +131,9 @@ public class BookingService {
             long dayToMilliSec = 86400000;
             long dateDiff = (bookingDate.getTime() - currDate.getTime()) / dayToMilliSec;
 
-            if(dateDiff > 2) {
+            if(dateDiff > 2) { // If the date difference is 2 or more days
                 toBeDeleted = true;
-            } else if(dateDiff == 2) {
+            } else if(dateDiff == 2) { // If the data difference is 2 days
                 if(currTime.before(bookingTime)) {
                     toBeDeleted = true;
                 } else {
@@ -156,75 +155,4 @@ public class BookingService {
 
         return success;
     }
-
-//    public String deleteBooking(String bookingIdAPI, String dateAPI, String timeAPI) {
-//        boolean toBeDeleted = false;
-//        String success = "Booking is successfully deleted";
-//
-//        long bookingId = idErrorService.idStringToLong(bookingIdAPI);
-//        Booking booking = bookingRepository.getBookingById(bookingId);
-//
-//        if(booking != null) {
-//            Date bookingDate = booking.getEmployeeSchedule().getDate();
-//            Date bookingTime = booking.getEmployeeSchedule().getStartTime();
-//            Date currDate = dateErrorService.convertToDateType(dateAPI, "date");
-//            Date currTime = dateErrorService.convertToDateType(timeAPI, "time");
-//
-//            // Check if date time is within 48 hours, otherwise cannot delete
-//            // One day has 86,400,000 milliseconds
-//            long dayToMilliSec = 86400000;
-//            long dateDiff = (bookingDate.getTime() - currDate.getTime()) / dayToMilliSec;
-//
-//            if(dateDiff > 2) {
-//                toBeDeleted = true;
-//            } else if(dateDiff == 2) {
-//                if(currTime.before(bookingTime)) {
-//                    toBeDeleted = true;
-//                } else {
-//                    throw new ResponseException(HttpStatus.BAD_REQUEST, "Late request. Please contact business owner directly asap. Thank you");
-//                }
-//            } else {
-//                throw new ResponseException(HttpStatus.BAD_REQUEST, "Late request. Please contact business owner directly asap. Thank you");
-//            }
-//        } else {
-//            throw new ResponseException(HttpStatus.BAD_REQUEST, "Booking does not exist");
-//        }
-//
-//        // Now its time to delete the booking and set the employee schedule availability to true
-//        if(toBeDeleted) {
-//            long employeeScheduleId = booking.getEmployeeSchedule().getId();
-//            bookingRepository.deleteById(bookingId);
-//            employeeScheduleRepository.updateEmployeeScheduleAfterBookingDeleted(employeeScheduleId);
-//        }
-//
-//        return success;
-//    }
-
-//    public String testDateMinus(String bookingDateAPI, String bookingTimeAPI,
-//                                String currDateAPI, String currTimeAPI) {
-//        String statement = "";
-//
-//        Date bookingDate = dateErrorService.convertToDateType(bookingDateAPI, "date");
-//        Date bookingTime = dateErrorService.convertToDateType(bookingTimeAPI, "time");
-//        Date currDate = dateErrorService.convertToDateType(currDateAPI, "date");
-//        Date currTime = dateErrorService.convertToDateType(currTimeAPI, "time");
-//
-//        // One day has 86,400,000 milliseconds
-//        long dayToMilliSec = 86400000;
-//        long dateDiff = (bookingDate.getTime() - currDate.getTime()) / dayToMilliSec;
-//
-//        if(dateDiff > 2) {
-//            statement = "All good, can remove";
-//        } else if(dateDiff == 2) {
-//            if(currTime.before(bookingTime)) {
-//                statement = "All good, can remove";
-//            } else {
-//                statement = "Too late, cannot remove";
-//            }
-//        } else {
-//            statement = "Too late, cannot remove";
-//        }
-//
-//        return statement + "\nDate: " + String.valueOf(dateDiff);
-//    }
 }

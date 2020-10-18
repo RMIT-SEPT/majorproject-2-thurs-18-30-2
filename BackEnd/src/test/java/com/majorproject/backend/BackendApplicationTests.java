@@ -9,19 +9,5 @@ import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest
 class BackendApplicationTests {
-    @MockBean
-    private EmployeeRepository employeeRepository;
-    @MockBean
-    private EmployeeScheduleRepository employeeScheduleRepository;
-    @MockBean
-    private BServiceRepository bServiceRepository;
-    @MockBean
-    private CustomerRepository customerRepository;
-    @MockBean
-    private BookingRepository bookingRepository;
-    @MockBean
-    private MapValidationErrorService mapValidationErrorService;
-    @Test
-    void contextLoads() {
-    }
+
 }

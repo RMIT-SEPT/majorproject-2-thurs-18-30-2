@@ -11,7 +11,7 @@ import { Image, Card, Col, Row, Button } from 'react-bootstrap';
 function Profile({ router }) {
 
     var mainUser = useSelector(state => state.user);
-    const [user, setUser] = useState();
+    const [user, setUser] = useState(null);
     const [editUrl, setEditUrl] = useState('/edit');
     const [scheduleUrl, setScheduleUrl] = useState('/schedule');
 
@@ -34,11 +34,13 @@ function Profile({ router }) {
             getApi();    
         } else {
             setUser({...mainUser.userDetails});
-            setScheduleUrl('/schedule/' + mainUser.userDetails.id);
+            if(mainUser.userDetails) {
+                setScheduleUrl('/schedule/' + mainUser.userDetails.id);
+            }
             // Here if it is employee profile as main user
         }
     }, [mainUser.userDetails, router.computedMatch.params.eId]);
-
+    
     var html;
     if(user && mainUser.userDetails) {
         html = (
@@ -81,7 +83,7 @@ function Profile({ router }) {
                             <Row>
                                 <Col md="1" />
                                 <Col md="11" style={{ fontSize : '20px' }}>
-                                    <Row className="row-spacing">
+                                    <Row className="row-spacing" id="firstName">
                                         <Col md="3">
                                             First Name
                                         </Col>
@@ -105,7 +107,7 @@ function Profile({ router }) {
                                             {user.email}
                                         </Col>
                                     </Row>
-                                    <Row className="row-spacing">
+                                    <Row className="row-spacing" id="username">
                                         <Col md="3">
                                             Username
                                         </Col>
@@ -140,7 +142,7 @@ function Profile({ router }) {
             </Card>
         )
     } else {
-        html = <React.Fragment>Loading...</React.Fragment>
+        html = <React.Fragment><div id="loading">Loading...</div></React.Fragment>
     }
 
     return html;

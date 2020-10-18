@@ -107,6 +107,7 @@ export default class FormTemplates {
             apiCall : "/customer/editCustomer",
             redirect : "/profile",
             prefill : true,
+            responseHandler : "setUser",
             modal : {
                 title : "Edit Successfull",
                 body : "Good News, profile edited without an issue"

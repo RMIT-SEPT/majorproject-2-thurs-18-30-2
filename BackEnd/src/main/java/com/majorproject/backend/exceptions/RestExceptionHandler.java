@@ -12,7 +12,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<?> buildErrorResponse(ResponseException exception) {
-
         return new ResponseEntity<>(new ExceptionForm(exception), exception.getStatus());
     }
 }

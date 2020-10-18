@@ -6,7 +6,7 @@ import { Row, Col,
     Alert } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-import { logIn } from '../../app/reducers/userSlice';
+import { logIn, setUser } from '../../app/reducers/userSlice';
 import { openModal } from '../../app/reducers/modalSlice';
 import FormTemplates from '../../form-templates/form-templates';
 
@@ -110,7 +110,6 @@ class FormTemplate extends React.Component {
         if(this.state.valid) {
             try {
                 var response = await api.post(this.form.apiCall, this.state.inputValues);
-           
                 if(this.form.responseHandler) {
                     this.props[this.form.responseHandler](response.data);
                 }
@@ -195,7 +194,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = () => {
     return { 
         logIn,
-        openModal
+        openModal,
+        setUser
     };
 };
 
