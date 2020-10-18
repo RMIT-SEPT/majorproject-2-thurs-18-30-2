@@ -1,5 +1,6 @@
 package com.majorproject.backend.web;
 
+import com.majorproject.backend.exceptions.ResponseException;
 import com.majorproject.backend.models.BService;
 import com.majorproject.backend.services.MapValidationErrorService;
 import com.majorproject.backend.services.BServiceService;
@@ -16,10 +17,8 @@ import java.util.List;
 @RequestMapping("api/bService")
 @CrossOrigin
 public class BServiceController {
-
     @Autowired
     private BServiceService bServiceService;
-
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 
