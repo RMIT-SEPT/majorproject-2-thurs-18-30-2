@@ -73,9 +73,14 @@ jobs:
     docker:
       - image: circleci/node:7.10
 
+    environment:
+      ECR_REPOSITORY_NAME: agme-frontend
+      FULL_IMAGE_NAME: 939196155225.dkr.ecr.us-east-1.amazonaws.com/agme-frontend:latest
+
     steps:
       - checkout:
           path: ~/majorproject-2-thurs-18-30-2
+      - setup_remote_docker
 
       - restore_cache:
           key: npm-cache-v1-{{ checksum "package-lock.json" }}
@@ -93,6 +98,23 @@ jobs:
           name: Run Tests
           command: npm test
 
+      - run:
+          name: Install dependencies for AWS
+          command: |
+            sudo apt-get update
+            sudo apt-get -y -qq install awscli
+            sudo apt-get install python3-pip
+            sudo pip3 install --upgrade awscli
+      - run:
+          name: Build image
+          command: |
+            docker build -t $ECR_REPOSITORY_NAME .
+      - run:
+          name: Push image
+          command: |
+            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 939196155225.dkr.ecr.us-east-1.amazonaws.com/agme-backend:latest
+            docker tag ${ECR_REPOSITORY_NAME}:latest 939196155225.dkr.ecr.us-east-1.amazonaws.com/agme-backend:latest
+            docker push $FULL_IMAGE_NAME
 
 workflows:
   build-deploy-qa:
