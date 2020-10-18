@@ -81,7 +81,7 @@ function Profile({ router }) {
                             <Row>
                                 <Col md="1" />
                                 <Col md="11" style={{ fontSize : '20px' }}>
-                                    <Row className="row-spacing">
+                                    <Row className="row-spacing" id="firstName">
                                         <Col md="3">
                                             First Name
                                         </Col>
@@ -105,7 +105,7 @@ function Profile({ router }) {
                                             {user.email}
                                         </Col>
                                     </Row>
-                                    <Row className="row-spacing">
+                                    <Row className="row-spacing" id="username">
                                         <Col md="3">
                                             Username
                                         </Col>
@@ -140,7 +140,7 @@ function Profile({ router }) {
             </Card>
         )
     } else {
-        html = <React.Fragment>Loading...</React.Fragment>
+        html = <React.Fragment><div id="loading">Loading...</div></React.Fragment>
     }
 
     return html;

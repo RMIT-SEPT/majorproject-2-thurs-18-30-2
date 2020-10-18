@@ -72,7 +72,7 @@ function BookingCard (props) {
                         </Popover>
                     }
                 >
-                    <Card.Title >{props.item.bServiceName}</Card.Title>
+                    <Card.Title id="title">{props.item.bServiceName}</Card.Title>
                 </OverlayTrigger>
                 
                 <OverlayTrigger
