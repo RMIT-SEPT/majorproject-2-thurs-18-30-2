@@ -36,43 +36,7 @@ const ong = (props) => {
     } return <AppointmentForm.Select {...props} />;
   };
   
-  const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
-    const onCustomFieldChange = (nextValue) => {
-      onFieldChange({ customField: nextValue });
-    };
-    
-    return (
-      <AppointmentForm.BasicLayout
-        appointmentData={appointmentData}
-        onFieldChange={onFieldChange}
-        {...restProps}
-      >
-        <AppointmentForm.Label
-          text="Service"
-          type="title"
-        />
-        <AppointmentForm.Select
-          value={appointmentData.customField}
-          availableOptions={[
-            {
-                id : 0,
-                text : "Full Body Massage"
-            },
-            {
-                id : 1,
-                text : "Super Happy Fun Time"
-            },
-            {
-                id : 2,
-                text : "Designer Designing Designs"
-            }
-        ]}
-          onValueChange={onCustomFieldChange}
-          placeholder="Custom field"
-        />
-      </AppointmentForm.BasicLayout>
-    );
-  };
+  
 
 
 class Schedule extends React.Component {
@@ -90,15 +54,15 @@ class Schedule extends React.Component {
       endTime : 18,
       baseLayout : null
     };
-
+    //Bind all functions to class
     this.commitChanges = this.commitChanges.bind(this);
     this.changeAddedAppointment = this.changeAddedAppointment.bind(this);
     this.changeAppointmentChanges = this.changeAppointmentChanges.bind(this);
     this.changeEditingAppointment = this.changeEditingAppointment.bind(this);
     this.saveSchedule = this.saveSchedule.bind(this);
-    console.log(props);
-
+    //Set current date
     this.state.currentDate = new Date();
+    //Base layout for editing schedules
     this.state.baseLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
       const onCustomFieldChange = (nextValue) => {
         onFieldChange({ customField: nextValue });
@@ -137,10 +101,11 @@ class Schedule extends React.Component {
       );
     };
   }
-
+  //Use all buffer information to edit/add respective schedules timing blocks
   saveSchedule() {
     var tempBuffer = this.state.data;
     var convBuffer = [];
+    //Create a buffer with the proper information
     tempBuffer.forEach(element => 
       convBuffer.push( {
         employeeId : parseInt(this.state.employeeID, 10), 
@@ -151,8 +116,8 @@ class Schedule extends React.Component {
         availability : true,
         employeeScheduleId : element.employeeScheduleId
       })
-      //console.log(element)
     );
+    //Iterate through and make api calls for each block
     convBuffer.forEach(element => 
       api.post('employeeSchedule/editSchedule/' + element.employeeScheduleId, element)
             .then((response) => {
@@ -162,15 +127,16 @@ class Schedule extends React.Component {
                     errorMsg : error.response.data.message
                 });
             })
-            //console.log(element)
     );
   }
 
+  //On component load
   async componentDidMount() {
-    
+    //Api call to fill in the schedule to the calendar
     await api.get('employeeSchedule/getSchedules/employee/' + this.state.employeeID)
               .then((response) => {
                 var tempData = [];
+                //Create a buffer with the proper information
                 response.data.forEach((element, index) =>
                   tempData.push(
                     {
@@ -195,6 +161,7 @@ class Schedule extends React.Component {
 
       var tempData = [];
       var service = [];
+      //Api call to get all the services to populate the list for editing the schedule block
       await api.get('bService/getAllBServices')
       .then((response) => {
           tempData = response.data;
@@ -206,6 +173,7 @@ class Schedule extends React.Component {
       tempData.forEach((element, index) => 
         service[index] = {id : element.id, text : element.name}
         )
+      //Temporary layout change for adding the aforementioned services
       var tempLay = ({ onFieldChange, appointmentData, ...restProps }) => {
         const onCustomFieldChange = (nextValue) => {
           onFieldChange({ customField: nextValue });
@@ -234,19 +202,19 @@ class Schedule extends React.Component {
         baseLayout : tempLay
       })
   }
-
+  //Adding appointments
   changeAddedAppointment(addedAppointment) {
     this.setState({ addedAppointment });
   }
-
+  //Applying changes
   changeAppointmentChanges(appointmentChanges) {
     this.setState({ appointmentChanges });
   }
-
+  //Editting appointments
   changeEditingAppointment(editingAppointment) {
     this.setState({ editingAppointment });
   }
-
+  //Commit changes to actual data set
   commitChanges({ added, changed, deleted }) {
     this.setState((state) => {
       let { data } = state;
@@ -266,9 +234,6 @@ class Schedule extends React.Component {
   }
 
   render() {
-    /* const {
-      currentDate, data, addedAppointment, appointmentChanges, editingAppointment,
-    } = this.state; */
     if(this.props.user.userDetails) {
       return (
           <React.Fragment>
@@ -323,6 +288,7 @@ class Schedule extends React.Component {
   }
 }
 }
+//Redux for user state
 const mapStateToProps = state => ({
   user : state.user
 });
