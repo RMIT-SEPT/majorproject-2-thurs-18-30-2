@@ -1,92 +1,224 @@
 package com.majorproject.backend.services;
 
 import com.majorproject.backend.exceptions.ResponseException;
+import com.majorproject.backend.models.BService;
+import com.majorproject.backend.models.Employee;
 import com.majorproject.backend.models.EmployeeSchedule;
 import com.majorproject.backend.repositories.EmployeeRepository;
 import com.majorproject.backend.repositories.EmployeeScheduleRepository;
 import com.majorproject.backend.repositories.BServiceRepository;
-import com.majorproject.backend.responseForms.EmployeeAvailabilityForm;
-import com.majorproject.backend.responseForms.EmployeeScheduleWithinTimeForm;
-import com.majorproject.backend.responseForms.EmployeeScheduleWithinTimeFormAndEmployee;
+import com.majorproject.backend.responseForms.EmpSchByEmpIdForm;
+import com.majorproject.backend.responseForms.EmployeeByBServiceIdForm;
+import com.majorproject.backend.responseForms.EmployeeScheduleAvailabilityForm;
+import com.majorproject.backend.responseForms.ListWithTimeboundForm;
+import com.majorproject.backend.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
 public class EmployeeScheduleService {
     @Autowired
-    EmployeeScheduleRepository employeeScheduleRepository;
+    private EmployeeScheduleRepository employeeScheduleRepository;
 
     @Autowired
-    EmployeeRepository employeeRepository;
+    private EmployeeRepository employeeRepository;
 
     @Autowired
-    BServiceRepository bServiceRepository;
+    private BServiceRepository bServiceRepository;
 
-    // String to Date format
-    private SimpleDateFormat formatterDate = new SimpleDateFormat("dd-MM-yyyy");
-
-    // String to Time format
-    private SimpleDateFormat formatterTime = new SimpleDateFormat("HH:mm");
+    private IdErrorUtil idErrorUtil = new IdErrorUtil();
+    private ListEmptyErrorUtil listEmptyErrorUtil = new ListEmptyErrorUtil();
+    private ObjectEmptyErrorUtil objectEmptyErrorUtil = new ObjectEmptyErrorUtil();
+    private DateErrorUtil dateErrorUtil = new DateErrorUtil();
+    private DateNowUtil dateNowUtil = new DateNowUtil();
 
     /**
-     * Creates the employee schedule
-     * @param request A map that contains the request details
-     * @return The employee schedule
+     * Saves or edit/update the employee schedule
+     * @param request The map that contains the employee schedule details
+     * @param storingType A string that states if its a save or edit of employee schedule
+     * @param scheduleIdAPI The employeeScheduleId (null if its storingType = save)
+     * @return The employee schedule if successfully created
      */
-    public EmployeeSchedule saveEmployeeSchedule(Map<String, String> request) {
-        EmployeeSchedule employeeSchedule = new EmployeeSchedule();
-        EmployeeSchedule employeeScheduleNew = null;
+    public EmployeeSchedule saveOrEditEmployeeSchedule(Map<String, String> request, String storingType, String scheduleIdAPI) {
+        EmployeeSchedule employeeSchedule;
+        String employeeIdString = request.get("employeeId");
+        String bServiceIdString = request.get("bServiceId");
+        String dateString = request.get("date");
+        String startTimeString = request.get("startTime");
+        String endTimeString = request.get("endTime");
 
-        try {
-            employeeSchedule.setDate(formatterDate.parse(request.get("date")));
-            employeeSchedule.setStartTime(formatterTime.parse(request.get("startTime")));
-            employeeSchedule.setEndTime(formatterTime.parse(request.get("endTime")));
-            employeeSchedule.setEmployee(employeeRepository.findByEmployeeId(Long.parseLong(request.get("employeeId"))));
-            employeeSchedule.setBService(bServiceRepository.findByBServiceId(Long.parseLong(request.get("bServiceId"))));
-            employeeSchedule.setAvailability(true);
-        } catch(Exception e) {
-            throw new ResponseException(HttpStatus.BAD_REQUEST, "Scheduling error");
-        }
+        long duplicatedScheduleId = checkForDuplicates(employeeIdString, bServiceIdString, dateString, startTimeString, endTimeString);
+        if(storingType.equals("save") && duplicatedScheduleId == -1) { // new employeeSchedule, no duplicates
+            employeeSchedule = new EmployeeSchedule();
 
-        boolean foundDuplicates = findAnyDuplicates(employeeSchedule);
-        if(foundDuplicates) { // there is a duplicate
+            // Set availability
+            employeeSchedule.setAvailability(true); // set to true since its new schedule
+
+        } else if(storingType.equals("edit")) {
+            Long scheduleId = idErrorUtil.idStringToLong(scheduleIdAPI);
+
+            /**
+             * edit scheduleId = 3, details are all there
+             *
+             * if list id = 4, schedule duplicated
+             * if list id = 3, correct schedule, edit it
+             * if list id = -1, correct schedule, edit it
+             */
+            if(duplicatedScheduleId == scheduleId || duplicatedScheduleId == -1) { // no duplicates, editing the found one
+                employeeSchedule = employeeScheduleRepository.getEmployeeScheduleById(scheduleId);
+
+                // Set availability
+                boolean availability = Boolean.parseBoolean(request.get("availability"));
+                employeeSchedule.setAvailability(availability);
+            } else { // duplicated, throw exception
+                throw new ResponseException(HttpStatus.BAD_REQUEST, "Duplicated schedule");
+            }
+        } else { // duplicated, throw exception
             throw new ResponseException(HttpStatus.BAD_REQUEST, "Duplicated schedule");
-        } else { // No duplicate
-            employeeScheduleNew = employeeScheduleRepository.save(employeeSchedule);
         }
 
-        return employeeScheduleNew;
+        // Setting details
+        Long employeeId = idErrorUtil.idStringToLong(employeeIdString);
+        Employee employee = employeeRepository.findByEmployeeId(employeeId);
+        employeeSchedule.setEmployee(employee);
+
+        Long bServiceId = idErrorUtil.idStringToLong(bServiceIdString);
+        BService bService = bServiceRepository.getBServiceById(bServiceId);
+        employeeSchedule.setBService(bService);
+
+        Date date = dateErrorUtil.convertToDateType(dateString, "date");
+        employeeSchedule.setDate(date);
+
+        Date startTime = dateErrorUtil.convertToDateType(startTimeString, "time");
+        employeeSchedule.setStartTime(startTime);
+
+        Date endTime = dateErrorUtil.convertToDateType(endTimeString, "time");
+        employeeSchedule.setEndTime(endTime);
+
+        employeeScheduleRepository.save(employeeSchedule);
+
+        return employeeSchedule;
     }
 
     /**
-     * Find any duplicated employee schedule in the database
-     * If there are duplicates, return true
-     * If there are no duplicates, return false
-     * @param employeeSchedule The employee's schedule
-     * @return A boolean that determine if there is any duplicates
+     * This method is used to find if there is already a schedule inside
+     * A duplicated schedule is found if the employee has a schedule clashing with the one being created
+     * Checks are based on employeeId and date and time
+     * @param employeeIdAPI The employee id
+     * @param bServiceIdAPI The BService id
+     * @param dateAPI The schedule's date
+     * @param startTimeAPI The schedule's start time
+     * @param endTimeAPI The schedule's end time
+     * @return The employee schedule id, or -1 if no employee schedule found
      */
-    public boolean findAnyDuplicates(EmployeeSchedule employeeSchedule) {
-        boolean found = false;
-        List<EmployeeSchedule> employeeScheduleList = employeeScheduleRepository.getAllEmployeeSchedules();
+    public long checkForDuplicates(String employeeIdAPI, String bServiceIdAPI, String dateAPI, String startTimeAPI, String endTimeAPI) {
+//        boolean found = false;
+        EmployeeSchedule employeeSchedule;
+        long duplicatedScheduleId = -1;
 
-        // Checks all variables
-        for(int i = 0; i < employeeScheduleList.size() && !found; ++i) {
-            if(employeeSchedule.getEmployee().getId().equals(employeeScheduleList.get(i).getEmployee().getId()) &&
-            employeeSchedule.getBService().getId().equals(employeeScheduleList.get(i).getBService().getId()) &&
-            employeeSchedule.getDate().equals(employeeScheduleList.get(i).getDate()) &&
-            employeeSchedule.getStartTime().equals(employeeScheduleList.get(i).getStartTime()) &&
-            employeeSchedule.getEndTime().equals(employeeScheduleList.get(i).getEndTime())) {
-                found = true;
-            }
+        long employeeId = idErrorUtil.idStringToLong(employeeIdAPI);
+        long bServiceId = idErrorUtil.idStringToLong(bServiceIdAPI);
+        Date date = dateErrorUtil.convertToDateType(dateAPI, "date");
+        Date startTime = dateErrorUtil.convertToDateType(startTimeAPI, "time");
+        Date endTime = dateErrorUtil.convertToDateType(endTimeAPI, "time");
+
+        // Check if employee and bService exist
+        Employee employee = employeeRepository.findByEmployeeId(employeeId);
+        BService bService = bServiceRepository.getBServiceById(bServiceId);
+        if(employee == null || bService == null) {
+            throw new ResponseException(HttpStatus.BAD_REQUEST, "Employee or BService error");
         }
 
-        return found;
+        try {
+            employeeSchedule = employeeScheduleRepository.getDuplicatedSchedules(employeeId, date, startTime, endTime);
+        } catch(Exception e) {
+            throw new ResponseException(HttpStatus.BAD_REQUEST, "Schedule error");
+        }
+
+        if(employeeSchedule != null) {
+            duplicatedScheduleId = employeeSchedule.getId();
+        }
+        return duplicatedScheduleId;
+    }
+
+    /**
+     * Gets employee schedules based on date, start time and end time
+     * @param dateAPI The date
+     * @param startTimeAPI The start time
+     * @param endTimeAPI The end time
+     * @return A custom list based on above
+     */
+    public ListWithTimeboundForm getSchedulesWithinTime(String dateAPI,
+                                                        String startTimeAPI,
+                                                        String endTimeAPI) {
+        List<EmployeeSchedule> employeeScheduleList;
+        List<EmployeeScheduleAvailabilityForm> employeeScheduleAvailabilityList = new ArrayList<EmployeeScheduleAvailabilityForm>();
+
+        Date date = dateErrorUtil.convertToDateType(dateAPI, "date");
+        Date startTime = dateErrorUtil.convertToDateType(startTimeAPI, "time");
+        Date endTime = dateErrorUtil.convertToDateType(endTimeAPI, "time");
+
+        employeeScheduleList = employeeScheduleRepository.findSchedulesByDateAndTime(date, startTime, endTime);
+        listEmptyErrorUtil.checkListEmpty(employeeScheduleList, "Employee Schedule");
+
+        convertToAvailabilityList(employeeScheduleList, employeeScheduleAvailabilityList);
+        ListWithTimeboundForm listWithTimeboundForm = new ListWithTimeboundForm(employeeScheduleAvailabilityList);
+
+        return listWithTimeboundForm;
+    }
+
+    /**
+     * Checks for employee schedules, based on employee id
+     * @param employeeIdAPI The employee id
+     * @param repoCallType Checking for either all or by availability and date now
+     * @return A list of employee schedules based on above
+     */
+    public List<EmpSchByEmpIdForm> getSchedulesByEmployeeId(String employeeIdAPI, String repoCallType) {
+        List<EmployeeSchedule> employeeScheduleList = new ArrayList<EmployeeSchedule>();
+        List<EmpSchByEmpIdForm> customScheduleList = new ArrayList<EmpSchByEmpIdForm>();
+
+        long employeeId = idErrorUtil.idStringToLong(employeeIdAPI);
+
+        // Checking which repo call it would be
+        if(repoCallType.equals("all")) {
+            employeeScheduleList = employeeScheduleRepository.getEmployeeScheduleByEmployeeId(employeeId);
+        } else if(repoCallType.equals("byAvailable")) {
+            Date currDate = dateNowUtil.getCurrentDate();
+            Date currTime = dateNowUtil.getCurrentTime();
+            employeeScheduleList = employeeScheduleRepository.getEmployeeScheduleByEmployeeIdAvailability(employeeId, currDate, currTime);
+        }
+
+        listEmptyErrorUtil.checkListEmpty(employeeScheduleList, "Employee Schedule");
+
+        for(int i = 0; i < employeeScheduleList.size(); ++i) {
+            customScheduleList.add(new EmpSchByEmpIdForm(employeeScheduleList.get(i)));
+        }
+
+        return customScheduleList;
+    }
+
+    /**
+     * Gets a list of employee schedules, based on employee id and date
+     * @param employeeIdAPI The employee id
+     * @return A custom list of employee schedules based on employee id and date
+     */
+    public ListWithTimeboundForm getSchedulesByEmployeeIdAndDate(String employeeIdAPI) {
+        List<EmployeeSchedule> employeeScheduleList = new ArrayList<EmployeeSchedule>();
+        List<EmployeeScheduleAvailabilityForm> employeeScheduleAvailabilityList = new ArrayList<EmployeeScheduleAvailabilityForm>();
+
+        long employeeId = idErrorUtil.idStringToLong(employeeIdAPI);
+        Date date = dateNowUtil.getCurrentDate();
+        Date week = dateNowUtil.getCurrentWeek();
+
+        employeeScheduleList = employeeScheduleRepository.getEmployeeScheduleByEmployeeIdDate(employeeId, date, week);
+        listEmptyErrorUtil.checkListEmpty(employeeScheduleList, "Employee Schedule");
+
+        convertToAvailabilityList(employeeScheduleList, employeeScheduleAvailabilityList);
+        ListWithTimeboundForm listWithTimeboundForm = new ListWithTimeboundForm(employeeScheduleAvailabilityList);
+        return listWithTimeboundForm;
     }
 
     /**
@@ -94,124 +226,103 @@ public class EmployeeScheduleService {
      * @param scheduleId The schedule's Id
      * @return The employee schedule
      */
-    public EmployeeSchedule getEmployeeScheduleById(Long scheduleId) {
+    public EmployeeSchedule getEmployeeScheduleByScheduleId(Long scheduleId) {
         EmployeeSchedule employeeSchedule = employeeScheduleRepository.getEmployeeScheduleById(scheduleId);
-        if(employeeSchedule == null) {
-            throw new ResponseException(HttpStatus.BAD_REQUEST, "Employee Schedule does not exist");
-        }
+        objectEmptyErrorUtil.checkIfNull(employeeSchedule, "Employee Schedule does not exist");
 
         return employeeSchedule;
     }
 
-    /**
-     * Returns a custom list(see form class) that contains the employee's availability based on the employee's id
-     * and week if byWeek = true
-     * @param employeeId The employee's Id
-     * @param byWeek A boolean that checks if the list should only contain dates from today till a week
-     * @return A custom list that contains the employee's availability
-     */
-    public List<EmployeeAvailabilityForm> getEmployeeAvailability(Long employeeId, boolean byWeek) {
-        List<EmployeeSchedule> employeeScheduleList;
-        if(byWeek) { // Get only today till next week
-            try {
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                LocalDateTime currentDate = LocalDateTime.now();
-                Date now = formatterDate.parse(currentDate.format(dtf));
-                LocalDateTime currentWeekFromDate = currentDate.plusWeeks(1);
-                Date nextWeekDate = formatterDate.parse(currentWeekFromDate.format(dtf));
-                employeeScheduleList = employeeScheduleRepository.getEmployeeAvailabilityByIdInWeek(employeeId, now, nextWeekDate);
-            } catch(Exception e) {
-                    throw new ResponseException(HttpStatus.BAD_REQUEST, "Date Error");
+    public List<EmployeeByBServiceIdForm> getEmployeesByBServiceId(String bServiceIdAPI) {
+        List<EmployeeSchedule> employeeScheduleList = new ArrayList<EmployeeSchedule>();
+        List<EmployeeByBServiceIdForm> employeeList = new ArrayList<EmployeeByBServiceIdForm>();
+
+        long bServiceId = idErrorUtil.idStringToLong(bServiceIdAPI);
+
+        employeeScheduleList = employeeScheduleRepository.getEmployeeByBServiceIdOnlyAvailable(bServiceId);
+        listEmptyErrorUtil.checkListEmpty(employeeScheduleList, "Employee");
+
+        List<Long> storeEmployeeId = new ArrayList<Long>();
+        for(int i = 0; i < employeeScheduleList.size(); ++i) {
+            // Check for duplicated employeeId
+            boolean duplicated = false;
+            long listEmployeeId = employeeScheduleList.get(i).getEmployee().getId();
+
+            for(int j = 0; j < storeEmployeeId.size() && !duplicated; ++j) {
+                if(listEmployeeId == storeEmployeeId.get(j)) {
+                    duplicated = true;
+                }
             }
 
-        } else { // Get all employee availability
-            employeeScheduleList = employeeScheduleRepository.getEmployeeAvailabilityById(employeeId);
+            if(!duplicated) {
+                employeeList.add(new EmployeeByBServiceIdForm(employeeScheduleList.get(i)));
+                storeEmployeeId.add(listEmployeeId);
+            }
         }
 
-        List<EmployeeAvailabilityForm> employeeAvailability = new ArrayList<EmployeeAvailabilityForm>();
+        return employeeList;
+    }
+
+    /**
+     * Gets the employee schedules based on BService id and date and time
+     * @param bServiceIdAPI The BService id
+     * @return A custom list of employee schedules based on above
+     */
+    public List<EmployeeByBServiceIdForm> getSchedulesByBServiceIdAndNow(String bServiceIdAPI) {
+        List<EmployeeSchedule> employeeScheduleList = new ArrayList<EmployeeSchedule>();
+        List<EmployeeByBServiceIdForm> employeeList = new ArrayList<EmployeeByBServiceIdForm>();
+
+        long bServiceId = idErrorUtil.idStringToLong(bServiceIdAPI);
+        Date currDate = dateNowUtil.getCurrentDate();
+        Date currTime = dateNowUtil.getCurrentTime();
+
+        employeeScheduleList = employeeScheduleRepository.getEmployeeScheduleByBServiceIdAndNowOnlyAvailable(bServiceId, currDate, currTime);
+        listEmptyErrorUtil.checkListEmpty(employeeScheduleList, "Employee");
 
         for(int i = 0; i < employeeScheduleList.size(); ++i) {
-            employeeAvailability.add(new EmployeeAvailabilityForm(employeeScheduleList.get(i)));
+            employeeList.add(new EmployeeByBServiceIdForm(employeeScheduleList.get(i)));
         }
 
-        if(employeeAvailability.size() == 0) {
-            throw new ResponseException(HttpStatus.NO_CONTENT, "No time available");
-        }
-
-        return employeeAvailability;
+        return employeeList;
     }
 
     /**
-     * Returns a custom list(see form class) based on the service, date and time specified by the user
-     * @param request A map that contains the request details
-     * @return The cusom list that contains the employee's first name, last name and service
+     * Gets a list of employee schedules based on the employee id and BService id
+     * @param employeeIdAPI The employee id
+     * @param bServiceIdAPI The BService id
+     * @return A custom list of employee schedules based on above
      */
-    public List<Object> getServicesWithinParameters(Map<String, String> request) {
-        boolean findAllEmployees = false;
-        List<EmployeeSchedule> employeeScheduleList;
-        List<Object> employeeScheduleTimeList = new ArrayList<Object>();
-        SimpleDateFormat formatterDate = new SimpleDateFormat("dd-MM-yyyy");
-        SimpleDateFormat formatterTime = new SimpleDateFormat("HH:mm");
+    public ListWithTimeboundForm getSchedulesByEmployeeAndBService(String employeeIdAPI, String bServiceIdAPI) {
+        List<EmployeeSchedule> employeeScheduleList = new ArrayList<EmployeeSchedule>();
+        List<EmployeeScheduleAvailabilityForm> employeeScheduleAvailabilityList = new ArrayList<EmployeeScheduleAvailabilityForm>();
 
-        try {
-            Long bServiceId = Long.parseLong(request.get("bServiceId"));
-            Date date = formatterDate.parse(request.get("date"));
-            Date startTime = formatterTime.parse(request.get("startTime"));
-            Date endTime = formatterTime.parse(request.get("endTime"));
+        long employeeId = idErrorUtil.idStringToLong(employeeIdAPI);
+        long bServiceId = idErrorUtil.idStringToLong(bServiceIdAPI);
+        Date currDate = dateNowUtil.getCurrentDate();
+        Date currTime = dateNowUtil.getCurrentTime();
 
-            if(request.get("employeeId") == null) { // find all employees
-                employeeScheduleList = employeeScheduleRepository.findSchedulesWithinParameters(bServiceId, date, startTime, endTime);
-                findAllEmployees = true;
-            } else { // f ind a specific employee only
-                Long employeeId = Long.parseLong(request.get("employeeId"));
-                employeeScheduleList = employeeScheduleRepository.findSchedulesWithinParameters(bServiceId, employeeId, date, startTime, endTime);
-            }
-        }
-        catch(Exception e) {
-            throw new ResponseException(HttpStatus.BAD_REQUEST, "Date Error");
-        }
+        employeeScheduleList = employeeScheduleRepository.getEmployeeScheduleByEmployeeIdAndBServiceIdAndNow(employeeId, bServiceId,
+                                                                                                        currDate, currTime);
+        listEmptyErrorUtil.checkListEmpty(employeeScheduleList, "Employee Schedule");
 
-        if(employeeScheduleList.size() == 0) {
-            throw new ResponseException(HttpStatus.NO_CONTENT, "No services available");
-        }
-
-        if(findAllEmployees) { // find all employees
-            for(int i = 0; i < employeeScheduleList.size(); ++i) {
-                employeeScheduleTimeList.add(new EmployeeScheduleWithinTimeForm(employeeScheduleList.get(i)));
-            }
-        } else { // find specific employee only
-            for(int i = 0; i < employeeScheduleList.size(); ++i) {
-                employeeScheduleTimeList.add(new EmployeeScheduleWithinTimeFormAndEmployee(employeeScheduleList.get(i)));
-            }
-        }
-
-        return employeeScheduleTimeList;
+        convertToAvailabilityList(employeeScheduleList, employeeScheduleAvailabilityList);
+        ListWithTimeboundForm listWithTimeboundForm = new ListWithTimeboundForm(employeeScheduleAvailabilityList);
+        return listWithTimeboundForm;
     }
 
-    /*** Future code ***/
+    /**
+     * Creates a custom list from another list
+     * This method is used in this class, to avoid code duplication
+     * @param listOld The main list
+     * @param listNew The custom list
+     * @return The custom list
+     */
+    public List<EmployeeScheduleAvailabilityForm> convertToAvailabilityList(List<EmployeeSchedule> listOld,
+                                                                            List<EmployeeScheduleAvailabilityForm> listNew) {
+        for(int i = 0; i < listOld.size(); ++i) {
+            listNew.add(new EmployeeScheduleAvailabilityForm(listOld.get(i)));
+        }
 
-////    public EmployeeSchedule editEmployeeSchedule(EmployeeSchedule employeeSchedule) {
-//    public EmployeeSchedule editEmployeeSchedule(String id, Map <String, String> request) {
-//        Long scheduleId = Long.parseLong(id);
-//        EmployeeSchedule employeeScheduleEdit = getEmployeeScheduleById(scheduleId);
-//
-//        try {
-//            employeeScheduleEdit.setEmployee(employeeRepository.findByEmployeeId(Long.parseLong(request.get("employeeId"))));
-//            employeeScheduleEdit.setBService(bServiceRepository.findByBServiceId(Long.parseLong(request.get("bServiceId"))));
-//            employeeScheduleEdit.setDate(formatterDate.parse(request.get("date")));
-//            employeeScheduleEdit.setStartTime(formatterTime.parse(request.get("startTime")));
-//            employeeScheduleEdit.setEndTime(formatterTime.parse(request.get("endTime")));
-//        } catch(Exception e) {
-//            throw new ResponseException(HttpStatus.BAD_REQUEST, "Scheduling error");
-//        }
-//
-//        boolean foundDuplicates = findAnyDuplicates(employeeScheduleEdit);
-//        if(foundDuplicates) { // there is a duplicate
-//            throw new ResponseException(HttpStatus.BAD_REQUEST, "Duplicated schedule");
-//        } else { // No duplicate
-//            employeeScheduleEdit = employeeScheduleRepository.save(employeeScheduleEdit);
-//        }
-//
-//        return employeeScheduleEdit;
-//    }
+        return listNew;
+    }
 }

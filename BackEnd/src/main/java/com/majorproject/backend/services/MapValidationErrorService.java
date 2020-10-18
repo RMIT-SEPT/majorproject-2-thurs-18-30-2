@@ -9,6 +9,9 @@ import org.springframework.validation.FieldError;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class checks if the mapping has issues
+ */
 @Service
 public class MapValidationErrorService {
 
@@ -16,7 +19,7 @@ public class MapValidationErrorService {
         if(result.hasErrors()){
             Map<String, String> errorMap = new HashMap<>();
 
-            for(FieldError error: result.getFieldErrors()){
+            for(FieldError error: result.getFieldErrors()) {
                 errorMap.put(error.getField(), error.getDefaultMessage());
             }
             

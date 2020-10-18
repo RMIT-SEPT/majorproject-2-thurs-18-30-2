@@ -2,20 +2,40 @@ import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Container, Row, Col } from 'react-bootstrap';
-
+import jwt_decode from 'jwt-decode';
 import './css/App.css';
 
+import api from './app/api';
 import SubRouter from './components/utils/SubRouter';
 import NavigationBar from './components/layout/NavigationBar';
 import SideBar from './components/layout/SideBar';
 import Modal from './components/utils/Modal';
 import router from './router/router';
-import { } from './app/reducers/userSlice';
+import { setUser, setDecoded } from './app/reducers/userSlice';
 import SideBarMenu from './side-bar-menus/side-bar-menus';
 
 class App extends React.Component {
-    render () {
+    async componentDidMount() {
+        if(!this.props.user.userDecoded) {       
+            var token = localStorage.getItem('jwtToken');  
+            if(token === 'null') {
+                token = null
+            }
+            if(token !== null) {  
+                this.props.setDecoded(token);
+                var decoded = jwt_decode(token);
+                try {
+                    var { data } = await api.get('/user/getUser/' + decoded.id);
+                    this.props.setUser(data);
+                } catch(error) {
+                    console.log(error.repsonse);
+                }
+            }
+        } 
+    }
 
+
+    render () {
         var items = []
         var sideBarMenu = new SideBarMenu();
         if(this.props.user.userDetails) {
@@ -66,7 +86,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = () => {
     return {
-        
+        setUser,
+        setDecoded
     };
 };
 

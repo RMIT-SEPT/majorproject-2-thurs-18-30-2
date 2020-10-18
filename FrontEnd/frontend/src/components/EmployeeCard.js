@@ -1,52 +1,51 @@
 import React from 'react';
-import { Card, Button } from 'react-bootstrap';
+import { Card, Button, Row, Col, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import '../css/Card.css';
 
-class EmployeeCard extends React.Component {
-    constructor (props) {
-        super(props);
-        this.state = {
+import profilePic from '../images/dwight1.jpg';
+// import avocado from '../images/avocado.jpg';
 
-        };
-
-    }
-
-    // employeeProfile() {
-    //     console.log("link to employee profile");
-
+function EmployeeCard (props) {
         
-    //     var url = "/employees/" + this.props.id;
-
-    //     return <Redirect path={url} />;
-    // }
-
-    render () {
-        return (
-            <div id="card">
-            <Card id="test">
-                <Card.Body>
-                    <Card.Title><p>{this.props.employee.username}</p></Card.Title>
-                    <Card.Subtitle>
-                        <p>{this.props.employee.fName} {this.props.employee.lName}</p>
-                    </Card.Subtitle>
-                    <Card.Text>
-                        <p>{this.props.employee.email}</p>
-                    </Card.Text>
-                    
-                    <Link to={"/employee/" + this.props.employee.id}>
-                        <div id="button">
-                            <Button variant="primary">View Details</Button>
-                        </div>
+    return (
+        <Card className="card employee-card">
+            
+            <Row >
+                <Col >
+                    <Image src={profilePic} className="card-profile-pic" roundedCircle fluid />                              
+                
+                </Col>
+                <Col md="8">
+                    <Card.Body> 
+                        <Card.Title id="title">{props.item.username}</Card.Title>
+                        <Card.Subtitle>
+                            {props.item.fName} {props.item.lName}
+                        </Card.Subtitle>
+                        <Card.Text>
+                            {props.item.email}
+                        </Card.Text>
+                    </Card.Body>
+                </Col>
+            </Row>
+            <Row>
+                <Col md="3"/>
+                <Col className="card-button">
+                    <Link to={"/employee/" + props.item.id}>
+                        <Button variant="info" style={{ fontSize : '14px'}}>View Details</Button>
                     </Link>
-                    
-                    
-                </Card.Body>
-            </Card>
-        
-            </div>
-        );
-    }
+                </Col>
+                <Col className="card-button">
+                    <Link to={"/schedule/" + props.item.id}>
+                        <Button variant="dark" style={{ fontSize : '14px'}}>Schedule</Button>
+                    </Link>
+                </Col>
+            </Row>
+            <Card.Footer className="text-muted">
+                Created At : {props.item.createdAt}
+            </Card.Footer>
+        </Card>            
+    );
 }
 
 export default EmployeeCard;

@@ -3,6 +3,7 @@ package com.majorproject.backend.exceptions;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.majorproject.backend.exceptions.subErrors.AbstractSubError;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import java.util.Date;
 import java.util.List;

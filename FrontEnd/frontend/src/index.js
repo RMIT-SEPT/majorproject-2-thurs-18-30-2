@@ -11,6 +11,16 @@ import App from './App';
 
 import * as serviceWorker from './serviceWorker';
 import store from './app/store';
+import setJWTToken from './app/securityUtils/setJWTToken';
+
+var token = localStorage.getItem('jwtToken');  
+if(token === 'null') {
+    token = null
+}
+if(token !== null) {
+    setJWTToken(token);
+}
+
 
 ReactDOM.render(
     <React.StrictMode>

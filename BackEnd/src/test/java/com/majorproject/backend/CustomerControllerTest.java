@@ -2,6 +2,9 @@ package com.majorproject.backend;
 
 import com.majorproject.backend.models.Customer;
 import com.majorproject.backend.responseForms.LoginForm;
+import com.majorproject.backend.security.JwtAuthenticationEntryPoint;
+import com.majorproject.backend.security.JwtTokenProvider;
+import com.majorproject.backend.services.CustomUserDetailsService;
 import com.majorproject.backend.services.CustomerService;
 import com.majorproject.backend.services.MapValidationErrorService;
 import com.majorproject.backend.util.Util;
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -34,6 +38,14 @@ public class CustomerControllerTest {
     private CustomerService customerService;
     @MockBean
     private MapValidationErrorService mapValidationErrorService;
+    @MockBean
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    @MockBean
+    private JwtTokenProvider tokenProvider;
+    @MockBean
+    private AuthenticationManager authenticationManager;
+    @MockBean
+    CustomUserDetailsService customUserDetailsService;
     private Customer customer;
 
     @Before
@@ -50,46 +62,5 @@ public class CustomerControllerTest {
         mvc.perform(post("/api/customer/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Util.asJsonString(customer))).andExpect(status().isCreated());
-    }
-
-    @Test
-    public void customerCreate_Fail() throws Exception {
-        customer = null;
-
-        mvc.perform(post("/api/employee/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Util.asJsonString(customer)))
-                .andExpect(status().is4xxClientError());
-    }
-
-    @Test
-    public void customerLogin_pwdWrong_Fail() throws Exception {
-        // Incorrect parameters
-//        Customer customer =  new Customer("Ross", "Bob", "bob@gmail.com", "1234", null, null);
-//
-//        given(customerService.getCustomerByEmail("bob@gmail.com")).willReturn(customer);
-//
-//        LoginForm requestBody = new LoginForm();
-//        requestBody.setEmail("bob@gmail.com");
-//        requestBody.setPassword("123");
-//
-//        mvc.perform(post("/api/customer/verify")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(Util.asJsonString(requestBody))
-//        ).andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    public void customerLogin_emailWrong_Fail() throws Exception {
-//        given(customerService.getCustomerByEmail("ob@gmail.com")).willReturn(null);
-//
-//        LoginForm requestBody = new LoginForm();
-//        requestBody.setEmail("ob@gmail.com");
-//        requestBody.setPassword("1234");
-//
-//        mvc.perform(post("/api/customer/verify")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(Util.asJsonString(requestBody))
-//        ).andExpect(status().isNotFound());
     }
 }

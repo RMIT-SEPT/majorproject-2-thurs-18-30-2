@@ -1,25 +1,24 @@
-h2 {
-    text-align: center;
-}
-img {
+.profile-pic {
+    width : 15rem;
+    height : 15rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 5px;
     width: 250px;
     margin-left: 25px;
-
-}
-#centre{
-    width: 75%;
-
-    margin: auto;
 }
 
-#borderTopAndBottom{
-    border: 1px solid black;
-    border: 1px solid black;
-    text-align: center;
-    padding-top: 15px;
-    margin-bottom: 10px;
-    box-shadow: 5px 8px #888888;
+.row-spacing {
+    margin-bottom : 10px;
 }
+
+.background-image {
+    max-width : 100%;
+    margin-right : 0;
+    margin-left : 0;
+    filter: brightness(70%);
+    border: 1px solid #ddd; 
+    padding: 5px;
+}
+

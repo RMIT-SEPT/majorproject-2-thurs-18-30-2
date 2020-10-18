@@ -1,62 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import _ from 'lodash';
 import api from '../../app/api';
 
-class UsernameInput extends React.Component {
-    constructor (props) {
-        super(props);
-        this.state = {
-            value : props.val,
-            valid : true,
-            border : "1px solid lightgrey",
-            errMsg : "",
-            changed : false
-        };
+function UsernameInput (props) {
+    
+    var debounceFn;
+    var [border, setBorder] = useState('1px solid lightgrey');
+    var [errMsg, setErrMsg] = useState('');
 
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange (event) {
-        this.setState({
-            value : event.target.value
-        });
-
-        
+    function handleChange (event) {
+        var input = event.target.value;
+        props.onChange(props.inputKey, input);
 
         event.persist();
 
-        if (this.debounceFn) {
-            this.debounceFn.cancel()
-            this.debounceFn = false
+        if (debounceFn) {
+            debounceFn.cancel()
+            debounceFn = false
         }
 
-        this.debounceFn = _.debounce(() => {
+        debounceFn = _.debounce(() => {
             
-            api.get(`/user/usernameExists/${this.state.value}`)
+            api.get(`/user/usernameExists/${event.target.value}`)
             .then((response) => {
                 var exists = response.data;
                 if(!exists) {
-                    this.setState({
-                        valid : true
-                    });
+                    setBorder('1px solid lightgrey');
+                    setErrMsg('');
+                    props.changeValid(props.inputKey, true);
                 } else {
-                    this.setState({
-                        valid : false
-                    });
-                }
-
-                if(this.state.valid) {
-                    this.setState({
-                        border : '1px solid lightgreyn',
-                        errMsg : ""
-                    });
-                }
-                else {
-                    this.setState({
-                        border : '1px solid red',
-                        errMsg : "Username already exists, please try a different username"
-                    });
+                    setBorder('1px solid red');
+                    setErrMsg('Username already exists, please try a different username');
+                    props.changeValid(props.inputKey, false);
                 }
             })
             .catch((error) => {
@@ -64,26 +40,22 @@ class UsernameInput extends React.Component {
             });
         }, 700, { leading : false, trailing: true });
 
-        this.debounceFn();
+        debounceFn();
     }
-
-    render () {
-        
-        return (
-            <Form.Group as={Row}>
-                <Form.Label column sm={this.props.pos[0]}>
-                    {this.props.naming}
-                </Form.Label>
-                <Col sm={this.props.pos[1]}>
-                    <Form.Control style={{border: this.state.border}} placeholder="Username" type="Username" value={this.state.value} onChange={this.handleChange} />
-                    <p style={{color: 'red', fontSize: '12px'}}>
-                        {this.state.errMsg}
-                    </p>
-                </Col>
-            </Form.Group>
-        );
-        
-    }
+   
+    return (
+        <Form.Group as={Row}>
+            <Form.Label column sm={props.pos[0]}>
+                {props.naming}
+            </Form.Label>
+            <Col sm={props.pos[1]}>
+                <Form.Control style={{border: border}} placeholder="Username" type="Username" value={props.value} onChange={handleChange} />
+                <p style={{color: 'red', fontSize: '12px'}}>
+                    {errMsg}
+                </p>
+            </Col>
+        </Form.Group>
+    );
 }
 
 export default UsernameInput;

@@ -1,122 +1,90 @@
 import React from 'react';
-import { Form } from 'react-bootstrap';
-import Booking from '../components/Booking';
+import { Switch } from 'react-router-dom';
+import { Nav } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import SubRouter from './utils/SubRouter';
+
 import '../css/BookingPage.css';
 
-class BookingsPage extends React.Component {
-    constructor (props) {
+class BookingPage extends React.Component {
+    constructor(props) {
         super(props);
         this.state = {
-        };
+            routes : this.props.router.routes,
+            timeState : 'present'
+        }
+        this.selectHandler = this.selectHandler.bind(this);
     }
 
-    // async componentDidMount() {
-    //     try {
-    //         const response = await api.get('/employee/getAllEmployees');
-    //         await this.setState({
-    //             employees : response.data
-    //         });
-    //     } catch(error) {
-    //         console.log(error.response);
-    //     }
-    // }
+    selectHandler(eventKey) {
+        if(eventKey === '#/bookings/present') {
+            this.setState({
+                timeState : 'present'
+            })
+        } else {
+            this.setState({
+                timeState : 'past'
+            })
+        }
+    }
 
-    //A contact us page
-    render () {
-        
+    render() {
         var html;
-        var call = [
-                {
-                    eFName : "efirst",
-                    eLName : "elast",
-                    date : "15/09/2020",
-                    startTime : "0930",
-                    endTime : "1030",
-                    service : "Full Body Massage"
-                },
-                {
-                    eFName : "another1",
-                    eLName : "another2",
-                    date : "15/09/2020",
-                    startTime : "1330",
-                    endTime : "1530",
-                    service : "Super Happy Fun Times"
-                },
-                {
-                    eFName : "employeeFirstName",
-                    eLName : "employeeLastName",
-                    date : "14/09/2020",
-                    startTime : "1930",
-                    endTime : "2030",
-                    service : "Dine and Dash"
-                },
-                {
-                    eFName : "employeeFirstName",
-                    eLName : "employeeLastName",
-                    date : "14/09/2020",
-                    startTime : "1930",
-                    endTime : "2030",
-                    service : "Dine and Dash"
-                },
-                {
-                    eFName : "employeeFirstName",
-                    eLName : "employeeLastName",
-                    date : "14/09/2020",
-                    startTime : "1930",
-                    endTime : "2030",
-                    service : "Dine and Dash"
-                },
-                {
-                    eFName : "employeeFirstName",
-                    eLName : "employeeLastName",
-                    date : "14/09/2020",
-                    startTime : "1930",
-                    endTime : "2030",
-                    service : "Dine and Dash"
-                },
-                {
-                    eFName : "employeeFirstName",
-                    eLName : "employeeLastName",
-                    date : "14/09/2020",
-                    startTime : "1930",
-                    endTime : "2030",
-                    service : "Dine and Dash"
-                },
-                {
-                    eFName : "employeeFirstName",
-                    eLName : "employeeLastName",
-                    date : "14/09/2020",
-                    startTime : "1930",
-                    endTime : "2030",
-                    service : "Dine and Dash"
+        if(this.props.user.userDetails) {
+            var apiCall;
+            if(this.props.user.userDetails.empType) {
+                if(this.props.user.userDetails.empType === 'admin') {
+                    apiCall = '/booking/getAllBookings';
+                } else {
+                    apiCall = '/booking/getBookings/employee/' + this.props.user.userDetails.id;
                 }
-            ]
-        
-        html = (
-            <Form.Group>
+            } else {
+                apiCall = '/booking/getBookings/customer/' + this.props.user.userDetails.id;
+            }
+            var routes = this.state.routes;
+            routes[0].listApi = apiCall + '/' + this.state.timeState;
+            routes[1].listApi = apiCall + '/' + this.state.timeState;
+            
+            html = (
+                <React.Fragment>
+                    <Nav justify variant="tabs" onSelect={this.selectHandler} className="tabBar">
+                        {
+                            routes.map((route) => {
+                                return (
+                                    <Nav.Item key={route.path}>
+                                        <Nav.Link href={'#' + route.path}>{route.label}</Nav.Link>
+                                    </Nav.Item>
+                                );
+                            })
+                        }    
+                    </Nav>
 
-                <div class="Margin">
-                <div className="row">
-
-                {       
-                    call.map(
-                        function(book) {
-                            return  (
-                                
-                                    <Booking 
-                                        booking={book}
-                                    />
-                            );
-                        }
-                    ) 
-                }
-                </div>
-                </div>
-            </Form.Group>
-        )
+                    <Switch>
+                        {this.state.routes.map((route, i) => (
+                                <SubRouter key={i} {...route} />
+                            )
+                        )}
+                        
+                    </Switch>
+                </React.Fragment>
+            );
+        } else {
+            html = <React.Fragment>Loading...</React.Fragment>
+        }
         return html;
     }
-
 }
 
-export default BookingsPage;
+const mapStateToProps = state => ({
+    user : state.user
+});
+
+const mapDispatchToProps = () => {
+    return { 
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps()
+)(BookingPage);

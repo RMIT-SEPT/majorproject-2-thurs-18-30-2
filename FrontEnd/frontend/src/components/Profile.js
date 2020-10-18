@@ -3,14 +3,17 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import api from '../app/api';
+import profilePic from '../images/dwight1.jpg';
+import background from '../images/background3.jpg';
 import '../css/Profile.css';
-import { Button } from 'react-bootstrap';
+import { Image, Card, Col, Row, Button } from 'react-bootstrap';
 
 function Profile({ router }) {
 
     var mainUser = useSelector(state => state.user);
-    const [user, setUser] = useState();
+    const [user, setUser] = useState(null);
     const [editUrl, setEditUrl] = useState('/edit');
+    const [scheduleUrl, setScheduleUrl] = useState('/schedule');
 
     useEffect(() => {
         if(router.computedMatch.params.eId) {
@@ -21,6 +24,7 @@ function Profile({ router }) {
             
                     setUser({...response.data});
                     setEditUrl('/edit/employee/' + router.computedMatch.params.eId);
+                    setScheduleUrl('/schedule/' + router.computedMatch.params.eId);
 
                 } catch(error) {
                     console.log(error.response);
@@ -29,84 +33,119 @@ function Profile({ router }) {
 
             getApi();    
         } else {
-            setUser({...mainUser.userDetails})
+            setUser({...mainUser.userDetails});
+            if(mainUser.userDetails) {
+                setScheduleUrl('/schedule/' + mainUser.userDetails.id);
+            }
+            // Here if it is employee profile as main user
         }
     }, [mainUser.userDetails, router.computedMatch.params.eId]);
+    
+    var html;
+    if(user && mainUser.userDetails) {
+        html = (
 
-
-    if(user) {
-        return (
-            <React.Fragment>  
-                <div className="jumbotron jumbotron-fluid">
-                    <div id="centre">
-                        <div className="row">
-                            <div className="col-md-4">
-                                <h2><b>{user.username}'s Profile Page</b></h2>
-                                <img src="https://storage.pixteller.com/designs/designs-images/2016-11-19/02/thumbs/img_page_1_58305b35ebf5e.png"></img>
-                                <Link to={editUrl}>
-                                    <Button>Edit</Button>
-                                </Link>
-                            </div>
-                            <div id="profile-border" className="col-md-8">
-                                <div id="borderTopAndBottom" className="row">
-                                    <div className="col-md-6">
-                                        <b><label>Username</label></b>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <p>{user.username}</p>
-                                    </div>
-                                </div>
-                                <div id="borderTopAndBottom" className="row">
-                                    <div className="col-md-6">
-                                        <b><label>First Name</label></b>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <p>{user.fName}</p>
-                                    </div>
-                                </div>
-                                <div id="borderTopAndBottom" className="row">
-                                    <div className="col-md-6">
-                                        <b><label>Last Name</label></b>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <p>{user.lName}</p>
-                                    </div>
-                                </div>
-                                <div id="borderTopAndBottom" className="row">
-                                    <div className="col-md-6">
-                                        <b><label>Email</label></b>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <p>{user.email}</p>
-                                    </div>
-                                </div>
-                                <div id="borderTopAndBottom"className="row">
-                                    <div className="col-md-6">
-                                        <b><label>Phone</label></b>
-                                    </div>
-                                    <div  className="col-md-6">
-                                        <p>{user.pNumber}</p>
-                                    </div>
-                                </div>
-                                <div id="borderTopAndBottom" className="row">
-                                    <div className="col-md-6">
-                                        <b><label>Address</label></b>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <p>{user.address}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </React.Fragment>
-        );
+            <Card className="bg-dark text-white" style={{marginTop : '20px'}}>
+                <Card.Img src={background} alt="Card image" className="bg-dark background-image" />
+                <Card.ImgOverlay>
+                <Row style={{marginTop : '20px', marginBottom : '20px'}}>
+                    <Col md="3">
+                        <Image src={profilePic} className="profile-pic" roundedCircle fluid />
+                    
+                    </Col>
+                    <Col md="9">
+                        <Card.Body>
+                            <Row>
+                                <Col>
+                                    <Card.Title style={{fontSize: '30px'}}>{user.username}</Card.Title>
+                                </Col>
+                                {(mainUser.userDetails.empType === 'admin' || !mainUser.userDetails.empType) &&
+                                    <Col xs="2">
+                                        <Link to={editUrl}>
+                                            <Button variant="info">Edit</Button>
+                                        </Link>
+                                    </Col>
+                                }
+                            </Row>
+                            <Row>
+                                {mainUser.userDetails.empType &&
+                                    <React.Fragment>
+                                        <Col></Col>
+                                        <Col xs="2">
+                                            <Link to={scheduleUrl}>
+                                                <Button variant="dark">Schedule</Button>
+                                            </Link>
+                                        </Col>
+                                    </React.Fragment>
+                                }
+                            </Row>
+                            <br />  
+                            <Row>
+                                <Col md="1" />
+                                <Col md="11" style={{ fontSize : '20px' }}>
+                                    <Row className="row-spacing" id="firstName">
+                                        <Col md="3">
+                                            First Name
+                                        </Col>
+                                        <Col md="9">
+                                            {user.fName}
+                                        </Col>
+                                    </Row>
+                                    <Row className="row-spacing">
+                                        <Col md="3">
+                                            Last Name
+                                        </Col>
+                                        <Col md="9">
+                                            {user.lName}
+                                        </Col>
+                                    </Row>
+                                    <Row className="row-spacing">
+                                        <Col md="3">
+                                            E-mail
+                                        </Col>
+                                        <Col md="9">
+                                            {user.email}
+                                        </Col>
+                                    </Row>
+                                    <Row className="row-spacing" id="username">
+                                        <Col md="3">
+                                            Username
+                                        </Col>
+                                        <Col md="9">
+                                            {user.username}
+                                        </Col>
+                                    </Row>
+                                    <Row className="row-spacing">
+                                        <Col md="3">
+                                            Address
+                                        </Col>
+                                        <Col md="9">
+                                            {user.address}
+                                        </Col>
+                                    </Row>
+                                    <Row className="row-spacing">
+                                        <Col md="3">
+                                            Phone Number
+                                        </Col>
+                                        <Col md="9">
+                                            {user.pNumber}
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                            
+                            
+                        </Card.Body>
+                    </Col>
+                </Row>
+                </Card.ImgOverlay>
+            </Card>
+        )
     } else {
-        return(
-            <React.Fragment>Not Logged In</React.Fragment>
-        );
+        html = <React.Fragment><div id="loading">Loading...</div></React.Fragment>
     }
+
+    return html;
 }
 
 export default Profile;

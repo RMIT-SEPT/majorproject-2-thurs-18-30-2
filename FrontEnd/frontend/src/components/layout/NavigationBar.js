@@ -1,17 +1,17 @@
 import React from 'react';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown, Image } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { logOut } from '../../app/reducers/userSlice';
-
+import profilePic from '../../images/dwight1.jpg';
 import '../../css/NavBar.css';
 
 class NavigationBar extends React.Component {
     render () {
         return (
-            <Navbar className="navigationBar" bg="dark" variant="dark">
+            <Navbar className="navigation-bar" bg="dark" variant="dark">
                 <Navbar.Brand href="#home">AGME</Navbar.Brand>
 
                 <Nav className="mr-auto">
@@ -24,20 +24,27 @@ class NavigationBar extends React.Component {
                 </Nav>
                 
                 <NavDropdown 
-                    title={
-                        <i className="fa fa-user-circle fa-2x"></i>
+                    title={this.props.user.userDetails ?
+                        <span className="fa-stack fa-lg">
+                            <Image src={profilePic} className="nav-profile-pic fa-stack-1x" roundedCircle fluid />
+                        </span>
+                        :  
+                        <span className="fa-stack">
+                            <i className="fa fa-user-circle fa-2x"></i>
+                        </span> 
                     }
                     id="nav-dropdown" 
                     className="mr-sm-2"
                 >
-                    {this.props.user.loggedIn 
+                    {this.props.user.userDetails 
                         ?
                         <React.Fragment>
                             <NavDropdown.Item href="#profile">
                                 <span className="fa-stack fa-lg">
-                                    <i className="fa fa-circle fa-stack-2x fa-inverse"></i>
-                                    <i className="fa fa-user-circle fa-stack-1x"></i>
+                                    
+                                    <Image src={profilePic} className="nav-profile-pic fa-stack-1x" roundedCircle fluid />
                                 </span>
+                                
                                 Profile
                             </NavDropdown.Item>
                             <NavDropdown.Divider />

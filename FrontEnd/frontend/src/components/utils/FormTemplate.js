@@ -6,7 +6,7 @@ import { Row, Col,
     Alert } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-import { logIn } from '../../app/reducers/userSlice';
+import { logIn, setUser } from '../../app/reducers/userSlice';
 import { openModal } from '../../app/reducers/modalSlice';
 import FormTemplates from '../../form-templates/form-templates';
 
@@ -18,84 +18,98 @@ class FormTemplate extends React.Component {
             redirect : null,
             valid : true,
             errorMsg : 'Please fill in all fields correctly',
-            preFillValues : null
+            inputValues : {},
+            inputValidity : {}
         };
 
         // Form template which is passed down by props.router
         var formTemplates = new FormTemplates();
         this.form = formTemplates[props.router.form]();
 
-        // Reference to child input components
-        this.componentRefs = {};
-
         var component;
         for (component of this.form.components) {
-            this.componentRefs[component.inputName] = React.createRef();
+            this.state.inputValues[component.input] = '';
+            this.state.inputValidity[component.input] = false;
         }
-
+        this.inputChangeValidity = this.inputChangeValidity.bind(this);
+        this.inputChangeHandler = this.inputChangeHandler.bind(this);
         this.submitForm = this.submitForm.bind(this);
-
     }
 
-    async componentDidMount() {
+    inputChangeHandler (inputKey, input) {
+        var tmp = this.state.inputValues;
+        tmp[inputKey] = input;
+        this.setState({
+            inputValues : tmp
+        })
+    }
+
+    inputChangeValidity (inputKey, valid) {
+        var tmp = this.state.inputValidity;
+        tmp[inputKey] = valid;
+        this.setState({
+            inputValidity : tmp
+        })
+    }
+
+    async componentDidMount () {
         if(this.form.prefill) {
             var id = this.props.router.computedMatch.params.eId;
+            var valuesToFill;
             if(id) {
                 try {
                     const response = await api.get('/employee/getEmployeeById/' + id);
                     
-                    this.setState({
-                        preFillValues : {...response.data}
-                    });
-                    this.form.apiCall += '/' + response.data.username;
+                    valuesToFill = {...response.data};
+                    this.form.apiCall += '/' + response.data.id;
                     this.form.redirect += '/' + id;
 
                 } catch(error) {
                     console.log(error.response);
                 }
             } else {
-                await this.setState({
-                    preFillValues : {...this.props.user.userDetails}
-                });
+                valuesToFill = {...this.props.user.userDetails};
 
-                this.form.apiCall += '/' + this.props.user.userDetails.username;
+                this.form.apiCall += '/' + this.props.user.userDetails.id;
             }
-            
-            this.form.components.map(
-                function(component) {
-                    this.componentRefs[component.inputName].current.setState({
-                        value : this.state.preFillValues[component.input],
-                        valid : true
-                    });
-                    return true;
-                }.bind(this)
-            );
+            valuesToFill.password = '';
+            if(valuesToFill) {
+                var tmpValues = {...this.state.inputValues};
+                var tmpValidity = {...this.state.inputValidity};
+
+                var component;
+                for(component of this.form.components) {
+                    
+                    tmpValues[component.input] = valuesToFill[component.input];
+                    tmpValidity[component.input] = true;
+                } 
+                
+                this.setState({
+                    inputValues : {...tmpValues},
+                    inputValidity : {...tmpValidity}
+                });
+            }
             
         }
     }
 
     async submitForm (event) {
         event.preventDefault();
-
-        var user = {};
+        
         var valid = true;
-        await this.form.components.map(
-            function(component) {
-                user[component.input] = this.componentRefs[component.inputName].current.state.value;
-                if(this.componentRefs[component.inputName].current.state.valid != null) {
-                    valid = valid && this.componentRefs[component.inputName].current.state.valid;
-                }
-                return true;
-            }.bind(this)
-        );
+        var component;
+        for(component of this.form.components) {
+            valid = valid && this.state.inputValidity[component.input]
+        }
+        
         this.setState({
             valid : valid,
             errorMsg : 'Please fill in all fields correctly'
         });
         
         if(this.state.valid) {
-            api.post(this.form.apiCall, user)
-            .then((response) => {
+            try {
+                var response = await api.post(this.form.apiCall, this.state.inputValues);
                 if(this.form.responseHandler) {
                     this.props[this.form.responseHandler](response.data);
                 }
@@ -107,12 +121,12 @@ class FormTemplate extends React.Component {
                 this.setState({
                     redirect : this.form.redirect
                 });
-            }).catch((error) => {
+            } catch(error) {
                 this.setState({
                     valid : false,
                     errorMsg : error.response.data.message
                 });
-            });
+            }
         }
     }
     
@@ -138,20 +152,17 @@ class FormTemplate extends React.Component {
                                     this.form.components.map(
                                         function(component) {
                                             var TagName = component.inputType;
-                                            var val = '';
-                                            // if(this.state.preFillValues) {
-                                            //     val = this.state.preFillValues[component.input];
-                                            // }
-                                            // else {
-                                            //     val = '';
-                                            // }
+                                    
                                             return  (
                                                 <TagName 
-                                                    key={component.inputName} 
-                                                    ref={this.componentRefs[component.inputName]} 
+                                                    key={component.input}
+                                                    inputKey={component.input}
                                                     naming={component.inputName} 
                                                     pos={[3,9]} 
-                                                    val={val}
+                                                    value={this.state.inputValues[component.input]}
+                                                    onChange={this.inputChangeHandler}
+                                                    changeValid={this.inputChangeValidity}
+                                                    validity={this.state.inputValidity[component.input]}
                                                 />
                                                 
                                             );
@@ -183,7 +194,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = () => {
     return { 
         logIn,
-        openModal
+        openModal,
+        setUser
     };
 };
 
