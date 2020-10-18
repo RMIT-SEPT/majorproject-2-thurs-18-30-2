@@ -11,7 +11,7 @@ import { Image, Card, Col, Row, Button } from 'react-bootstrap';
 function Profile({ router }) {
 
     var mainUser = useSelector(state => state.user);
-    const [user, setUser] = useState();
+    const [user, setUser] = useState(null);
     const [editUrl, setEditUrl] = useState('/edit');
     const [scheduleUrl, setScheduleUrl] = useState('/schedule');
 
@@ -40,7 +40,7 @@ function Profile({ router }) {
     }, [mainUser.userDetails, router.computedMatch.params.eId]);
 
     var html;
-    if(user && mainUser.userDetails) {
+    if(user && mainUser.userDetails != null) {
         html = (
 
             <Card className="bg-dark text-white" style={{marginTop : '20px'}}>

@@ -40,9 +40,6 @@ class BookingForm extends React.Component {
       modal : { title : "Booking Successful", body : "Thanks for choosing us, you have successfully made a booking" }
     };
     //Binding functions to class
-    this.commitChanges = this.commitChanges.bind(this);
-    this.changeAddedAppointment = this.changeAddedAppointment.bind(this);
-    this.changeAppointmentChanges = this.changeAppointmentChanges.bind(this);
     this.handleChangeService = this.handleChangeService.bind(this);
     this.handleChangeEmployee = this.handleChangeEmployee.bind(this);
     this.appointmentClickHandler = this.appointmentClickHandler.bind(this);
